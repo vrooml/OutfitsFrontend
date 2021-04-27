@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_closet"
+        android:icon="@drawable/bottom_navigation_closet_selector"
+        android:title="衣柜" />
+    <item
+        android:id="@+id/navigation_outfit"
+        android:icon="@drawable/bottom_navigation_outfit_selector"
+        android:title="搭配" />
+
+    <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/bottom_navigation_chat_selector"
+        android:title="社区" />
+
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@drawable/bottom_navigation_user_selector"
+        android:title="我的" />
+
+</menu>
