@@ -45,6 +45,7 @@ dependencies {
     // Retrofit库
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     //垂直的tablayout和viewpager
     implementation 'q.rorbin:VerticalTabLayout:1.2.5'

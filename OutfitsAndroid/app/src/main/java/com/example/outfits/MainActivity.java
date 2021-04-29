@@ -1,31 +1,22 @@
 package com.example.outfits;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTabHost;
 import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.example.outfits.CustomView.MainActivityPagerAdapter;
 import com.example.outfits.CustomView.ScrollableViewPager;
-import com.example.outfits.Fragment.ChatFragment;
-import com.example.outfits.Fragment.ClosetFragment;
-import com.example.outfits.Fragment.OutfitFragment;
-import com.example.outfits.Fragment.UserFragment;
+import com.example.outfits.Chat.ChatFragment;
+import com.example.outfits.Closet.ClosetFragment;
+import com.example.outfits.Outfit.OutfitFragment;
+import com.example.outfits.User.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
