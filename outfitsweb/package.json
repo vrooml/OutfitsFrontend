@@ -10,7 +10,9 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "masonry-layout": "^4.2.2",
+    "mint-ui": "^2.2.13",
     "vue": "^2.6.11",
+    "vue-directive-touch": "^1.0.28",
     "vue-grid-layout": "^2.3.12",
     "vue-masonry": "^0.13.0",
     "vue-router": "^3.2.0",
