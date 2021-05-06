@@ -1,4 +1,4 @@
-package com.example.outfits.User;
+package com.example.outfits.Bean;
 
 public class UserInfo {
     public UserInfo(String userNickname, String userSex, String userProfile, int userId) {

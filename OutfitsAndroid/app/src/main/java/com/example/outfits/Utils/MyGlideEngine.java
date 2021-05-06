@@ -1,4 +1,4 @@
-package com.example.outfits.User;
+package com.example.outfits.Utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -8,8 +8,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
+import com.zhihu.matisse.engine.ImageEngine;
 
-public class MyGlideEngine implements ImageEngine {
+public class MyGlideEngine implements ImageEngine{
     @Override
     public void loadThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
         Glide.with(context)
@@ -23,7 +24,7 @@ public class MyGlideEngine implements ImageEngine {
     }
 
     @Override
-    public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+    public void loadAnimatedGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
         Glide.with(context)
                 .asBitmap()
                 .load(uri)
@@ -46,7 +47,7 @@ public class MyGlideEngine implements ImageEngine {
     }
 
     @Override
-    public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+    public void loadAnimatedGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
         Glide.with(context)
                 .asGif()
                 .load(uri)

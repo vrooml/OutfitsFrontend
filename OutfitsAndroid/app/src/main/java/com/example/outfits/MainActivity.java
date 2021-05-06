@@ -10,11 +10,11 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.outfits.CustomView.MainActivityPagerAdapter;
+import com.example.outfits.Adapter.MainActivityPagerAdapter;
 import com.example.outfits.CustomView.ScrollableViewPager;
 import com.example.outfits.Chat.ChatFragment;
-import com.example.outfits.Closet.ClosetFragment;
-import com.example.outfits.Fragment.UserFragment;
+import com.example.outfits.UI.ClosetFragment;
+import com.example.outfits.UI.UserFragment;
 import com.example.outfits.Outfit.OutfitFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

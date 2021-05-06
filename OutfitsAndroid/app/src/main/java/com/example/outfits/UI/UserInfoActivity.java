@@ -1,4 +1,4 @@
-package com.example.outfits.User;
+package com.example.outfits.UI;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,13 @@ import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.R;
+import com.example.outfits.Utils.MyGlideEngine;
+import com.example.outfits.Utils.RetrofitUtil;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.List;
 
@@ -53,39 +59,24 @@ public class UserInfoActivity extends AppCompatActivity {
         rbMan = (RadioButton)findViewById(R.id.rb_man);
         rbWoman = (RadioButton)findViewById(R.id.rb_woman);
         icon = (ImageView)findViewById(R.id.iv_icon);
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://a440c33e-ef48-4f8d-9cba-85579f86a113.mock.pstmn.io/")
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        UserClient userClient = retrofit.create(UserClient.class);
-        Call<UserInfoReturn> call = userClient.getUserInfo("fjdskfjks");
-        call.enqueue(new Callback<UserInfoReturn>() {
+        UserInfo userInfo=null;
+        userInfo=RetrofitUtil.getUserInfo("token");
+        nickname.setText(userInfo.getUserNickname().toString());
+        profile.setText(userInfo.getUserProfile().toString());
+        sex1 = userInfo.getUserSex().toString();
+        picUrl = userInfo.getUserPic().toString();
+        if(sex1.equals("男")){
+            rbMan.setChecked(true);
+        }else rbWoman.setChecked(true);
+        Glide.with(UserInfoActivity.this).asBitmap()
+                .load(picUrl)
+                .centerCrop().into(new BitmapImageViewTarget(icon){
             @Override
-            public void onResponse(Call<UserInfoReturn> call, Response<UserInfoReturn> response) {
-                UserInfo userInfo = (UserInfo)response.body().getData();
-                nickname.setText(userInfo.getUserNickname().toString());
-                profile.setText(userInfo.getUserProfile().toString());
-                sex1 = userInfo.getUserSex().toString();
-                picUrl = userInfo.getUserPic().toString();
-                if(sex1.equals("男")){
-                    rbMan.setChecked(true);
-                }else rbWoman.setChecked(true);
-                Glide.with(UserInfoActivity.this).asBitmap()
-                        .load(picUrl)
-                        .centerCrop().into(new BitmapImageViewTarget(icon){
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
-                                .create(UserInfoActivity.this.getResources(), resource);
-                        circularBitmapDrawable.setCircular(true);
-                        icon.setImageDrawable(circularBitmapDrawable);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<UserInfoReturn> call, Throwable t) {
-                Log.i("MainActivity", "error :(");
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
+                        .create(UserInfoActivity.this.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                icon.setImageDrawable(circularBitmapDrawable);
             }
         });
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +93,7 @@ public class UserInfoActivity extends AppCompatActivity {
                         profile.getText().toString(),
                         3
                 );
-                Call<UserInfoReturn> call1 =  userClient1.modifyUserInfo(userInfoNew);
+                Call<UserInfoReturn> call1 =  userClient1.modifyUserInfo("token",userInfoNew);
                 call1.enqueue(new Callback<UserInfoReturn>() {
                     @Override
                     public void onResponse(Call<UserInfoReturn> call, Response<UserInfoReturn> response) {
@@ -129,9 +120,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 Matisse
                         .from(UserInfoActivity.this)
                         //选择视频和图片
-                        .choose(MimeType.ofAll())
-                        //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
-                        .showSingleMediaType(true)
+                        .choose(MimeType.allOf())
                         //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
                         .capture(true)
                         .captureStrategy(new CaptureStrategy(true,"com.example.myapplication.fileProvider"))

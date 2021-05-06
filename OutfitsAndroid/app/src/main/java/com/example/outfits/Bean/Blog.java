@@ -1,4 +1,4 @@
-package com.example.outfits.User;
+package com.example.outfits.Bean;
 
 public class Blog {
     private int blogId;

@@ -1,4 +1,4 @@
-package com.example.outfits.User;
+package com.example.outfits.UI;
 
 import android.os.Bundle;
 
@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.outfits.Bean.Blog;
 import com.example.outfits.R;
+import com.example.outfits.Adapter.BlogAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

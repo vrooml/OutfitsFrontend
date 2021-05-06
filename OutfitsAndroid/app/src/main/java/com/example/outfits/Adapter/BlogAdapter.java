@@ -1,4 +1,4 @@
-package com.example.outfits.User;
+package com.example.outfits.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.outfits.Bean.Blog;
 import com.example.outfits.R;
 
 import java.util.List;
