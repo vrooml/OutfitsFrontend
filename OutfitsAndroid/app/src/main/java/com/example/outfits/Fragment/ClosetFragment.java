@@ -1,4 +1,4 @@
-package com.example.outfits.Closet;
+package com.example.outfits.Fragment;
 
 import android.os.Bundle;
 
@@ -6,15 +6,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.outfits.R;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.widget.QTabView;
@@ -23,7 +30,6 @@ import q.rorbin.verticaltablayout.widget.TabView;
 public class ClosetFragment extends Fragment{
     VerticalTabLayout tabLayout;
     ViewPager2 viewPager;
-
 
     public ClosetFragment(){
         // Required empty public constructor
@@ -93,8 +99,33 @@ public class ClosetFragment extends Fragment{
             }
         });
 
-//        ClothesAdapter clothesAdapter=new ClothesAdapter(this,subTypes,clothes);
-//        viewPager.setAdapter(clothesAdapter);
+        viewPager.setAdapter(new RecyclerView.Adapter<ViewPagerViewHolder>() {
+            String test[]={
+                    "111","222","333"
+            };
+
+            @NonNull
+            @Override
+            public ViewPagerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View inflate = LayoutInflater.from(getContext()).inflate(R.layout.closet_viewpager_item, parent,false);
+                return new ViewPagerViewHolder(inflate);
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull ViewPagerViewHolder holder, int position) {
+                holder.textView.setText(test[position]);
+            }
+
+            @Override
+            public int getItemCount() {
+                return test.length;
+            }
+
+
+        });
+
+
+
 
 
         return view;

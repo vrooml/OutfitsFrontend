@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.outfits.MyApplication;
 import com.example.outfits.RetrofitStuff.AuthCodeRequest;
+import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
 
@@ -31,7 +32,10 @@ public class RetrofitUtil{
             .addConverterFactory(GsonConverterFactory.create())//设置使用Gson解析
             .client(okHttpClient)
             .build();
-
+    private  static Retrofit retrofit1=new Retrofit.Builder()
+            .baseUrl("http://2457sx9279.qicp.vip")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
 /*
 主界面、登录等界面
@@ -64,5 +68,29 @@ public class RetrofitUtil{
         });
     }
 
+    public static void postModifyUserInfo(ModifyUserInfoRequest modifyUserInfoRequest){
+        final PostInterfaces request1=retrofit1.create(PostInterfaces.class);
+        Call<ResponseModel> call=request1.postModifyUserInfoRequest(modifyUserInfoRequest);
+        call.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+//                        RetrofitUtil.postModifyUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"gender",ModifyUserInfoRequest.getUserSex());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",ModifyUserInfoRequest.getUserNickname());
+                        Toast.makeText(MyApplication.getContext(),"修改信息成功",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
