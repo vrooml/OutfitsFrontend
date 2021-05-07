@@ -6,9 +6,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
-import com.example.outfits.Closet.ClothesFragment;
+import com.example.outfits.UI.ClothesFragment;
 import com.example.outfits.RetrofitStuff.GetClothingRequest;
-import com.example.outfits.Utils.RetrofitUtil;
 
 import java.util.ArrayList;
 import java.util.List;

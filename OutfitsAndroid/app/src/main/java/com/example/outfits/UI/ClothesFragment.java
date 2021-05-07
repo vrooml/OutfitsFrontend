@@ -1,4 +1,4 @@
-package com.example.outfits.Closet;
+package com.example.outfits.UI;
 
 import android.content.Intent;
 import android.database.Cursor;
