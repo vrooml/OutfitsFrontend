@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.outfits.Adapter.MainActivityPagerAdapter;
 import com.example.outfits.CustomView.ScrollableViewPager;
-import com.example.outfits.Chat.ChatFragment;
+import com.example.outfits.UI.ChatFragment;
 import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.OutfitFragment;
 import com.example.outfits.UI.UserFragment;
