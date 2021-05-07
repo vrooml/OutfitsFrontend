@@ -14,8 +14,9 @@ import android.widget.TextView;
 
 import com.example.outfits.Adapter.BlogAdapter;
 import com.example.outfits.Bean.Blog;
-import com.example.outfits.LoginActivity;
 import com.example.outfits.R;
+import com.example.outfits.ShowFansListActivity;
+import com.example.outfits.ShowFocusListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,19 @@ public class UserFragment extends Fragment{
         fansCount = this.getActivity().findViewById(R.id.fansCount);
 
 
+        this.getActivity().findViewById(R.id.followCount).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ShowFocusListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        this.getActivity().findViewById(R.id.fansCount).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ShowFansListActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -106,7 +120,7 @@ public class UserFragment extends Fragment{
         layoutManager.setOrientation(isVertical? LinearLayoutManager.VERTICAL: LinearLayoutManager.HORIZONTAL);
         list.setLayoutManager(layoutManager);
         //创建适配器
-        BlogAdapter adapter = new BlogAdapter(datas,this);
+        BlogAdapter adapter = new BlogAdapter(this.getContext(),datas);
         //设置到RecyclerView中
         list.setAdapter(adapter);
     }
