@@ -14,8 +14,8 @@ import com.example.outfits.Adapter.MainActivityPagerAdapter;
 import com.example.outfits.CustomView.ScrollableViewPager;
 import com.example.outfits.Chat.ChatFragment;
 import com.example.outfits.UI.ClosetFragment;
+import com.example.outfits.UI.OutfitFragment;
 import com.example.outfits.UI.UserFragment;
-import com.example.outfits.Outfit.OutfitFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;

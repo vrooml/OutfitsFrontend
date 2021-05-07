@@ -3,7 +3,6 @@ package com.example.outfits;
 import android.app.Application;
 import android.content.Context;
 
-import org.litepal.LitePal;
 
 //便于获取全局context
 public class MyApplication extends Application{
@@ -13,7 +12,6 @@ public class MyApplication extends Application{
     public void onCreate(){
         super.onCreate();
         context=getApplicationContext();
-        LitePal.initialize(this);
     }
 
     public static Context getContext(){

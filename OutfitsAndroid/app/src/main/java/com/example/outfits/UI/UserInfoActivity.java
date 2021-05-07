@@ -86,23 +86,23 @@ public class UserInfoActivity extends AppCompatActivity {
                         .baseUrl("https://a440c33e-ef48-4f8d-9cba-85579f86a113.mock.pstmn.io/")
                         .addConverterFactory(GsonConverterFactory.create());
                 Retrofit retrofit1 = builder.build();
-                UserClient userClient1 = retrofit1.create(UserClient.class);
-                UserInfo userInfoNew = new UserInfo(
-                        nickname.getText().toString(),
-                        sex1,
-                        profile.getText().toString(),
-                        3
-                );
-                Call<UserInfoReturn> call1 =  userClient1.modifyUserInfo("token",userInfoNew);
-                call1.enqueue(new Callback<UserInfoReturn>() {
-                    @Override
-                    public void onResponse(Call<UserInfoReturn> call, Response<UserInfoReturn> response) {
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserInfoReturn> call, Throwable t) {
-                    }
-                });
+//                UserClient userClient1 = retrofit1.create(UserClient.class);
+//                UserInfo userInfoNew = new UserInfo(
+//                        nickname.getText().toString(),
+//                        sex1,
+//                        profile.getText().toString(),
+//                        3
+//                );
+//                Call<UserInfoReturn> call1 =  userClient1.modifyUserInfo("token",userInfoNew);
+//                call1.enqueue(new Callback<UserInfoReturn>() {
+//                    @Override
+//                    public void onResponse(Call<UserInfoReturn> call, Response<UserInfoReturn> response) {
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<UserInfoReturn> call, Throwable t) {
+//                    }
+//                });
             }
         });
         sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -120,7 +120,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 Matisse
                         .from(UserInfoActivity.this)
                         //选择视频和图片
-                        .choose(MimeType.allOf())
+                        .choose(MimeType.ofAll())
                         //这两行要连用 是否在选择图片中展示照相 和适配安卓7.0 FileProvider
                         .capture(true)
                         .captureStrategy(new CaptureStrategy(true,"com.example.myapplication.fileProvider"))

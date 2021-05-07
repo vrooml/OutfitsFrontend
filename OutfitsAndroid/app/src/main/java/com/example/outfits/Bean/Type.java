@@ -1,14 +1,9 @@
 package com.example.outfits.Bean;
 
-import org.litepal.annotation.Column;
-import org.litepal.crud.LitePalSupport;
+public class Type{
 
-public class Type extends LitePalSupport{
-    @Column(unique=true)
     private int typeId;
-    @Column
     private String typeName;
-    @Column(ignore=true)
     private SubType[] subType;
 
     public Type(int typeId,String typeName,SubType[] subType){

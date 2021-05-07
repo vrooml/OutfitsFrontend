@@ -140,24 +140,24 @@ public class MyCollectionFragment extends Fragment {
                 .client(client)
                 .build();
         //创建网络请求接口实例
-        UserClient userClient = retrofit.create(UserClient.class);
-        Call<BlogListReturn> call = userClient.getBlog("fsda", 2);
-        //发送网络请求（异步）
-        call.enqueue(new Callback<BlogListReturn>() {
-            @Override
-            public void onResponse(Call<BlogListReturn> call, Response<BlogListReturn> response) {
-                BlogListReturn returnValue = response.body();
-                if(returnValue == null){
-                    return;
-                }
-                blogLists = returnValue.getData();
-                Log.e("MyBlogFragment", blogLists.toString());
-            }
-
-            @Override
-            public void onFailure(Call<BlogListReturn> call, Throwable t) {
-
-            }
-        });
+//        UserClient userClient = retrofit.create(UserClient.class);
+//        Call<BlogListReturn> call = userClient.getBlog("fsda", 2);
+//        //发送网络请求（异步）
+//        call.enqueue(new Callback<BlogListReturn>() {
+//            @Override
+//            public void onResponse(Call<BlogListReturn> call, Response<BlogListReturn> response) {
+//                BlogListReturn returnValue = response.body();
+//                if(returnValue == null){
+//                    return;
+//                }
+//                blogLists = returnValue.getData();
+//                Log.e("MyBlogFragment", blogLists.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BlogListReturn> call, Throwable t) {
+//
+//            }
+//        });
     }
 }

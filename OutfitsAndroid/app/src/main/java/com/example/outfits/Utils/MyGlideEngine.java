@@ -24,7 +24,7 @@ public class MyGlideEngine implements ImageEngine{
     }
 
     @Override
-    public void loadAnimatedGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
+    public void loadGifThumbnail(Context context, int resize, Drawable placeholder, ImageView imageView, Uri uri) {
         Glide.with(context)
                 .asBitmap()
                 .load(uri)
@@ -47,7 +47,7 @@ public class MyGlideEngine implements ImageEngine{
     }
 
     @Override
-    public void loadAnimatedGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
+    public void loadGifImage(Context context, int resizeX, int resizeY, ImageView imageView, Uri uri) {
         Glide.with(context)
                 .asGif()
                 .load(uri)
