@@ -12,14 +12,10 @@
         android:id="@+id/user_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:scaleType="fitXY"
         android:src="@drawable/head"
-        app:layout_constraintBottom_toTopOf="@+id/focus"
-        app:layout_constraintEnd_toStartOf="@+id/user_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,16 +23,13 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="83dp"
-        android:layout_marginBottom="56dp"
         android:gravity="center"
         android:text="小明"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="30sp"
 
-        app:layout_constraintBottom_toBottomOf="@+id/user_image"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/user_image"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,13 +39,11 @@
         android:layout_height="0dp"
         android:layout_marginStart="91dp"
         android:layout_marginTop="34dp"
-        android:layout_marginEnd="38dp"
         android:gravity="center"
 
         android:text="我的发布"
         android:textColor="@color/black"
         android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/blocFollow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fansCount2" />
 
@@ -60,16 +51,14 @@
         android:id="@+id/blocFollow"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="120dp"
-        android:gravity="center"
+        android:layout_marginTop="53dp"
 
+        android:layout_marginEnd="91dp"
+        android:gravity="center"
         android:text="我的收藏"
         android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/blocUser"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <TextView
@@ -77,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="16dp"
         android:text="收藏"
         app:layout_constraintStart_toEndOf="@+id/fans"
         app:layout_constraintTop_toBottomOf="@+id/user_image" />
@@ -87,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="16dp"
         android:text="粉丝"
         app:layout_constraintStart_toEndOf="@+id/follow"
         app:layout_constraintTop_toBottomOf="@+id/user_image" />
@@ -96,13 +85,9 @@
         android:id="@+id/follow"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:text="关注"
-        app:layout_constraintBottom_toTopOf="@+id/followCount"
-        app:layout_constraintEnd_toStartOf="@+id/fans"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_image" />
 
@@ -110,57 +95,57 @@
         android:id="@+id/followCount"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintTop_toBottomOf="@+id/follow"
-        tools:layout_editor_absoluteX="27dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/follow" />
 
     <TextView
-        android:id="@+id/fansCount2"
+        android:id="@+id/fansCount"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintTop_toBottomOf="@+id/fans"
-        tools:layout_editor_absoluteX="80dp" />
+        app:layout_constraintStart_toEndOf="@+id/followCount"
+        app:layout_constraintTop_toBottomOf="@+id/fans" />
 
     <TextView
         android:id="@+id/focalCount"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintTop_toBottomOf="@+id/focus"
-        tools:layout_editor_absoluteX="131dp" />
+        app:layout_constraintStart_toEndOf="@+id/fansCount2"
+        app:layout_constraintTop_toBottomOf="@+id/focus" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="91dp"
         android:layout_height="39dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="78dp"
-        android:layout_marginEnd="78dp"
-        android:layout_marginBottom="34dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="88dp"
         android:text="编辑资料"
         android:textColor="@color/black"
         android:textSize="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/blocFollow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/focus"
         app:layout_constraintTop_toBottomOf="@+id/user_name" />
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
 
-        >
+        android:layout_marginTop="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/id_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="194dp"
+            android:layout_marginBottom="220dp">
 
         </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>

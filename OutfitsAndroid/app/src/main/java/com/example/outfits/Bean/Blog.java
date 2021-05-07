@@ -5,7 +5,7 @@ public class Blog {
     private String blogTitle;
     private String blogPic;
     private int userId;
-
+    private String blogIntroduce;
     public int getBlogId() {
         return blogId;
     }
@@ -18,8 +18,8 @@ public class Blog {
         return blogPic;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getBlogIntroduce() {
+        return blogIntroduce;
     }
 
     public void setBlogId(int blogId) {
@@ -36,5 +36,9 @@ public class Blog {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void setBlogIntroduce(String blogIntroduce) {
+        this.blogIntroduce=blogIntroduce;
     }
 }

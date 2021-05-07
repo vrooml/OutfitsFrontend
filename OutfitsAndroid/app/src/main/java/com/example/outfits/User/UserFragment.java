@@ -1,14 +1,24 @@
 package com.example.outfits.User;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.outfits.Adapter.BlogAdapter;
+import com.example.outfits.Bean.Blog;
+import com.example.outfits.LoginActivity;
 import com.example.outfits.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +35,12 @@ public class UserFragment extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private static final String TAG = "UserFragment";
+    private RecyclerView list;
+    private List<Blog> datas;
+    private TextView fllowCount;
+    private TextView fansCount;
 
     public UserFragment(){
         // Required empty public constructor
@@ -55,6 +71,44 @@ public class UserFragment extends Fragment{
             mParam1=getArguments().getString(ARG_PARAM1);
             mParam2=getArguments().getString(ARG_PARAM2);
         }
+        //onCreateView();
+        list = (RecyclerView)this.getActivity().findViewById(R.id.id_recyclerview);
+        initData();
+        //设置默认的显示样式
+        showList(true);
+
+        fllowCount = this.getActivity().findViewById(R.id.followCount);
+        fansCount = this.getActivity().findViewById(R.id.fansCount);
+
+
+
+
+
+    }
+
+    private void initData() {
+        //List<DataBean>------>Adapter------>setAdapter---->显示数据
+        //创建数据集合
+        datas = new ArrayList<>();
+        for(int i = 0; i < 10; i++){
+            Blog data = new Blog();
+            data.setBlogPic("这是第" + i + "张图片");
+            data.setBlogTitle("这是第" + i + "项");
+            data.setBlogIntroduce("11111111111");
+            datas.add(data);
+        }
+    }
+
+    private void showList(boolean isVertical) {
+        //RecyclerView需要设置样式，其实就是设置布局管理器
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        //设置水平还是垂直
+        layoutManager.setOrientation(isVertical? LinearLayoutManager.VERTICAL: LinearLayoutManager.HORIZONTAL);
+        list.setLayoutManager(layoutManager);
+        //创建适配器
+        BlogAdapter adapter = new BlogAdapter(datas,this);
+        //设置到RecyclerView中
+        list.setAdapter(adapter);
     }
 
     @Override
