@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.outfits.Adapter.BlogAdapter;
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.ModifyActivity;
 import com.example.outfits.R;
 import com.example.outfits.ShowFansListActivity;
 import com.example.outfits.ShowFocusListActivity;
@@ -42,6 +44,8 @@ public class UserFragment extends Fragment{
     private List<Blog> datas;
     private TextView fllowCount;
     private TextView fansCount;
+    private Button btn_modify;
+    private Button btn_createBloc;
 
     public UserFragment(){
         // Required empty public constructor
@@ -80,7 +84,8 @@ public class UserFragment extends Fragment{
 
         fllowCount = this.getActivity().findViewById(R.id.followCount);
         fansCount = this.getActivity().findViewById(R.id.fansCount);
-
+        btn_modify = this.getActivity().findViewById(R.id.btn_modify);
+        btn_createBloc = this.getActivity().findViewById(R.id.btn_createBloc);
 
         this.getActivity().findViewById(R.id.followCount).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -96,7 +101,20 @@ public class UserFragment extends Fragment{
             }
         });
 
+        this.getActivity().findViewById(R.id.btn_modify).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        this.getActivity().findViewById(R.id.btn_createBloc).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //和Web嵌入交互
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

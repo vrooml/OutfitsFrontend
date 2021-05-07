@@ -16,7 +16,7 @@ public class ModifyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.modify_personalinformation);
         btn_return=(ImageButton) findViewById(R.id.imageButton);
-        button=(Button) findViewById(R.id.button);
+        button=(Button) findViewById(R.id.btn_modify);
         btn_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
