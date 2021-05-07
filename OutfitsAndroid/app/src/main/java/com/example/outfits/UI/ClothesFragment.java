@@ -83,7 +83,6 @@ public class ClothesFragment extends Fragment{
             RetrofitUtil.postUploadClothing(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,subtypeIds
                     ,getImgList(pictures));
-            //TODO 数据库上传
         }
     }
 

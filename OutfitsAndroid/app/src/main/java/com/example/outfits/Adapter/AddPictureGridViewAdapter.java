@@ -103,7 +103,7 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
             Glide.with(context)
                     .load(R.drawable.add_pic_btn)
                     .into(viewHolder.ivimage);
-            viewHolder.ivimage.setScaleType(ImageView.ScaleType.FIT_XY);
+            viewHolder.ivimage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             viewHolder.btdel.setVisibility(View.GONE);
         }
         return convertView;

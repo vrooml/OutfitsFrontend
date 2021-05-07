@@ -52,6 +52,8 @@ public class ClosetFragment extends Fragment{
         subType[0]=new Type.SubType(1,"短袖");
         subType[1]=new Type.SubType(2,"长袖");
         types.add(new Type(1,"上衣",subType));
+        types.add(new Type(1,"上衣",subType));
+        types.add(new Type(1,"上衣",subType));
 
         setupWithViewPager(viewPager,tabLayout);
 

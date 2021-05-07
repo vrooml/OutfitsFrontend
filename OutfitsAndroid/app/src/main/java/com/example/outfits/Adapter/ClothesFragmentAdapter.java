@@ -26,8 +26,16 @@ public class ClothesFragmentAdapter extends FragmentStateAdapter{
     public Fragment createFragment(int position) {
         // Return a NEW fragment instance in createFragment(int)
         List<SubTypeClothingBean> subTypeClothingBeans=new ArrayList<>();
+        subTypeClothingBeans.add(new SubTypeClothingBean(1,"短袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
+        subTypeClothingBeans.add(new SubTypeClothingBean(2,"长袖",null));
 
-        GetClothingRequest request=new GetClothingRequest(types.get(position).getTypeId());
+//        GetClothingRequest request=new GetClothingRequest(types.get(position).getTypeId());
 //        RetrofitUtil.postGetClothing(request,subTypeClothingBeans);
 //        subTypeClothingBeans.add(new SubTypeClothingBean(1,null));
         //        Bundle args = new Bundle();

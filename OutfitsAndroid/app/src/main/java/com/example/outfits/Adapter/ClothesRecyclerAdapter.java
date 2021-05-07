@@ -44,8 +44,10 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder,int position){
         holder.subTypeName.setText(subTypeClothingBeans.get(position).getSubtypeName());
         Clothes[] clothing=subTypeClothingBeans.get(position).getClothing();
-        for(int i=0;i<clothing.length;i++){
-            holder.pictures.add(Uri.parse(clothing[i].getClothingPic()));
+        if(clothing!=null){
+            for(int i=0;i<clothing.length;i++){
+                holder.pictures.add(Uri.parse(clothing[i].getClothingPic()));
+            }
         }
         //设置图片添加adapter
         holder.addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,fragment.getContext());
