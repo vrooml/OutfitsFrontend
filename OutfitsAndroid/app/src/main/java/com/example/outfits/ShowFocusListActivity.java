@@ -45,8 +45,7 @@ public class ShowFocusListActivity extends BaseActivity{
         //创建数据集合
         datas = new ArrayList<>();
         for(int i = 0; i < 10; i++){
-            UserInfo data = new UserInfo();
-            data.setUserNickname("这是第" + i + "张图片");
+            UserInfo data = new UserInfo("nickname","man","111",1);
             datas.add(data);
         }
     }
