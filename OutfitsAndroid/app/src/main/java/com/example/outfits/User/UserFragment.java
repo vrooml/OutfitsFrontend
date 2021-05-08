@@ -46,6 +46,8 @@ public class UserFragment extends Fragment{
     private TextView fansCount;
     private Button btn_modify;
     private Button btn_createBloc;
+    private TextView blocUser;
+    private TextView blocFollow;
 
     public UserFragment(){
         // Required empty public constructor
@@ -87,6 +89,9 @@ public class UserFragment extends Fragment{
         btn_modify = this.getActivity().findViewById(R.id.btn_modify);
         btn_createBloc = this.getActivity().findViewById(R.id.btn_createBloc);
 
+        blocUser = this.getActivity().findViewById(R.id.blocUser);
+        blocFollow = this.getActivity().findViewById(R.id.blocFollow);
+
         this.getActivity().findViewById(R.id.followCount).setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), ShowFocusListActivity.class);
@@ -113,6 +118,18 @@ public class UserFragment extends Fragment{
                 //和Web嵌入交互
                 Intent intent = new Intent(getActivity(), ModifyActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        this.getActivity().findViewById(R.id.blocUser).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //传递关于“我的博客”数据进入
+            }
+        });
+
+        this.getActivity().findViewById(R.id.blocFollow).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //传递关于“我的收藏”数据进入
             }
         });
 

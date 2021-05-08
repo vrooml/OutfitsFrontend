@@ -1,13 +1,18 @@
 package com.example.outfits;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Adapter.BlogAdapter;
+import com.example.outfits.Adapter.UserInfoAdapter;
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.UserInfo;
+import com.example.outfits.User.UserFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +22,7 @@ public class ShowFansListActivity extends BaseActivity{
     private static final String TAG = "ShowFansListActivity";
     private RecyclerView list;
     private List<UserInfo> datas;
-
+    private ImageView goback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +31,14 @@ public class ShowFansListActivity extends BaseActivity{
         initData();
         //设置默认的显示样式
         showList(true);
-
+        goback = (ImageView) findViewById(R.id.goback1);
+        goback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1=new Intent(ShowFansListActivity.this, UserFragment.class);
+                startActivityForResult(intent1,1);
+            }
+        });
     }
 
     private void initData() {
