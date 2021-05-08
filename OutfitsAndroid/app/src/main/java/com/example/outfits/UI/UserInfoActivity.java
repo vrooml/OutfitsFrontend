@@ -47,6 +47,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private ImageView icon;
     private String picUrl;
     private static final int REQUEST_CODE_CHOOSE = 23;
+    private static final int userId = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,27 +83,9 @@ public class UserInfoActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("https://a440c33e-ef48-4f8d-9cba-85579f86a113.mock.pstmn.io/")
-                        .addConverterFactory(GsonConverterFactory.create());
-                Retrofit retrofit1 = builder.build();
-//                UserClient userClient1 = retrofit1.create(UserClient.class);
-//                UserInfo userInfoNew = new UserInfo(
-//                        nickname.getText().toString(),
-//                        sex1,
-//                        profile.getText().toString(),
-//                        3
-//                );
-//                Call<UserInfoReturn> call1 =  userClient1.modifyUserInfo("token",userInfoNew);
-//                call1.enqueue(new Callback<UserInfoReturn>() {
-//                    @Override
-//                    public void onResponse(Call<UserInfoReturn> call, Response<UserInfoReturn> response) {
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<UserInfoReturn> call, Throwable t) {
-//                    }
-//                });
+                UserInfo userInfoNew=new UserInfo(nickname.getText().toString(),
+                        sex1, profile.getText().toString(), userId);
+                RetrofitUtil.modifyUserInfo("token", userInfoNew);
             }
         });
         sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

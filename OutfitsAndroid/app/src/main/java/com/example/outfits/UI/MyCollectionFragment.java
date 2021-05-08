@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.R;
 import com.example.outfits.Adapter.BlogAdapter;
+import com.example.outfits.Utils.RetrofitUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,9 @@ public class MyCollectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_my_collection, container, false);
+        if(view == null) {
+            view = inflater.inflate(R.layout.fragment_my_collection, container, false);
+        }
         initData();
         initView();
         return view;
@@ -128,36 +131,6 @@ public class MyCollectionFragment extends Fragment {
         Request();
     }
     private void Request(){
-        //okhttp的网络等待
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS);
-        final OkHttpClient client = builder.build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-        //创建网络请求接口实例
-//        UserClient userClient = retrofit.create(UserClient.class);
-//        Call<BlogListReturn> call = userClient.getBlog("fsda", 2);
-//        //发送网络请求（异步）
-//        call.enqueue(new Callback<BlogListReturn>() {
-//            @Override
-//            public void onResponse(Call<BlogListReturn> call, Response<BlogListReturn> response) {
-//                BlogListReturn returnValue = response.body();
-//                if(returnValue == null){
-//                    return;
-//                }
-//                blogLists = returnValue.getData();
-//                Log.e("MyBlogFragment", blogLists.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BlogListReturn> call, Throwable t) {
-//
-//            }
-//        });
+        blogLists = RetrofitUtil.getCollection("token", 3);
     }
 }

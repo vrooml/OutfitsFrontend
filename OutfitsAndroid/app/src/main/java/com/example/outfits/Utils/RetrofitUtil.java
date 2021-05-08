@@ -10,6 +10,7 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
@@ -21,6 +22,7 @@ import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
 import com.example.outfits.UI.UserInfoActivity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -202,13 +204,13 @@ public class RetrofitUtil{
     public static UserInfo getUserInfo(String token){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo>> call=request.getUserInfo(token);
-        UserInfo userInfo=null;
+        final UserInfo[] userInfo = {null};
         call.enqueue(new Callback<ResponseModel<UserInfo>>(){
             @Override
             public void onResponse(Call<ResponseModel<UserInfo>> call,Response<ResponseModel<UserInfo>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        UserInfo userInfo=response.body().getData();
+                        userInfo[0] =response.body().getData();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -220,7 +222,7 @@ public class RetrofitUtil{
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
-        return userInfo;
+        return userInfo[0];
     }
 
     /**
@@ -236,7 +238,7 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        Toast.makeText(MyApplication.getContext(),"上传衣物成功！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.getContext(),"修改成功",Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -250,4 +252,55 @@ public class RetrofitUtil{
         });
     }
 
+    /**
+     * 获取我的发布博客
+     *
+     * @param token token
+     * */
+    public static List<Blog> getBlog(String token, int userId){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<List<Blog>>> call=request.getBlog(token,userId);
+        final List<Blog>[] blogList = new List[]{new ArrayList<>()};
+        call.enqueue(new Callback<ResponseModel<List<Blog>>>() {
+            @Override
+            public void onResponse(Call<ResponseModel<List<Blog>>> call, Response<ResponseModel<List<Blog>>> response) {
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        blogList[0] =response.body().getData();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<Blog>>> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+        return blogList[0];
+    }
+
+    /**
+     * 获取我的收藏博客
+     *
+     * @param token token
+     * */
+    public static List<Blog> getCollection(String token,int userId){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<List<Blog>>> call=request.getCollection(token,userId);
+        final List<Blog>[] blogList = new List[]{new ArrayList<>()};
+        call.enqueue(new Callback<ResponseModel<List<Blog>>>() {
+            @Override
+            public void onResponse(Call<ResponseModel<List<Blog>>> call, Response<ResponseModel<List<Blog>>> response) {
+                if(response.body()!=null){
+                    blogList[0] =response.body().getData();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<Blog>>> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+        return blogList[0];
+    }
 }
