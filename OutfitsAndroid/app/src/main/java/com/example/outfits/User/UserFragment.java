@@ -7,18 +7,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.outfits.Adapter.BlogAdapter;
+import com.example.outfits.Adapter.BlogViewPagerAdapter;
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.CustomView.ScrollableViewPager;
 import com.example.outfits.ModifyActivity;
 import com.example.outfits.R;
 import com.example.outfits.ShowFansListActivity;
 import com.example.outfits.ShowFocusListActivity;
+import com.example.outfits.UI.MyBlogFragment;
+import com.example.outfits.UI.MyCollectionFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +45,18 @@ public class UserFragment extends Fragment{
     private String mParam1;
     private String mParam2;
 
+    private View view;
     private static final String TAG = "UserFragment";
     private RecyclerView list;
     private List<Blog> datas;
     private TextView fllowCount;
     private TextView fansCount;
     private Button btn_modify;
-    private Button btn_createBloc;
+    private Button btn_createBlog;
     private TextView blocUser;
     private TextView blocFollow;
+    private ScrollableViewPager scrollableViewPager;
+    private List<Fragment> mFragmentArray=new ArrayList<>();
 
     public UserFragment(){
         // Required empty public constructor
@@ -78,42 +87,59 @@ public class UserFragment extends Fragment{
             mParam1=getArguments().getString(ARG_PARAM1);
             mParam2=getArguments().getString(ARG_PARAM2);
         }
-        //onCreateView();
-        list = (RecyclerView)this.getActivity().findViewById(R.id.id_recyclerview);
-        initData();
-        //设置默认的显示样式
-        showList(true);
+    }
 
-        fllowCount = this.getActivity().findViewById(R.id.followCount);
-        fansCount = this.getActivity().findViewById(R.id.fansCount);
-        btn_modify = this.getActivity().findViewById(R.id.btn_modify);
-        btn_createBloc = this.getActivity().findViewById(R.id.btn_createBloc);
+    @Override
+    public View onCreateView(LayoutInflater inflater,ViewGroup container,
+                             Bundle savedInstanceState){
+        // Inflate the layout for this fragment
+        if(view == null) {
+            view = inflater.inflate(R.layout.fragment_my_blog, container, false);
+            Toast.makeText(getContext(), "kong2", Toast.LENGTH_LONG).show();
+        }
+        initView();
+        return view;
+    }
 
-        blocUser = this.getActivity().findViewById(R.id.blocUser);
-        blocFollow = this.getActivity().findViewById(R.id.blocFollow);
+    private void initView(){
+        fllowCount = view.findViewById(R.id.followCount);
+        fansCount = view.findViewById(R.id.fansCount);
+        btn_modify = view.findViewById(R.id.btn_modify);
+        btn_createBlog = view.findViewById(R.id.btn_createBloc);
+        blocUser = view.findViewById(R.id.blocUser);
+        blocFollow = view.findViewById(R.id.blocFollow);
+        mFragmentArray.add(MyBlogFragment.newInstance("", ""));
+        mFragmentArray.add(MyCollectionFragment.newInstance("", ""));
+        BlogViewPagerAdapter blogViewPagerAdapter = new BlogViewPagerAdapter(getFragmentManager());
+        blogViewPagerAdapter.setList(mFragmentArray);
+        scrollableViewPager = view.findViewById(R.id.sp_blog);
+        scrollableViewPager.setOffscreenPageLimit(2);
+        scrollableViewPager.setAdapter(blogViewPagerAdapter);
+        scrollableViewPager.setScroll(true);
+        scrollableViewPager.setAnimate(true);
 
-        this.getActivity().findViewById(R.id.followCount).setOnClickListener(new View.OnClickListener(){
+        fllowCount.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), ShowFocusListActivity.class);
                 startActivity(intent);
             }
         });
 
-        this.getActivity().findViewById(R.id.fansCount).setOnClickListener(new View.OnClickListener(){
+        fansCount.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), ShowFansListActivity.class);
                 startActivity(intent);
             }
         });
 
-        this.getActivity().findViewById(R.id.btn_modify).setOnClickListener(new View.OnClickListener(){
+        btn_modify.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), ModifyActivity.class);
                 startActivity(intent);
             }
         });
 
-        this.getActivity().findViewById(R.id.btn_createBloc).setOnClickListener(new View.OnClickListener(){
+        btn_createBlog.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //和Web嵌入交互
                 Intent intent = new Intent(getActivity(), ModifyActivity.class);
@@ -121,49 +147,20 @@ public class UserFragment extends Fragment{
             }
         });
 
-        this.getActivity().findViewById(R.id.blocUser).setOnClickListener(new View.OnClickListener(){
+        blocUser.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //传递关于“我的博客”数据进入
+                scrollableViewPager.setCurrentItem(0);
+                Toast.makeText(getContext(), "这是MyBlogFragment", Toast.LENGTH_LONG).show();
             }
         });
 
-        this.getActivity().findViewById(R.id.blocFollow).setOnClickListener(new View.OnClickListener(){
+        blocFollow.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //传递关于“我的收藏”数据进入
+                scrollableViewPager.setCurrentItem(1);
+                Toast.makeText(getContext(), "这是MyCollectionFragment", Toast.LENGTH_LONG).show();
             }
         });
-
-    }
-
-    private void initData() {
-        //List<DataBean>------>Adapter------>setAdapter---->显示数据
-        //创建数据集合
-        datas = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            Blog data = new Blog();
-            data.setBlogPic("这是第" + i + "张图片");
-            data.setBlogTitle("这是第" + i + "项");
-            data.setBlogIntroduce("11111111111");
-            datas.add(data);
-        }
-    }
-
-    private void showList(boolean isVertical) {
-        //RecyclerView需要设置样式，其实就是设置布局管理器
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
-        //设置水平还是垂直
-        layoutManager.setOrientation(isVertical? LinearLayoutManager.VERTICAL: LinearLayoutManager.HORIZONTAL);
-        list.setLayoutManager(layoutManager);
-        //创建适配器
-        BlogAdapter adapter = new BlogAdapter(this.getContext(),datas);
-        //设置到RecyclerView中
-        list.setAdapter(adapter);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,
-                             Bundle savedInstanceState){
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user,container,false);
     }
 }

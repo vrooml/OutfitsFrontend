@@ -1,4 +1,4 @@
-package com.example.outfits.UI;
+package com.example.outfits;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +20,6 @@ import android.widget.RadioGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Bean.UserInfo;
-import com.example.outfits.R;
 import com.example.outfits.Utils.MyGlideEngine;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.zhihu.matisse.Matisse;
@@ -29,12 +27,6 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserInfoActivity extends AppCompatActivity {
     private EditText nickname;

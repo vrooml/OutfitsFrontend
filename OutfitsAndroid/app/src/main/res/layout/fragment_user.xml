@@ -15,7 +15,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:scaleType="fitXY"
-        android:src="@drawable/head"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -133,25 +132,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-
-        android:layout_height="match_parent"
-        android:layout_marginTop="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/id_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="194dp"
-            android:layout_marginBottom="220dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    </RelativeLayout>
-
     <Button
         android:id="@+id/btn_createBloc"
         android:layout_width="wrap_content"
@@ -161,7 +141,21 @@
         android:text="发布"
         app:iconTint="#070707"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_blog" />
+
+    <com.example.outfits.CustomView.ScrollableViewPager
+        android:id="@+id/sp_blog"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="315dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_createBloc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

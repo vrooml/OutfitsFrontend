@@ -1,15 +1,9 @@
 package com.example.outfits.Utils;
 
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
 
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
@@ -20,7 +14,6 @@ import com.example.outfits.RetrofitStuff.GetClothingRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
-import com.example.outfits.UI.UserInfoActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
