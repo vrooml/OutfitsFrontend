@@ -1,14 +1,30 @@
 package com.example.outfits.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.outfits.Adapter.BlogViewPagerAdapter;
+import com.example.outfits.Bean.Blog;
+import com.example.outfits.CustomView.ScrollableViewPager;
+import com.example.outfits.ModifyActivity;
 import com.example.outfits.R;
+import com.example.outfits.ShowFansListActivity;
+import com.example.outfits.ShowFocusListActivity;
+import com.example.outfits.UI.MyBlogFragment;
+import com.example.outfits.UI.MyCollectionFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +41,19 @@ public class UserFragment extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View view;
+    private static final String TAG = "UserFragment";
+    private RecyclerView list;
+    private List<Blog> datas;
+    private TextView fllowCount;
+    private TextView fansCount;
+    private Button btn_modify;
+    private Button btn_createBlog;
+    private TextView blocUser;
+    private TextView blocFollow;
+    private ScrollableViewPager scrollableViewPager;
+    private List<Fragment> mFragmentArray=new ArrayList<>();
 
     public UserFragment(){
         // Required empty public constructor
@@ -61,6 +90,74 @@ public class UserFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,ViewGroup container,
                              Bundle savedInstanceState){
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user,container,false);
+        if(view == null) {
+            view = inflater.inflate(R.layout.fragment_my_blog, container, false);
+            Toast.makeText(getContext(), "kong2", Toast.LENGTH_LONG).show();
+        }
+        initView();
+        return view;
+    }
+
+    private void initView(){
+        fllowCount = view.findViewById(R.id.followCount);
+        fansCount = view.findViewById(R.id.fansCount);
+        btn_modify = view.findViewById(R.id.btn_modify);
+        btn_createBlog = view.findViewById(R.id.btn_createBlog);
+        blocUser = view.findViewById(R.id.blog_user);
+        blocFollow = view.findViewById(R.id.blog_follow);
+        mFragmentArray.add(MyBlogFragment.newInstance("", ""));
+        mFragmentArray.add(MyCollectionFragment.newInstance("", ""));
+        BlogViewPagerAdapter blogViewPagerAdapter = new BlogViewPagerAdapter(getFragmentManager());
+        blogViewPagerAdapter.setList(mFragmentArray);
+        scrollableViewPager = view.findViewById(R.id.sp_blog);
+        scrollableViewPager.setOffscreenPageLimit(2);
+        scrollableViewPager.setAdapter(blogViewPagerAdapter);
+        scrollableViewPager.setScroll(true);
+        scrollableViewPager.setAnimate(true);
+
+        fllowCount.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ShowFocusListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fansCount.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ShowFansListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_modify.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_createBlog.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //和Web嵌入交互
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        blocUser.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //传递关于“我的博客”数据进入
+                scrollableViewPager.setCurrentItem(0);
+                Toast.makeText(getContext(), "这是MyBlogFragment", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        blocFollow.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //传递关于“我的收藏”数据进入
+                scrollableViewPager.setCurrentItem(1);
+                Toast.makeText(getContext(), "这是MyCollectionFragment", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

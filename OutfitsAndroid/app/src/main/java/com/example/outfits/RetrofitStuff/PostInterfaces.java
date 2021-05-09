@@ -39,7 +39,7 @@ public interface PostInterfaces{
     @Multipart
     @POST("/wardrobe/importClothing")
     Call<ResponseModel> postUploadClothing(@Header("token") String token,
-                                           @Part List<Integer> subtypeIds,
+                                           @Part("subtypeIds") List<Integer> subtypeIds,
                                            @Part List<MultipartBody.Part> uploadPic);
 
     //获取个人资料

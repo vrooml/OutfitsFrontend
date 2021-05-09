@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Adapter.UserInfoAdapter;
 import com.example.outfits.Bean.UserInfo;
-import com.example.outfits.User.UserFragment;
+import com.example.outfits.UI.UserFragment;
 
 import java.util.ArrayList;
 import java.util.List;

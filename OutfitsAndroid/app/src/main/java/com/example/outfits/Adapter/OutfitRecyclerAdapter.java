@@ -1,7 +1,6 @@
 package com.example.outfits.Adapter;
 
 import android.net.Uri;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Bean.Clothes;
+import com.example.outfits.Bean.Outfit;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.R;
-import com.example.outfits.Utils.LoadingDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -24,13 +23,13 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecyclerAdapter.ViewHolder>{
-    List<SubTypeClothingBean> subTypeClothingBeans;
+public class OutfitRecyclerAdapter extends RecyclerView.Adapter<OutfitRecyclerAdapter.ViewHolder>{
+    List<Outfit> outfits;
     Fragment fragment;
 
 
-    public ClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Fragment fragment){
-        this.subTypeClothingBeans=subTypeClothingBeans;
+    public OutfitRecyclerAdapter(List<Outfit> outfits,Fragment fragment){
+        this.outfits=outfits;
         this.fragment=fragment;
     }
 
@@ -44,17 +43,17 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,int position){
-        if(subTypeClothingBeans!=null){
-            holder.subTypeName.setText(subTypeClothingBeans.get(position).getSubtypeName());
-            Clothes[] clothing=subTypeClothingBeans.get(position).getClothing();
+        if(outfits!=null){
+            holder.subTypeName.setText(outfits.get(position).getIntroduce());
+            List<Clothes> clothing=outfits.get(position).getClothing();
             if(clothing!=null){
-                for(int i=0;i<clothing.length;i++){
-                    holder.pictures.add(Uri.parse(clothing[i].getClothingPic()));
+                for(int i=0;i<clothing.size();i++){
+                    holder.pictures.add(Uri.parse(clothing.get(i).getClothingPic()));
                 }
             }
         }
         //设置图片添加adapter
-        holder.addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,fragment.getContext(),AddPictureGridViewAdapter.ADD_MODE);
+        holder.addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,fragment.getContext(),AddPictureGridViewAdapter.SHOW_MODE);
         holder.addPictureGrid.setAdapter(holder.addPictureAdapter);
 
 
@@ -62,34 +61,21 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
         holder.addPictureGrid.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView,View view,int position,long id){
-                LoadingDialog dialog=new LoadingDialog.Builder(fragment.getContext())
-                        .setMessage("加载中...")
-                        .setCancelable(false)
-                        .create();
-                dialog.show();
-
-                Handler handler=new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog.dismiss();
-                    }
-                },2000);
-//                Matisse.from(fragment)
-//                        .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
-//                        .countable(true)//true:选中后显示数字;false:选中后显示对号
-//                        .maxSelectable(10)//可选的最大数
-//                        .capture(false)//选择照片时，是否显示拍照
-//                        .imageEngine(new GlideEngine())//图片加载引擎
-//                        .forResult(subTypeClothingBeans.get(position).getSubtypeId());
+                Matisse.from(fragment)
+                        .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
+                        .countable(true)//true:选中后显示数字;false:选中后显示对号
+                        .maxSelectable(10)//可选的最大数
+                        .capture(false)//选择照片时，是否显示拍照
+                        .imageEngine(new GlideEngine())//图片加载引擎
+                        .forResult(outfits.get(position).getMatchId());
             }
         });
     }
 
     @Override
     public int getItemCount(){
-        if(subTypeClothingBeans!=null){
-            return subTypeClothingBeans.size();
+        if(outfits!=null){
+            return outfits.size();
         }
         return 0;
     }

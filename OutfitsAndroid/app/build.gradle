@@ -53,4 +53,10 @@ dependencies {
 
     //图片选择器Matisse
     implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+
+    //loading动画
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //圆形图片
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
