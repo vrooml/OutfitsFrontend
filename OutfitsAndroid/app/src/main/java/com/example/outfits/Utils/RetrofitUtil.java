@@ -198,6 +198,7 @@ public class RetrofitUtil{
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo>> call=request.getUserInfo(token);
         final UserInfo[] userInfo = {null};
+
         call.enqueue(new Callback<ResponseModel<UserInfo>>(){
             @Override
             public void onResponse(Call<ResponseModel<UserInfo>> call,Response<ResponseModel<UserInfo>> response){

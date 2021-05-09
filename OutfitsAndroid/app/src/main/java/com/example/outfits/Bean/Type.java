@@ -1,12 +1,14 @@
 package com.example.outfits.Bean;
 
+import java.util.List;
+
 public class Type{
 
     private int typeId;
     private String typeName;
-    private SubType[] subType;
+    private List<SubType> subType;
 
-    public Type(int typeId,String typeName,SubType[] subType){
+    public Type(int typeId,String typeName,List<SubType> subType){
         this.typeId=typeId;
         this.typeName=typeName;
         this.subType=subType;
@@ -28,11 +30,11 @@ public class Type{
         this.typeName=typeName;
     }
 
-    public SubType[] getSubType(){
+    public List<SubType> getSubType(){
         return subType;
     }
 
-    public void setSubType(SubType[] subType){
+    public void setSubType(List<SubType> subType){
         this.subType=subType;
     }
 

@@ -18,16 +18,19 @@ import java.util.List;
 public class AddPictureGridViewAdapter extends BaseAdapter{
 
     private List<Uri> images;
-
     private Context context;
+    private int mode;
 
     private LayoutInflater inflater;
+    public static final int ADD_MODE=1;
+    public static final int SHOW_MODE=2;
 
     private int maxImages=9;
 
-    public AddPictureGridViewAdapter(List<Uri> datas,Context context) {
+    public AddPictureGridViewAdapter(List<Uri> datas,Context context,int mode) {
         this.images = datas;
         this.context = context;
+        this.mode=mode;
         inflater = LayoutInflater.from(context);
     }
 
@@ -35,11 +38,15 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
     //得到数量
     @Override
     public int getCount(){
-        int count=1;
+        int count=0;
         if(images!=null){
             count=images.size()+1;
         }else{
-            count=1;
+            if(mode==ADD_MODE){
+                count=1;
+            }else{
+                count=0;
+            }
         }
         if (count>maxImages) {
             return images.size();
@@ -98,7 +105,7 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
                 }
             });
         }
-        if(images==null||i==images.size()){
+        if(mode==ADD_MODE&&(images==null||i==images.size())){
             /**代表+号的需要+号图片显示图片**/
             Glide.with(context)
                     .load(R.drawable.add_pic_btn)

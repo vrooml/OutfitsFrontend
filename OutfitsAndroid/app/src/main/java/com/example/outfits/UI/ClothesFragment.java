@@ -31,11 +31,6 @@ import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ClothesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ClothesFragment extends Fragment{
     RecyclerView recyclerView;
     ClothesRecyclerAdapter adapter;

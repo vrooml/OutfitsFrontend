@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.outfits.User.UserFragment;
+import com.example.outfits.UI.UserFragment;
 
 public class RegisterActivity extends BaseActivity{
     private Button button4;

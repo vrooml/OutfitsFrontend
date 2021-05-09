@@ -1,6 +1,7 @@
 package com.example.outfits.UI;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.outfits.Adapter.ClothesFragmentAdapter;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.R;
+import com.example.outfits.Utils.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +50,9 @@ public class ClosetFragment extends Fragment{
         viewPager=view.findViewById(R.id.closet_viewpager);
         types=new ArrayList<>();
 //        RetrofitUtil.getType(types);
-        Type.SubType[] subType=new Type.SubType[2];
-        subType[0]=new Type.SubType(1,"短袖");
-        subType[1]=new Type.SubType(2,"长袖");
+        List<Type.SubType> subType=new ArrayList<>();
+        subType.add(new Type.SubType(1,"短袖"));
+        subType.add(new Type.SubType(2,"长袖"));
         types.add(new Type(1,"上衣",subType));
         types.add(new Type(1,"上衣",subType));
         types.add(new Type(1,"上衣",subType));
@@ -89,8 +91,8 @@ public class ClosetFragment extends Fragment{
             @Override
             public TabView.TabTitle getTitle(int position) {
                 return new QTabView.TabTitle.Builder()
-                        .setTextColor(0xff000000,0xFF87a8be)
-                        .setTextSize(18)
+                        .setTextColor(0xff9b8f92,0xFF87a8be)
+                        .setTextSize(14)
                         .setContent(types.get(position).getTypeName())
                         .build();
             }
