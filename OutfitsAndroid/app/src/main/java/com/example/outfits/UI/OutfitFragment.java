@@ -141,7 +141,7 @@ public class OutfitFragment extends Fragment{
 
         OutfitFragmentAdapter outfitFragmentAdapter=new OutfitFragmentAdapter(this,occasions);
         viewPager.setAdapter(outfitFragmentAdapter);
-
+        viewPager.setUserInputEnabled(false);
 
         return view;
     }

@@ -44,17 +44,13 @@ public class ClothesFragmentAdapter extends FragmentStateAdapter{
     @NonNull
     @Override
     public Fragment createFragment(int position){
-        List<SubTypeClothingBean> subTypeClothingBeans=new ArrayList<>();
-        LoadingDialog dialog=new LoadingDialog.Builder(fragment.getContext())
-                .setMessage("加载中...")
-                .setCancelable(false)
-                .create();
-        dialog.show();
-        GetClothingRequest getClothingRequest=new GetClothingRequest(types.get(position).getTypeId());
-        RetrofitUtil.postGetClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo"
-        ,getClothingRequest,subTypeClothingBeans,dialog);
-        return ClothesFragment.newInstance(subTypeClothingBeans);
+        ClothesFragment clothesFragment=new ClothesFragment();
+        clothesFragment.type=types.get(position);
+        return clothesFragment;
+//        return ClothesFragment.newInstance(types.get(position));
     }
+
+
 
     @Override
     public int getItemCount(){
@@ -62,32 +58,6 @@ public class ClothesFragmentAdapter extends FragmentStateAdapter{
             return types.size();
         }
         return 0;
-    }
-
-    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans,LoadingDialog dialog){
-        final PostInterfaces request=RetrofitUtil.retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<SubTypeClothingBean[]>> call=request.postGetClothing(token,getClothingRequest);
-        call.enqueue(new Callback<ResponseModel<SubTypeClothingBean[]>>(){
-            @Override
-            public void onResponse(Call<ResponseModel<SubTypeClothingBean[]>> call,Response<ResponseModel<SubTypeClothingBean[]>> response){
-                if(response.body()!=null){
-                    if(response.body().getCode()==SUCCESS_CODE){
-                        for(SubTypeClothingBean i:response.body().getData()){
-                            subTypeClothingBeans.add(i);
-                        }
-                        dialog.dismiss();
-                    }else{
-                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<SubTypeClothingBean[]>> call,Throwable t){
-                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
     }
 
 

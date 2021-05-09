@@ -109,7 +109,7 @@ public class RetrofitUtil{
      * @param getClothingRequest 获取某类别衣物请求体
      * @param subTypeClothingBeans 要填充的子类别数组
      */
-    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans,LoadingDialog dialog){
+    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans,ClothesFragment clothesFragment,LoadingDialog dialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<SubTypeClothingBean[]>> call=request.postGetClothing(token,getClothingRequest);
         call.enqueue(new Callback<ResponseModel<SubTypeClothingBean[]>>(){
@@ -117,14 +117,16 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<SubTypeClothingBean[]>> call,Response<ResponseModel<SubTypeClothingBean[]>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        for(SubTypeClothingBean i:response.body().getData()){
+                        for(SubTypeClothingBean i : response.body().getData()){
                             subTypeClothingBeans.add(i);
                         }
+                        clothesFragment.adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
                 }
+                Log.e("debug","onResponse: "+"GetClothing!"+clothesFragment.type.getTypeName());
             }
 
             @Override
@@ -148,8 +150,12 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<Type[]>> call,Response<ResponseModel<Type[]>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        types.addAll(Arrays.asList(response.body().getData()));
-                        Log.e("debug","onResponse: "+response.body().getData());
+                        types.clear();
+                        for(Type i:response.body().getData()){
+                            types.add(i);
+                        }
+
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                         closetFragment.init();
 
                     }else{

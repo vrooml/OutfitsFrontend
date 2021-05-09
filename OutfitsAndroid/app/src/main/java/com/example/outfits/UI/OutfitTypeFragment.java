@@ -15,6 +15,7 @@ import com.example.outfits.Adapter.ClothesRecyclerAdapter;
 import com.example.outfits.Adapter.OutfitRecyclerAdapter;
 import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.Outfit;
+import com.example.outfits.CustomView.RecyclerViewAtViewPager2;
 import com.example.outfits.MyApplication;
 import com.example.outfits.R;
 

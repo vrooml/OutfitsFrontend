@@ -5,18 +5,26 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Adapter.ClothesRecyclerAdapter;
 import com.example.outfits.Bean.SubTypeClothingBean;
+import com.example.outfits.Bean.Type;
+import com.example.outfits.CustomView.RecyclerViewAtViewPager2;
 import com.example.outfits.MyApplication;
 import com.example.outfits.R;
+import com.example.outfits.RetrofitStuff.GetClothingRequest;
+import com.example.outfits.Utils.LoadingDialog;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.example.outfits.Utils.SharedPreferencesUtil;
 import com.zhihu.matisse.Matisse;
@@ -33,16 +41,18 @@ import static android.app.Activity.RESULT_OK;
 
 public class ClothesFragment extends Fragment{
     RecyclerView recyclerView;
-    ClothesRecyclerAdapter adapter;
-    List<SubTypeClothingBean> subTypeClothingBeans;
+    public ClothesRecyclerAdapter adapter;
+    public List<SubTypeClothingBean> subTypeClothingBeans;
+    public LoadingDialog dialog;
+    public Type type;
 
     public ClothesFragment(){
         // Required empty public constructor
     }
 
-    public static ClothesFragment newInstance(List<SubTypeClothingBean> subTypeClothingBeans){
+    public static ClothesFragment newInstance(Type type){
         ClothesFragment fragment=new ClothesFragment();
-        fragment.subTypeClothingBeans=subTypeClothingBeans;
+        fragment.type=type;
         return fragment;
     }
 
@@ -55,13 +65,27 @@ public class ClothesFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,ViewGroup container,
                              Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_clothes,container,false);
+        subTypeClothingBeans=new ArrayList<>();
         recyclerView=view.findViewById(R.id.clothes_recyclerview);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter=new ClothesRecyclerAdapter(subTypeClothingBeans,this);
-
         recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        GetClothingRequest getClothingRequest=new GetClothingRequest(type.getTypeId());
+        dialog=new LoadingDialog.Builder(getContext())
+                .setMessage("加载中...")
+                .setCancelable(false)
+                .create();
+        dialog.show();
+        RetrofitUtil.postGetClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo"
+                ,getClothingRequest,subTypeClothingBeans,this,dialog);
+
     }
 
     @Override
