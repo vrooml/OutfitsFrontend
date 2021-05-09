@@ -3,6 +3,7 @@ package com.example.outfits;
 import android.app.Application;
 import android.content.Context;
 
+
 //便于获取全局context
 public class MyApplication extends Application{
     private static Context context;

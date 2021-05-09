@@ -1,19 +1,20 @@
-package com.example.outfits.Closet;
+package com.example.outfits.UI;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.outfits.Adapter.ClothesFragmentAdapter;
+import com.example.outfits.Bean.Type;
 import com.example.outfits.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.adapter.TabAdapter;
@@ -23,6 +24,7 @@ import q.rorbin.verticaltablayout.widget.TabView;
 public class ClosetFragment extends Fragment{
     VerticalTabLayout tabLayout;
     ViewPager2 viewPager;
+    List<Type> types;
 
 
     public ClosetFragment(){
@@ -44,6 +46,14 @@ public class ClosetFragment extends Fragment{
         View view=inflater.inflate(R.layout.fragment_closet,container,false);
         tabLayout=view.findViewById(R.id.closet_tab_layout);
         viewPager=view.findViewById(R.id.closet_viewpager);
+        types=new ArrayList<>();
+//        RetrofitUtil.getType(types);
+        Type.SubType[] subType=new Type.SubType[2];
+        subType[0]=new Type.SubType(1,"短袖");
+        subType[1]=new Type.SubType(2,"长袖");
+        types.add(new Type(1,"上衣",subType));
+        types.add(new Type(1,"上衣",subType));
+        types.add(new Type(1,"上衣",subType));
 
         setupWithViewPager(viewPager,tabLayout);
 
@@ -60,12 +70,10 @@ public class ClosetFragment extends Fragment{
 //        });
 
         tabLayout.setTabAdapter(new TabAdapter() {
-            String test[]={
-                    "111","222","333"
-            };
+
             @Override
             public int getCount() {
-                return test.length;
+                return types.size();
             }
 
             @Override
@@ -83,7 +91,7 @@ public class ClosetFragment extends Fragment{
                 return new QTabView.TabTitle.Builder()
                         .setTextColor(0xff000000,0xFF87a8be)
                         .setTextSize(18)
-                        .setContent(test[position])
+                        .setContent(types.get(position).getTypeName())
                         .build();
             }
 
@@ -93,8 +101,8 @@ public class ClosetFragment extends Fragment{
             }
         });
 
-        ClothesAdapter clothesAdapter=new ClothesAdapter(this,subTypes,clothes);
-        viewPager.setAdapter(clothesAdapter);
+        ClothesFragmentAdapter clothesFragmentAdapter=new ClothesFragmentAdapter(this,types);
+        viewPager.setAdapter(clothesFragmentAdapter);
 
 
         return view;
@@ -127,13 +135,5 @@ public class ClosetFragment extends Fragment{
                 super.onPageScrollStateChanged(state);
             }
         });
-    }
-
-    class ViewPagerViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
-        public ViewPagerViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView=itemView.findViewById(R.id.textView);
-        }
     }
 }

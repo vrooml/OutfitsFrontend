@@ -1,4 +1,4 @@
-package com.example.outfits.Outfit;
+package com.example.outfits.UI;
 
 import android.os.Bundle;
 
