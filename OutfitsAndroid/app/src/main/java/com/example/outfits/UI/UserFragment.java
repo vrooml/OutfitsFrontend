@@ -22,6 +22,7 @@ import com.example.outfits.ShowFansListActivity;
 import com.example.outfits.ShowFocusListActivity;
 import com.example.outfits.UI.MyBlogFragment;
 import com.example.outfits.UI.MyCollectionFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class UserFragment extends Fragment{
     private TextView fllowCount;
     private TextView fansCount;
     private Button btn_modify;
-    private Button btn_createBlog;
+    private FloatingActionButton btn_createBlog;
     private TextView blocUser;
     private TextView blocFollow;
     private ScrollableViewPager scrollableViewPager;
@@ -90,11 +91,10 @@ public class UserFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,ViewGroup container,
                              Bundle savedInstanceState){
         // Inflate the layout for this fragment
-        if(view == null) {
-            view = inflater.inflate(R.layout.fragment_my_blog, container, false);
-            Toast.makeText(getContext(), "kong2", Toast.LENGTH_LONG).show();
+        view = inflater.inflate(R.layout.fragment_user,container,false);
+        if(view != null){
+            initView();
         }
-        initView();
         return view;
     }
 

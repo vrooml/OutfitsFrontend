@@ -42,7 +42,7 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.InnerH
     //用于绑定holder，一般用来设置数据
     @Override
     public void onBindViewHolder(@NonNull UserInfoAdapter.InnerHolder holder, int position) {
-        holder.setData(datas.get(position));
+    //    holder.setData(datas.get(position));
     }
 
     @Override
