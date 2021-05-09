@@ -1,11 +1,16 @@
 package com.example.outfits.UI;
 
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -27,6 +32,10 @@ public class OutfitFragment extends Fragment{
     VerticalTabLayout tabLayout;
     ViewPager2 viewPager;
     List<Occasion> occasions;
+    TextView myOutfit;
+    TextView recommendOutfit;
+    ConstraintLayout rootLayout;
+
 
 
     public OutfitFragment(){
@@ -48,6 +57,9 @@ public class OutfitFragment extends Fragment{
         View view=inflater.inflate(R.layout.fragment_outfit,container,false);
         tabLayout=view.findViewById(R.id.outfit_tab_layout);
         viewPager=view.findViewById(R.id.outfit_viewpager);
+        myOutfit=view.findViewById(R.id.my_outfit);
+        recommendOutfit=view.findViewById(R.id.recommend_outfit);
+        rootLayout=view.findViewById(R.id.outfit_toolbar);
         occasions=new ArrayList<>();
 //        RetrofitUtil.getType(types);
         occasions.add(new Occasion(1,"上课"));
@@ -67,6 +79,33 @@ public class OutfitFragment extends Fragment{
 //
 //            }
 //        });
+
+        myOutfit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Transition transition = new ChangeBounds();
+                transition.setDuration(1000);
+                TransitionManager.beginDelayedTransition(rootLayout,transition);
+                myOutfit.setTextSize(20);
+                myOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
+                recommendOutfit.setTextSize(16);
+                recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
+
+            }
+        });
+
+        recommendOutfit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Transition transition = new ChangeBounds();
+                transition.setDuration(1000);
+                TransitionManager.beginDelayedTransition(rootLayout,transition);
+                myOutfit.setTextSize(16);
+                myOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
+                recommendOutfit.setTextSize(20);
+                recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
+            }
+        });
 
         tabLayout.setTabAdapter(new TabAdapter() {
 

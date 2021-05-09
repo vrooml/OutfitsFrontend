@@ -1,10 +1,12 @@
 package com.example.outfits.Utils;
 
+import android.app.Dialog;
 import android.util.Log;
 import android.widget.Toast;
 
 
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
@@ -14,6 +16,8 @@ import com.example.outfits.RetrofitStuff.GetClothingRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
+import com.example.outfits.UI.ClosetFragment;
+import com.example.outfits.UI.ClothesFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +41,8 @@ public class RetrofitUtil{
             .retryOnConnectionFailure(false)
             .connectTimeout(10000,TimeUnit.MILLISECONDS)
             .build();
-    private static Retrofit retrofit=new Retrofit.Builder()
-            .baseUrl("http://2457sx9279.qicp.vip")
+    public static Retrofit retrofit=new Retrofit.Builder()
+            .baseUrl("http://121.5.100.116:8080")
             .addConverterFactory(GsonConverterFactory.create())//设置使用Gson解析
             .client(okHttpClient)
             .build();
@@ -105,7 +109,7 @@ public class RetrofitUtil{
      * @param getClothingRequest 获取某类别衣物请求体
      * @param subTypeClothingBeans 要填充的子类别数组
      */
-    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans){
+    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans,LoadingDialog dialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<SubTypeClothingBean[]>> call=request.postGetClothing(token,getClothingRequest);
         call.enqueue(new Callback<ResponseModel<SubTypeClothingBean[]>>(){
@@ -116,8 +120,7 @@ public class RetrofitUtil{
                         for(SubTypeClothingBean i:response.body().getData()){
                             subTypeClothingBeans.add(i);
                         }
-                        Log.e("debug","onResponse: "+response.body().getData());
-
+                        dialog.dismiss();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -127,6 +130,7 @@ public class RetrofitUtil{
             @Override
             public void onFailure(Call<ResponseModel<SubTypeClothingBean[]>> call,Throwable t){
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
     }
@@ -136,7 +140,7 @@ public class RetrofitUtil{
      *
      * @param types 要填充的类别
      */
-    public static void getType(List<Type> types){
+    public static void getType(List<Type> types,ClosetFragment closetFragment){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<Type[]>> call=request.getType();
         call.enqueue(new Callback<ResponseModel<Type[]>>(){
@@ -146,6 +150,7 @@ public class RetrofitUtil{
                     if(response.body().getCode()==SUCCESS_CODE){
                         types.addAll(Arrays.asList(response.body().getData()));
                         Log.e("debug","onResponse: "+response.body().getData());
+                        closetFragment.init();
 
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();

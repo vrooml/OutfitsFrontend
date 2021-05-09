@@ -19,7 +19,8 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.Outfits">
+            android:theme="@style/Theme.Outfits"
+            android:networkSecurityConfig="@xml/network_secqurity_config">
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".UI.ModifyClothesActivity"></activity>
         <activity android:name=".UI.ChooseTypeActivity" />

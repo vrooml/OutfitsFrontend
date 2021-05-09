@@ -1,7 +1,6 @@
 package com.example.outfits.UI;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.outfits.Adapter.ClothesFragmentAdapter;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.R;
-import com.example.outfits.Utils.LoadingDialog;
+import com.example.outfits.Utils.RetrofitUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,16 @@ import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
 public class ClosetFragment extends Fragment{
-    VerticalTabLayout tabLayout;
+    public  VerticalTabLayout tabLayout;
     ViewPager2 viewPager;
     List<Type> types;
+    public TabAdapter tabAdapter;
+
+    private NotifyDatasetChangeListener notifyDatasetChangeListener;
+
+    public interface NotifyDatasetChangeListener{
+        void onDatasetChange(List<Type> types);
+    }
 
 
     public ClosetFragment(){
@@ -49,14 +55,12 @@ public class ClosetFragment extends Fragment{
         tabLayout=view.findViewById(R.id.closet_tab_layout);
         viewPager=view.findViewById(R.id.closet_viewpager);
         types=new ArrayList<>();
-//        RetrofitUtil.getType(types);
-        List<Type.SubType> subType=new ArrayList<>();
-        subType.add(new Type.SubType(1,"短袖"));
-        subType.add(new Type.SubType(2,"长袖"));
-        types.add(new Type(1,"上衣",subType));
-        types.add(new Type(1,"上衣",subType));
-        types.add(new Type(1,"上衣",subType));
+        RetrofitUtil.getType(types,this);
 
+        return view;
+    }
+
+    public void init(){
         setupWithViewPager(viewPager,tabLayout);
 
 //        tabLayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
@@ -71,7 +75,7 @@ public class ClosetFragment extends Fragment{
 //            }
 //        });
 
-        tabLayout.setTabAdapter(new TabAdapter() {
+        tabAdapter=new TabAdapter() {
 
             @Override
             public int getCount() {
@@ -101,13 +105,13 @@ public class ClosetFragment extends Fragment{
             public int getBackground(int position) {
                 return 0;
             }
-        });
+        };
+
+        tabLayout.setTabAdapter(tabAdapter);
 
         ClothesFragmentAdapter clothesFragmentAdapter=new ClothesFragmentAdapter(this,types);
         viewPager.setAdapter(clothesFragmentAdapter);
 
-
-        return view;
     }
 
     public void setupWithViewPager(@Nullable ViewPager2 viewPager,@Nullable VerticalTabLayout tabLayout) {
