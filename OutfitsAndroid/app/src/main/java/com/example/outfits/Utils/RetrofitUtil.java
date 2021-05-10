@@ -43,11 +43,8 @@ public class RetrofitUtil{
             .retryOnConnectionFailure(false)
             .connectTimeout(10000,TimeUnit.MILLISECONDS)
             .build();
-<<<<<<< Updated upstream
-    public static Retrofit retrofit=new Retrofit.Builder()
-=======
+
     private static Retrofit retrofit=new Retrofit.Builder()
->>>>>>> Stashed changes
             .baseUrl("http://121.5.100.116:8080")
             .addConverterFactory(GsonConverterFactory.create())//设置使用Gson解析
             .client(okHttpClient)
