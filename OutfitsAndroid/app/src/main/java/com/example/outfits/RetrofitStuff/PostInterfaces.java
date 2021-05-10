@@ -19,17 +19,21 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface PostInterfaces{
+    //登录
     @POST("/user/login")
     Call<ResponseModel<String>> login(@Header("token") String token,@Body LoginRequest loginRequest);
 
+    //注册
     @POST("/user/register")
     Call<ResponseModel> postRegister(@Header("token") String token,@Body RegisterRequest registerRequest);
+
     //获取验证码
     @POST("/user/sendSmsCode")
     Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest authCodeRequest);
 
+    //修改个人资料
     @POST("/user/modifyInfo")
-    Call<ResponseModel> postModifyUserInfoRequest(@Body ModifyUserInfoRequest modifyUserInfoRequest);
+    Call<ResponseModel> postModifyUserInfo(@Header("token") String token,@Body ModifyUserInfoRequest modifyUserInfoRequest);
 
     //请求子类别的衣物
     @POST("/wardrobe/getClothing")
@@ -44,17 +48,13 @@ public interface PostInterfaces{
     @Multipart
     @POST("/wardrobe/importClothing")
     Call<ResponseModel> postUploadClothing(@Header("token") String token,
-                                           @Part("subtypeIds") List<Integer> subtypeIds,
+                                           @Part List<Integer> subtypeIds,
                                            @Part List<MultipartBody.Part> uploadPic);
 
     //获取个人资料
     @FormUrlEncoded
     @POST("/user/getDetail")
     Call<ResponseModel<UserInfo>> getUserInfo(@Header("token") String token);
-
-    //修改个人资料
-    @POST("/user/modifyInfo")
-    Call<ResponseModel> modifyUserInfo(@Header("token") String token,@Body UserInfo userInfoNew);
 
     //获取我的收藏
     @FormUrlEncoded
