@@ -13,8 +13,10 @@ import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.MyApplication;
 import com.example.outfits.RetrofitStuff.AuthCodeRequest;
 import com.example.outfits.RetrofitStuff.GetClothingRequest;
+import com.example.outfits.RetrofitStuff.LoginRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
+import com.example.outfits.RetrofitStuff.RegisterRequest;
 import com.example.outfits.RetrofitStuff.ResponseModel;
 import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.ClothesFragment;
@@ -41,7 +43,11 @@ public class RetrofitUtil{
             .retryOnConnectionFailure(false)
             .connectTimeout(10000,TimeUnit.MILLISECONDS)
             .build();
+<<<<<<< Updated upstream
     public static Retrofit retrofit=new Retrofit.Builder()
+=======
+    private static Retrofit retrofit=new Retrofit.Builder()
+>>>>>>> Stashed changes
             .baseUrl("http://121.5.100.116:8080")
             .addConverterFactory(GsonConverterFactory.create())//设置使用Gson解析
             .client(okHttpClient)
@@ -78,6 +84,56 @@ public class RetrofitUtil{
         });
     }
 
+    public static void postLogin(String token,LoginRequest loginRequest){
+        token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"loginCodetoken");
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<String>> call=request.login(token,loginRequest);
+        call.enqueue(new Callback<ResponseModel<String>>() {
+            @Override
+            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> response) {
+                if (response.body() != null) {
+                    if (response.body().getCode() == SUCCESS_CODE) {
+                        RetrofitUtil.getUserInfo(response.body().getData());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(), "phoneNum", loginRequest.getPhone());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(), "token", response.body().getData());
+                    } else {
+                        Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseModel<String>> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(), FAILED, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static void postRegister(String token,RegisterRequest registerRequest){
+        token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"authCodeToken");
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postRegister(token,
+                registerRequest);
+        call.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"phoneNum",registerRequest.getPhone());
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"loginCodetoken", (String) response.body().getData());
+                            Toast.makeText(MyApplication.getContext(),"注册成功",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public static void postModifyUserInfo(ModifyUserInfoRequest modifyUserInfoRequest){
         final PostInterfaces request1=retrofit.create(PostInterfaces.class);
         Call<ResponseModel> call=request1.postModifyUserInfoRequest(modifyUserInfoRequest);
@@ -86,7 +142,7 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-//                        RetrofitUtil.postModifyUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
+                        RetrofitUtil.getUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"gender",ModifyUserInfoRequest.getUserSex());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",ModifyUserInfoRequest.getUserNickname());
                         Toast.makeText(MyApplication.getContext(),"修改信息成功",Toast.LENGTH_SHORT).show();
@@ -232,7 +288,7 @@ public class RetrofitUtil{
 
     /**
      * 修改用户信息
-     * //TODO记得还要把注释改掉，该加的加上
+     *
      * @param token token
      */
     public static void modifyUserInfo(String token,UserInfo userInfoNew){

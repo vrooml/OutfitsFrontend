@@ -21,14 +21,14 @@ public class ModifyActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1=new Intent(ModifyActivity.this,UserFragment.class);
-                startActivityForResult(intent1,1);
+                startActivity(intent1);
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2=new Intent(ModifyActivity.this,UserFragment.class);
-                startActivityForResult(intent2,1);
+                startActivity(intent2);
             }
         });
     }

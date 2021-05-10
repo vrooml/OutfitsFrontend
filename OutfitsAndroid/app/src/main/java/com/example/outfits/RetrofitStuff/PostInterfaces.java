@@ -19,9 +19,14 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface PostInterfaces{
+    @POST("/user/login")
+    Call<ResponseModel<String>> login(@Header("token") String token,@Body LoginRequest loginRequest);
+
+    @POST("/user/register")
+    Call<ResponseModel> postRegister(@Header("token") String token,@Body RegisterRequest registerRequest);
     //获取验证码
-    @POST("/sms/send")
-    Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest token);
+    @POST("/user/sendSmsCode")
+    Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest authCodeRequest);
 
     @POST("/user/modifyInfo")
     Call<ResponseModel> postModifyUserInfoRequest(@Body ModifyUserInfoRequest modifyUserInfoRequest);

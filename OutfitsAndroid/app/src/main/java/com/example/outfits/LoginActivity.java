@@ -18,15 +18,15 @@ public class LoginActivity extends BaseActivity{
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1=new Intent(LoginActivity.this, UserFragment.class);
-                startActivityForResult(intent1,1);
+                Intent intent1=new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent1);
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2=new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivityForResult(intent2,1);
+                startActivity(intent2);
             }
         });
     }
