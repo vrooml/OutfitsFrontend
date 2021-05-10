@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
                 android:descendantFocusability="blocksDescendants">
 
         <ImageView
@@ -18,6 +18,6 @@
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:clickable="false"
-                android:background="@mipmap/edit_pic_btn" />
+                android:background="@drawable/edit_pic_btn" />
 
 </RelativeLayout>

@@ -1,12 +1,10 @@
 package com.example.outfits.Utils;
 
-import android.app.Dialog;
 import android.util.Log;
 import android.widget.Toast;
 
 
 import com.example.outfits.Bean.Blog;
-import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
@@ -18,8 +16,6 @@ import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.RegisterRequest;
 import com.example.outfits.RetrofitStuff.ResponseModel;
-import com.example.outfits.UI.ClosetFragment;
-import com.example.outfits.UI.ClothesFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +39,6 @@ public class RetrofitUtil{
             .retryOnConnectionFailure(false)
             .connectTimeout(10000,TimeUnit.MILLISECONDS)
             .build();
-
     private static Retrofit retrofit=new Retrofit.Builder()
             .baseUrl("http://121.5.100.116:8080")
             .addConverterFactory(GsonConverterFactory.create())//设置使用Gson解析
@@ -92,7 +87,7 @@ public class RetrofitUtil{
                     if (response.body().getCode() == SUCCESS_CODE) {
                         RetrofitUtil.getUserInfo(response.body().getData());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(), "phoneNum", loginRequest.getPhone());
-                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(), "token", response.body().getData());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(), "Usertoken", response.body().getData());
                     } else {
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -131,9 +126,10 @@ public class RetrofitUtil{
         });
     }
 
-    public static void postModifyUserInfo(ModifyUserInfoRequest modifyUserInfoRequest){
-        final PostInterfaces request1=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel> call=request1.postModifyUserInfoRequest(modifyUserInfoRequest);
+    public static void postModifyUserInfo(String token,ModifyUserInfoRequest modifyUserInfoRequest){
+        token=SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"Usertoken");
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postModifyUserInfo(token,modifyUserInfoRequest);
         call.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
@@ -162,7 +158,7 @@ public class RetrofitUtil{
      * @param getClothingRequest 获取某类别衣物请求体
      * @param subTypeClothingBeans 要填充的子类别数组
      */
-    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans,ClothesFragment clothesFragment,LoadingDialog dialog){
+    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<SubTypeClothingBean[]>> call=request.postGetClothing(token,getClothingRequest);
         call.enqueue(new Callback<ResponseModel<SubTypeClothingBean[]>>(){
@@ -170,22 +166,20 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<SubTypeClothingBean[]>> call,Response<ResponseModel<SubTypeClothingBean[]>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        for(SubTypeClothingBean i : response.body().getData()){
+                        for(SubTypeClothingBean i:response.body().getData()){
                             subTypeClothingBeans.add(i);
                         }
-                        clothesFragment.adapter.notifyDataSetChanged();
-                        dialog.dismiss();
+                        Log.e("debug","onResponse: "+response.body().getData());
+
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
                 }
-                Log.e("debug","onResponse: "+"GetClothing!"+clothesFragment.type.getTypeName());
             }
 
             @Override
             public void onFailure(Call<ResponseModel<SubTypeClothingBean[]>> call,Throwable t){
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
             }
         });
     }
@@ -195,7 +189,7 @@ public class RetrofitUtil{
      *
      * @param types 要填充的类别
      */
-    public static void getType(List<Type> types,ClosetFragment closetFragment){
+    public static void getType(List<Type> types){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<Type[]>> call=request.getType();
         call.enqueue(new Callback<ResponseModel<Type[]>>(){
@@ -203,13 +197,8 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<Type[]>> call,Response<ResponseModel<Type[]>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        types.clear();
-                        for(Type i:response.body().getData()){
-                            types.add(i);
-                        }
-
-                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                        closetFragment.init();
+                        types.addAll(Arrays.asList(response.body().getData()));
+                        Log.e("debug","onResponse: "+response.body().getData());
 
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
@@ -262,7 +251,6 @@ public class RetrofitUtil{
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo>> call=request.getUserInfo(token);
         final UserInfo[] userInfo = {null};
-
         call.enqueue(new Callback<ResponseModel<UserInfo>>(){
             @Override
             public void onResponse(Call<ResponseModel<UserInfo>> call,Response<ResponseModel<UserInfo>> response){
@@ -281,33 +269,6 @@ public class RetrofitUtil{
             }
         });
         return userInfo[0];
-    }
-
-    /**
-     * 修改用户信息
-     *
-     * @param token token
-     */
-    public static void modifyUserInfo(String token,UserInfo userInfoNew){
-        final PostInterfaces request=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel> call=request.modifyUserInfo(token,userInfoNew);
-        call.enqueue(new Callback<ResponseModel>(){
-            @Override
-            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
-                if(response.body()!=null){
-                    if(response.body().getCode()==SUCCESS_CODE){
-                        Toast.makeText(MyApplication.getContext(),"修改成功",Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel> call,Throwable t){
-                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     /**

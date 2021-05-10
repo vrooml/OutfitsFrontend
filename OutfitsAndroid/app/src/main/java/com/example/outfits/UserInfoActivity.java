@@ -72,14 +72,14 @@ public class UserInfoActivity extends AppCompatActivity {
                 icon.setImageDrawable(circularBitmapDrawable);
             }
         });
-        confirm.setOnClickListener(new View.OnClickListener() {
+        /*confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserInfo userInfoNew=new UserInfo(nickname.getText().toString(),
                         sex1, profile.getText().toString(), userId);
                 RetrofitUtil.modifyUserInfo("token", userInfoNew);
             }
-        });
+        });*/
         sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

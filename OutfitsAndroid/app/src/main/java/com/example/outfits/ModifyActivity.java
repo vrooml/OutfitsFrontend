@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.example.outfits.UI.UserFragment;
+import com.example.outfits.User.UserFragment;
 
 public class ModifyActivity extends BaseActivity {
     private Button button;
