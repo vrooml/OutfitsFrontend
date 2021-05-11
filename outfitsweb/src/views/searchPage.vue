@@ -64,6 +64,9 @@
                     <svg v-show="item.favorite === 1" class="icon" aria-hidden="true">
                       <use xlink:href="#icon-aixin"></use>
                     </svg>
+                    <svg v-show="item.favorite === 0" class="icon" aria-hidden="true">
+                      <use xlink:href="#icon-icon-test"></use>
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -262,6 +265,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     position: relative;
+    box-shadow: 1px 0px 10px rgba(3, 0, 24, 0.11);
     #search-nav-back {
       width: 8%;
     }
