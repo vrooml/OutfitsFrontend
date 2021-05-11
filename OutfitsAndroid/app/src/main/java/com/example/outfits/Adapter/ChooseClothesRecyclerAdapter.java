@@ -60,7 +60,7 @@ public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClo
         holder.addPictureGrid.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView,View view,int position2,long id){
-                if(position!=holder.pictures.size()){
+                if(position2!=holder.pictures.size()){
                     Intent intent=new Intent(fragment.getActivity(),ClothesDetailActivity.class);
                     intent.putExtra("clothes",subTypeClothingBeans.get(position).getClothing()[position2]);
                     fragment.startActivity(intent);

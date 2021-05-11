@@ -1,6 +1,8 @@
 package com.example.outfits.Adapter;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.R;
+import com.example.outfits.UI.ClothesDetailActivity;
+import com.example.outfits.Utils.LoadingDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.outfits.Adapter.AddPictureGridViewAdapter.ADD_MODE;
 
 public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecyclerAdapter.ViewHolder>{
     List<SubTypeClothingBean> subTypeClothingBeans;
@@ -42,46 +48,53 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,int position){
-        holder.subTypeName.setText(subTypeClothingBeans.get(position).getSubtypeName());
-        Clothes[] clothing=subTypeClothingBeans.get(position).getClothing();
-        if(clothing!=null){
-            for(int i=0;i<clothing.length;i++){
-                holder.pictures.add(Uri.parse(clothing[i].getClothingPic()));
+        AddPictureGridViewAdapter addPictureAdapter;
+        if(subTypeClothingBeans!=null){
+            holder.subTypeName.setText(subTypeClothingBeans.get(position).getSubtypeName());
+            Clothes[] clothing=subTypeClothingBeans.get(position).getClothing();
+            if(clothing!=null){
+                for(int i=0;i<clothing.length;i++){
+                    holder.pictures.add(Uri.parse(clothing[i].getClothingPic()));
+                }
             }
         }
         //设置图片添加adapter
-        holder.addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,fragment.getContext());
-        holder.addPictureGrid.setAdapter(holder.addPictureAdapter);
-
-
+        addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,fragment.getContext(),ADD_MODE);
         //设置Gridview点击事件
         holder.addPictureGrid.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> adapterView,View view,int position,long id){
-                Matisse.from(fragment)
-                        .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
-                        .countable(true)//true:选中后显示数字;false:选中后显示对号
-                        .maxSelectable(10)//可选的最大数
-                        .capture(false)//选择照片时，是否显示拍照
-                        .imageEngine(new GlideEngine())//图片加载引擎
-                        .forResult(subTypeClothingBeans.get(position).getSubtypeId());
+            public void onItemClick(AdapterView<?> adapterView,View view,int position2,long id){
+                if(position2!=holder.pictures.size()){
+                    Intent intent=new Intent(fragment.getActivity(),ClothesDetailActivity.class);
+                    SubTypeClothingBean subTypeClothingBean=subTypeClothingBeans.get(position);
+                    intent.putExtra("clothes",subTypeClothingBean.getClothing()[position2]);
+                    fragment.startActivity(intent);
+                }else{
+                    Matisse.from(fragment)
+                            .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
+                            .countable(true)//true:选中后显示数字;false:选中后显示对号
+                            .maxSelectable(10)//可选的最大数
+                            .capture(false)//选择照片时，是否显示拍照
+                            .imageEngine(new GlideEngine())//图片加载引擎
+                            .forResult(subTypeClothingBeans.get(position).getSubtypeId());
+                }
             }
         });
+        holder.addPictureGrid.setAdapter(addPictureAdapter);
+
     }
 
     @Override
     public int getItemCount(){
         if(subTypeClothingBeans!=null){
             return subTypeClothingBeans.size();
-        }else{
-            return 0;
         }
+        return 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView subTypeName;
         GridView addPictureGrid;
-        AddPictureGridViewAdapter addPictureAdapter;
         List<Uri> pictures=new ArrayList<>();//图片路径列表
 
         public ViewHolder(@NonNull View itemView){
@@ -92,8 +105,6 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
 
 
     }
-
-
 
 
 }

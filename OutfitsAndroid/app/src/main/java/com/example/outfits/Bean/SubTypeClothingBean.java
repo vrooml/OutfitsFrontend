@@ -2,7 +2,9 @@ package com.example.outfits.Bean;
 
 import com.example.outfits.Bean.Clothes;
 
-public class SubTypeClothingBean{
+import java.io.Serializable;
+
+public class SubTypeClothingBean implements Serializable{
     private int subtypeId;
     private String subtypeName;
     private Clothes[] clothing;

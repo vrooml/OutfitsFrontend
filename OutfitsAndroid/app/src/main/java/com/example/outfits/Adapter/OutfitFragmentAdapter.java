@@ -30,16 +30,9 @@ public class OutfitFragmentAdapter extends FragmentStateAdapter{
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        List<Outfit> outfits=new ArrayList<>();
-        outfits.add(new Outfit(1,"1",null));
-        outfits.add(new Outfit(1,"2",null));
-        outfits.add(new Outfit(1,"3",null));
-        outfits.add(new Outfit(1,"4",null));
-        outfits.add(new Outfit(1,"5",null));
-        outfits.add(new Outfit(1,"6",null));
-        outfits.add(new Outfit(1,"7",null));
-        outfits.add(new Outfit(1,"8",null));
-        return OutfitTypeFragment.newInstance(outfits);
+        OutfitTypeFragment outfitTypeFragment=new OutfitTypeFragment();
+        outfitTypeFragment.occasion=occasions.get(position);
+        return outfitTypeFragment;
     }
 
     @Override

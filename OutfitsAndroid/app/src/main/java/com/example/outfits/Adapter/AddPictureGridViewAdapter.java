@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,16 +17,19 @@ import java.util.List;
 public class AddPictureGridViewAdapter extends BaseAdapter{
 
     private List<Uri> images;
-
     private Context context;
+    private int mode;
 
     private LayoutInflater inflater;
+    public static final int ADD_MODE=1;
+    public static final int SHOW_MODE=2;
 
     private int maxImages=9;
 
-    public AddPictureGridViewAdapter(List<Uri> datas,Context context) {
+    public AddPictureGridViewAdapter(List<Uri> datas,Context context,int mode) {
         this.images = datas;
         this.context = context;
+        this.mode=mode;
         inflater = LayoutInflater.from(context);
     }
 
@@ -35,11 +37,15 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
     //得到数量
     @Override
     public int getCount(){
-        int count=1;
+        int count=0;
         if(images!=null){
             count=images.size()+1;
         }else{
-            count=1;
+            if(mode==ADD_MODE){
+                count=1;
+            }else{
+                count=0;
+            }
         }
         if (count>maxImages) {
             return images.size();
@@ -73,7 +79,7 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
     public View getView(final int i,View convertView,ViewGroup viewGroup){
         ViewHolder viewHolder=null;
         if(convertView==null){
-            convertView=inflater.inflate(R.layout.view_select_picture,viewGroup,false);
+            convertView=inflater.inflate(R.layout.view_show_picture,viewGroup,false);
             viewHolder=new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }else{
@@ -85,26 +91,13 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
             Glide.with(context)
                     .load(images.get(i))
                     .into(viewHolder.ivimage);
-            viewHolder.btdel.setVisibility(View.VISIBLE);
-//            设置删除按钮监听
-            viewHolder.btdel.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    if(file.exists()){
-                        file.delete();
-                    }
-                    images.remove(i);
-                    notifyDataSetChanged();
-                }
-            });
         }
-        if(images==null||i==images.size()){
+        if(mode==ADD_MODE&&(images==null||i==images.size())){
             /**代表+号的需要+号图片显示图片**/
             Glide.with(context)
                     .load(R.drawable.add_pic_btn)
                     .into(viewHolder.ivimage);
             viewHolder.ivimage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            viewHolder.btdel.setVisibility(View.GONE);
         }
         return convertView;
     }
@@ -113,12 +106,10 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
 
     public class ViewHolder{
         public final ImageView ivimage;
-        public final Button btdel;
         public final View root;
 
         public ViewHolder(View root){
             ivimage=(ImageView)root.findViewById(R.id.iv_image);
-            btdel=(Button)root.findViewById(R.id.btn_delete);
             this.root=root;
         }
     }

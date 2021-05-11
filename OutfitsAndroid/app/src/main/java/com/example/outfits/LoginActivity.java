@@ -26,7 +26,7 @@ public class LoginActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 LoginRequest loginRequest=new LoginRequest(phoneNumEdit.getText().toString(),passwordEdit.getText().toString());
-                RetrofitUtil.postLogin("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0IiwiaWF0IjoxNjIwNTc1MzMwLCJzdWIiOiI2MzQwOTgiLCJpc3MiOiJydWlqaW4iLCJleHAiOjE2MjA1NzU5MzB9.qHY8OxshpoN18NPisKmDj2ZALJETqyP5I-xgPXoHcA0",loginRequest);//发送登录请求
+//                RetrofitUtil.postLogin("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI0IiwiaWF0IjoxNjIwNTc1MzMwLCJzdWIiOiI2MzQwOTgiLCJpc3MiOiJydWlqaW4iLCJleHAiOjE2MjA1NzU5MzB9.qHY8OxshpoN18NPisKmDj2ZALJETqyP5I-xgPXoHcA0",loginRequest);//发送登录请求
                 Intent intent1=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent1);
             }

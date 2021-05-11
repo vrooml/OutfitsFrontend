@@ -13,11 +13,11 @@
                 android:clickable="false"/>
 
         <Button
-                android:id="@+id/btn_delete"
+                android:id="@+id/btn_check"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:clickable="false"
-                android:background="@drawable/edit_pic_btn" />
+                android:background="@drawable/unchecked" />
 
 </RelativeLayout>
