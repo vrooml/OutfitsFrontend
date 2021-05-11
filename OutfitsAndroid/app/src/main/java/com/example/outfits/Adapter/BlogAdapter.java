@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,11 +21,12 @@ import com.example.outfits.R;
 import java.util.List;
 
 public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.InnerHolder> {
-    private Context context;
+    Fragment fragment;
     private List<Blog> datas;
-    public BlogAdapter(Context context, List<Blog> datas){
+
+    public BlogAdapter(Fragment fragment, List<Blog> datas) {
+        this.fragment = fragment;
         this.datas = datas;
-        this.context = context;
     }
 
     //创建条目界面

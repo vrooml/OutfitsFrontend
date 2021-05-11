@@ -110,18 +110,6 @@
             app:layout_constraintStart_toStartOf="@+id/focus" />
 
 
-        <Button
-            android:id="@+id/btn_modify"
-            android:layout_width="91dp"
-            android:layout_height="39dp"
-            android:layout_marginEnd="40dp"
-            android:text="编辑资料"
-            android:textColor="@color/black"
-            android:textSize="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/follow" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
@@ -170,24 +158,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2">
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_blog"
+        <com.example.outfits.CustomView.ScrollableViewPager
+            android:id="@+id/sp_blog"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </androidx.viewpager2.widget.ViewPager2>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/btn_createBlog"
-            android:layout_marginBottom="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:backgroundTint="@color/main_color"
-            app:tint="@color/white"
-            android:src="@mipmap/edit_white"
-            />
+        </com.example.outfits.CustomView.ScrollableViewPager>
 
 
     </RelativeLayout>

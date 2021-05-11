@@ -64,13 +64,19 @@ public interface PostInterfaces{
     Call<ResponseModel> modifyUserInfo(@Header("token") String token,@Body UserInfo userInfoNew);
 
     //获取我的收藏
-    @FormUrlEncoded
-    @POST("/user/getCollection")
-    Call<ResponseModel<List<Blog>>> getCollection(@Header("token") String token,@Field("userId") int userId);
+    @POST("/blog/getCollection")
+    Call<ResponseModel<Blog[]>> getCollection(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
 
     //获取我的发布
-    @FormUrlEncoded
     @POST("/user/getBlog")
-    Call<ResponseModel<List<Blog>>> getBlog(@Header("token") String token,@Field("userId") int userId);
+    Call<ResponseModel<Blog[]>> getBlog(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+
+    //获取我的粉丝列表
+    @POST("/user/getSubscriber")
+    Call<ResponseModel<UserInfo[]>> getSubscriber(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+
+    //获取我的关注列表
+    @POST("/user/getSubscription")
+    Call<ResponseModel<UserInfo[]>> getSubscription(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
 
 }

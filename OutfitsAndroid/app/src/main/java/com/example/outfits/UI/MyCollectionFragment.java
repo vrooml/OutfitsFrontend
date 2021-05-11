@@ -101,7 +101,7 @@ public class MyCollectionFragment extends Fragment {
         //获取RecyclerView
         recyclerView = (RecyclerView)view.findViewById(R.id.rv_myCollection);
         //创建adapter
-        blogAdapter = new BlogAdapter(view.getContext(), blogLists);
+        blogAdapter = new BlogAdapter(this, blogLists);
         //设置adapter
         recyclerView.setAdapter(blogAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
@@ -131,6 +131,6 @@ public class MyCollectionFragment extends Fragment {
         Request();
     }
     private void Request(){
-        blogLists = RetrofitUtil.getCollection("token", 3);
+        //blogLists = RetrofitUtil.getCollection("token", 3);
     }
 }

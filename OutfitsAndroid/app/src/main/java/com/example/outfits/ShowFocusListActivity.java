@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Adapter.UserInfoAdapter;
 import com.example.outfits.Bean.UserInfo;
-import com.example.outfits.User.UserFragment;
+import com.example.outfits.UI.UserFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +44,6 @@ public class ShowFocusListActivity extends BaseActivity{
         //List<DataBean>------>Adapter------>setAdapter---->显示数据
         //创建数据集合
         datas = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            UserInfo data = new UserInfo("nickname","man","111",1);
-            datas.add(data);
-        }
     }
 
     private void showList(boolean isVertical) {

@@ -14,6 +14,7 @@ import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.MyApplication;
 import com.example.outfits.RetrofitStuff.AuthCodeRequest;
+import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.GetClothingRequest;
 import com.example.outfits.RetrofitStuff.GetOutfitRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
@@ -337,26 +338,30 @@ public class RetrofitUtil{
      *
      * @param token token
      * */
-    public static List<Blog> getBlog(String token, int userId){
+    public static void getBlog(String token, GetBlogRequest getBlogRequest, List<Blog> blogList, LoadingDialog dialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<List<Blog>>> call=request.getBlog(token,userId);
-        final List<Blog>[] blogList = new List[]{new ArrayList<>()};
-        call.enqueue(new Callback<ResponseModel<List<Blog>>>() {
+        Call<ResponseModel<Blog[]>> call=request.getBlog(token,getBlogRequest);
+        call.enqueue(new Callback<ResponseModel<Blog[]>>() {
             @Override
-            public void onResponse(Call<ResponseModel<List<Blog>>> call, Response<ResponseModel<List<Blog>>> response) {
-                if(response.body()!=null){
+            public void onResponse(Call<ResponseModel<Blog[]>> call, Response<ResponseModel<Blog[]>> response) {
+                if(response.body() != null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        blogList[0] =response.body().getData();
+                        for(Blog i : response.body().getData()){
+                            blogList.add(i);
+                            Toast.makeText(MyApplication.getContext(), blogList.get(0).getBlogTitle().toString(), Toast.LENGTH_SHORT);
+                        }
+                    }else {
+                        Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseModel<List<Blog>>> call, Throwable t) {
+            public void onFailure(Call<ResponseModel<Blog[]>> call, Throwable t) {
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();;
             }
         });
-        return blogList[0];
     }
 
     /**
@@ -364,24 +369,90 @@ public class RetrofitUtil{
      *
      * @param token token
      * */
-    public static List<Blog> getCollection(String token,int userId){
+    public static void getCollection(String token,GetBlogRequest getBlogRequest, List<Blog> blogList, LoadingDialog dialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<List<Blog>>> call=request.getCollection(token,userId);
-        final List<Blog>[] blogList = new List[]{new ArrayList<>()};
-        call.enqueue(new Callback<ResponseModel<List<Blog>>>() {
+        Call<ResponseModel<Blog[]>> call=request.getCollection(token,getBlogRequest);
+        call.enqueue(new Callback<ResponseModel<Blog[]>>() {
             @Override
-            public void onResponse(Call<ResponseModel<List<Blog>>> call, Response<ResponseModel<List<Blog>>> response) {
+            public void onResponse(Call<ResponseModel<Blog[]>> call, Response<ResponseModel<Blog[]>> response) {
                 if(response.body()!=null){
-                    blogList[0] =response.body().getData();
+                    if(response.body().getCode() == SUCCESS_CODE) {
+                        for(Blog i : response.body().getData()){
+                            blogList.add(i);
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseModel<List<Blog>>> call, Throwable t) {
+            public void onFailure(Call<ResponseModel<Blog[]>> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 获取我的粉丝列表
+     *
+     * @param token token
+     * */
+    public  static List<UserInfo> getSubscriber(String token, GetBlogRequest getBlogRequest, List<UserInfo> userInfoList){
+        final PostInterfaces request = retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<UserInfo[]>> call = request.getSubscriber(token, getBlogRequest);
+        call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
+            @Override
+            public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {
+                if(response.body() != null){
+                    if(response.body().getCode() == SUCCESS_CODE) {
+                        for(UserInfo i : response.body().getData()){
+                            userInfoList.add(i);
+                            Toast.makeText(MyApplication.getContext(), String.valueOf(userInfoList.size()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyApplication.getContext(), userInfoList.get(0).getUserNickname(), Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<UserInfo[]>> call, Throwable t) {
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
-        return blogList[0];
+        return userInfoList;
+    }
+
+    /**
+     * 获取我的关注列表
+     *
+     * @param token token
+     * */
+    public  static void getSubscription(String token, GetBlogRequest getBlogRequest, List<UserInfo> userInfoList, LoadingDialog dialog){
+        final PostInterfaces request = retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<UserInfo[]>> call = request.getSubscriber(token, getBlogRequest);
+        call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
+            @Override
+            public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {
+                if(response.body() != null){
+                    if(response.body().getCode() == SUCCESS_CODE) {
+                        for(UserInfo i : response.body().getData()){
+                            userInfoList.add(i);
+                        }
+                    }else{
+                        Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<UserInfo[]>> call, Throwable t) {
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     

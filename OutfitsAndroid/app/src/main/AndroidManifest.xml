@@ -38,6 +38,7 @@
         <activity android:name=".ModifyActivity" />
         <activity android:name=".ShowFansListActivity" />
         <activity android:name=".ShowFocusListActivity" />
+        <activity android:name=".OtherUserActivity"/>
     </application>
 
 </manifest>

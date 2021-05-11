@@ -44,7 +44,7 @@ public class UserInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user_info);
         nickname = (EditText)findViewById(R.id.ed_nickname);
         profile = (EditText)findViewById(R.id.ed_profile);
         confirm = (Button)findViewById(R.id.btn_confirm);
@@ -52,8 +52,8 @@ public class UserInfoActivity extends AppCompatActivity {
         rbMan = (RadioButton)findViewById(R.id.rb_man);
         rbWoman = (RadioButton)findViewById(R.id.rb_woman);
         icon = (ImageView)findViewById(R.id.iv_icon);
-        UserInfo userInfo=null;
-        userInfo=RetrofitUtil.getUserInfo("token");
+   /*     UserInfo userInfo=null;
+        RetrofitUtil.getUserInfo("token", new GetBlogRequest(2), userInfo);
         nickname.setText(userInfo.getUserNickname().toString());
         profile.setText(userInfo.getUserProfile().toString());
         sex1 = userInfo.getUserSex().toString();
@@ -71,15 +71,15 @@ public class UserInfoActivity extends AppCompatActivity {
                 circularBitmapDrawable.setCircular(true);
                 icon.setImageDrawable(circularBitmapDrawable);
             }
-        });
-        /*confirm.setOnClickListener(new View.OnClickListener() {
+        });*/
+        confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserInfo userInfoNew=new UserInfo(nickname.getText().toString(),
                         sex1, profile.getText().toString(), userId);
                 RetrofitUtil.modifyUserInfo("token", userInfoNew);
             }
-        });*/
+        });
         sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
