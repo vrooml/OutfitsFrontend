@@ -13,10 +13,13 @@
           <span class="mui-icon mui-icon-search" @click="toSearch()"></span>
         </div>
       </div>
-      <div id="index-content">
-        <follow-list v-if="tabType === 1"></follow-list>
-        <recommend-list v-if="tabType === 2"></recommend-list>
-      </div>
+      <vue-scroll>
+        <div id="index-content">
+          <follow-list v-if="tabType === 1"></follow-list>
+          <recommend-list v-if="tabType === 2"></recommend-list>
+        </div>
+      </vue-scroll>
+
     </div>
 </template>
 
@@ -177,7 +180,7 @@ export default {
 <style scoped lang="less">
 #communityIndex {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -194,8 +197,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     font-size: 18px;
-    position: fixed;
+    position: relative;
     z-index: 2020;
+    box-shadow: 1px 0px 10px #87a8be;
     #index-nav-tab {
       min-width: 50%;
       display: flex;
@@ -216,6 +220,9 @@ export default {
   #index-content {
     width:100%;
     background-color: transparent;
-    padding-top: 60px;
+    /*padding-top: 60px;*/
   }
+.__vuescroll {
+  height: calc(100% - 60px) !important;
+}
 </style>
