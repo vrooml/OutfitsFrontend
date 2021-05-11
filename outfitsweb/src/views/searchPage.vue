@@ -66,7 +66,7 @@
         </div>
       </div>
       <div id="content" v-if="blocks1.length === 0">
-        asdfds
+        没有搜索内容
       </div>
     </div>
 

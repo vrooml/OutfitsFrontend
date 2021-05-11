@@ -4,7 +4,7 @@
     <div v-masonry-tile class="item"
          v-for="(item, index) in blocks"
          :key=" '2' + index ">
-      <div class="content">
+      <div class="content" @click="getBlogInfo">
         <div class="content-photo">
           <img :src="item.photo" />
         </div>
@@ -105,6 +105,22 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    getBlogInfo () {
+      console.log('获取订阅用户的博客')
+      this.$axios.post('/blog/getAll', {
+      }, {
+        header: {
+          'Content-Type': 'application/json' // 如果写成contentType会报错
+        }
+      }).then(res => {
+        console.log(res)
+      }).catch(error => {
+        console.log(error)
+      }).finally(() => {
+      })
+    }
   }
 }
 </script>
@@ -155,13 +171,15 @@ export default {
         .title {
           font-size:14px;
           text-align: left;
-          padding: 0 5px;
+          padding: 0 5px 5px 5px;
         }
         .userInfo {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
+          border-top: 0.5px solid rgba(3,0,24,0.17);
+          padding-top: 5px;
           .userInfos {
             display: flex;
             flex-direction: row;
