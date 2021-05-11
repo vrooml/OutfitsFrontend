@@ -2,10 +2,10 @@
   <div id="blogPage">
     <div id="blog-nav">
       <div id="blog-nav-left">
-        <div id="blog-nav-back">
+        <div id="blog-nav-back" @click="toBack()">
           <span class="mui-icon mui-icon-arrowleft"></span>
         </div>
-        <div id="blog-nav-info">
+        <div id="blog-nav-info" @click="toUser()">
           <div id="blog-nav-avatar">
             <img :src="data.user_pic" />
           </div>
@@ -70,7 +70,13 @@ export default {
   },
   methods: {
     getInfo () {
-      console.log(this.$route.params.blogId)
+      // console.log(this.$route.params.blogId)
+    },
+    toBack () {
+      this.$router.back()
+    },
+    toUser (item) {
+      window.android.toUser(item.userId)
     },
     getBlogDetail () {
       console.log('获取博客详细信息')
@@ -86,6 +92,8 @@ export default {
         if (res.data.code === 200) {
           // let temp = {}
           that.data = res.data.data
+        } else {
+          Toast(res.data.msg)
         }
       }).catch(error => {
         console.log(error)
@@ -93,7 +101,6 @@ export default {
       })
     },
     follow () {
-      console.log('关注')
       if (this.data.user_state === 1) {
         Toast('不能关注自己哦')
       } else if (this.data.user_state === 2 || this.data.user_state === 3) {
@@ -113,6 +120,8 @@ export default {
             } else if (res.data.msg === '取消关注成功') {
               this.data.user_state = 3
             }
+          } else {
+            Toast(res.data.msg)
           }
         }).catch(error => {
           console.log(error)
@@ -138,6 +147,8 @@ export default {
             } else if (res.data.msg === '删除成功') {
               this.data.favorite = 0
             }
+          } else {
+            Toast(res.data.msg)
           }
         }).catch(error => {
           console.log(error)
@@ -147,7 +158,7 @@ export default {
     }
   },
   mounted () {
-    this.getInfo()
+    // this.getInfo()
   }
 }
 </script>

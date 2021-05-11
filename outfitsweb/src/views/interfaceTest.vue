@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
+
 export default {
   name: 'interfaceTest.vue',
   data () {
@@ -87,6 +89,8 @@ export default {
         console.log(res)
         if (res.data.code === 200) {
           // let temp = {}
+        } else {
+          Toast(res.data.msg)
         }
       }).catch(error => {
         console.log(error)

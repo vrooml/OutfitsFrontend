@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
   name: 'followList.vue',
   data () {
@@ -122,11 +123,12 @@ export default {
   },
   methods: {
     toBlog (item) {
-      console.log(item.title)
+      // console.log(item.title)
       this.$router.push({ name: 'blogPage', params: { blogId: item.blogId } })
     },
     toUser (item) {
-      console.log(item)
+      // console.log(item)
+      window.android.toUser(item.userId)
     },
     getBlogInfo () {
       console.log('获取订阅用户的博客')
@@ -141,6 +143,8 @@ export default {
         if (res.data.code === 200) {
           // let temp = {}
           that.blocks = that.blocks.concat(res.data.data)
+        } else {
+          Toast(res.data.msg)
         }
       }).catch(error => {
         console.log(error)

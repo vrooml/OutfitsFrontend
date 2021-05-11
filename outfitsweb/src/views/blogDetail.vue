@@ -34,9 +34,10 @@
 <script>
 import { Toast } from 'mint-ui'
 export default {
-  name: 'blogPage.vue',
+  name: 'blogDetail.vue',
   data () {
     return {
+      blogId: '',
       data: {
         article: '晗杰最美 从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老',
         blogId: 6,
@@ -53,13 +54,13 @@ export default {
   },
   methods: {
     getInfo () {
-      console.log(this.$route.params.blogId)
+      // console.log(this.$route.params.blogId)
     },
     getBlogDetail () {
       console.log('获取博客详细信息')
       const that = this
       this.$axios.post('/blog/getDetail', {
-        blogId: this.$route.params.blogId
+        blogId: this.blogId
       }, {
         header: {
           'Content-Type': 'application/json' // 如果写成contentType会报错
@@ -69,6 +70,8 @@ export default {
         if (res.data.code === 200) {
           // let temp = {}
           that.data = res.data.data
+        } else {
+          Toast(res.data.msg)
         }
       }).catch(error => {
         console.log(error)
@@ -96,6 +99,8 @@ export default {
             } else if (res.data.msg === '取消关注成功') {
               this.data.user_state = 3
             }
+          } else {
+            Toast(res.data.msg)
           }
         }).catch(error => {
           console.log(error)
@@ -121,16 +126,23 @@ export default {
             } else if (res.data.msg === '删除成功') {
               this.data.favorite = 0
             }
+          } else {
+            Toast(res.data.msg)
           }
         }).catch(error => {
           console.log(error)
         }).finally(() => {
         })
       }
+    },
+    getBlogId (myblogId) {
+      this.blogId = myblogId
+      this.getBlogDetail()
     }
   },
   mounted () {
-    this.getInfo()
+    // this.getInfo()
+    // this.getBlogDetail()
   }
 }
 </script>

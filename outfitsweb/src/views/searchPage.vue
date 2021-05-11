@@ -51,7 +51,7 @@
               <div class="content-info">
                 <div class="title">{{item.blogTitle}}</div>
                 <div class="userInfo">
-                  <div class="userInfos">
+                  <div class="userInfos" @click="toUser(item)">
                     <div class="user-avator">
                       <img :src="item.user_pic" />
                     </div>
@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
+
 export default {
   name: 'searchPage.vue',
   data () {
@@ -163,9 +165,7 @@ export default {
           blog_released_time: '2021年4月8日',
           favorite: 1
         }
-      ],
-      blocks1: [],
-      equal: []
+      ]
     }
   },
   methods: {
@@ -185,6 +185,8 @@ export default {
           // let temp = {}
           that.blocks = that.blocks.concat(res.data.data)
           that.page = 2
+        } else {
+          Toast(res.data.msg)
         }
       }).catch(error => {
         console.log(error)
@@ -193,6 +195,9 @@ export default {
     },
     toBack () {
       this.$router.back()
+    },
+    toUser (item) {
+      window.android.toUser(item.userId)
     },
     chooseHistory (content) {
       this.text = content
@@ -204,21 +209,21 @@ export default {
     },
     focus1 () {
       this.page = 1
-      console.log('focus')
+      // console.log('focus')
     },
     blur1 () {
       this.page = 2
-      console.log('blur')
+      // console.log('blur')
     },
     getHistory () {
       const temp = window.localStorage.getItem('history')
-      console.log(temp)
+      // console.log(temp)
       if (temp === '') {
         this.history = []
       } else {
         this.history = temp.split(' ')
       }
-      console.log(this.history)
+      // console.log(this.history)
     },
     getRelated () {
       const temp = window.localStorage.getItem('relate')
