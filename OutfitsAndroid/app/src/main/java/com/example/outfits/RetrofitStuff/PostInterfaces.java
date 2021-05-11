@@ -22,11 +22,24 @@ import retrofit2.http.Part;
 
 public interface PostInterfaces{
     //获取验证码
-    @POST("/sms/send")
-    Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest token);
+    @POST("/user/sendSmsCode")
+    Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest authCodeRequest);
 
+    //登录
+    @POST("/user/login")
+    Call<ResponseModel<String>> login(@Header("token") String token,@Body LoginRequest loginRequest);
+
+    //注册
+    @POST("/user/register")
+    Call<ResponseModel> postRegister(@Header("token") String token,@Body RegisterRequest registerRequest);
+
+    //忘记密码
+    @POST("/user/info/update/password")
+    Call<ResponseModel> postForgetPassword(@Header("token") String token,@Body ForgetpasswordRequest forgetpasswordRequest1);
+
+    //修改个人资料
     @POST("/user/modifyInfo")
-    Call<ResponseModel> postModifyUserInfoRequest(@Body ModifyUserInfoRequest modifyUserInfoRequest);
+    Call<ResponseModel> postModifyUserInfo(@Header("token") String token,@Body ModifyUserInfoRequest modifyUserInfoRequest);
 
     //请求子类别的衣物
     @POST("/wardrobe/getClothing")
