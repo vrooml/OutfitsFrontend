@@ -7,6 +7,7 @@ import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import './assets/css/global.css'
 import axios from 'axios'
+import vuescroll from 'vuescroll'
 
 import './assets/icon/font/iconfont.css'
 import './assets/icon/font/iconfont.js'
@@ -22,6 +23,16 @@ axios.interceptors.request.use(config => {
 Vue.use(VueMasonryPlugin)
 Vue.use(Mint)
 Vue.config.productionTip = false
+Vue.use(vuescroll)
+Vue.prototype.$vuescrollConfig = {
+  bar: {
+    background: '#cecece',
+    minSize: 0.2,
+    opacity: 0.8,
+    specifyBorderRadius: '10px',
+    onlyShowBarOnScroll: false
+  }
+}
 
 new Vue({
   router,
