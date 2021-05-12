@@ -78,6 +78,10 @@ public interface PostInterfaces{
     @POST("/user/getDetail")
     Call<ResponseModel<UserInfo>> getUserInfo(@Header("token") String token);
 
+    //获取用户资料
+    @POST("/user/getIntro")
+    Call<ResponseModel<UserInfo>> getIntro(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+
     //修改个人资料
     @POST("/user/modifyInfo")
     Call<ResponseModel> modifyUserInfo(@Header("token") String token,@Body UserInfo userInfoNew);

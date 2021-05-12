@@ -36,7 +36,7 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
                     .create();
             //               dialog.show();
             GetBlogRequest getBlogRequest = new GetBlogRequest(2);
-            RetrofitUtil.getBlog("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo"
+            RetrofitUtil.getBlog("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
                     ,getBlogRequest, blogList, dialog);
             return MyBlogFragment.newInstance(blogList);
         }
@@ -48,7 +48,7 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
                     .create();
             //             dialog.show();
             GetBlogRequest getBlogRequest = new GetBlogRequest(2);
-            RetrofitUtil.getCollection("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo"
+            RetrofitUtil.getCollection("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
                     ,getBlogRequest, collectionList, dialog);
             return MyCollectionFragment.newInstance(collectionList);
         }

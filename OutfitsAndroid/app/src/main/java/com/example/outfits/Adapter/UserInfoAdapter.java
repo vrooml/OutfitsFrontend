@@ -1,7 +1,9 @@
 package com.example.outfits.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.UserInfo;
+import com.example.outfits.OtherUserActivity;
 import com.example.outfits.R;
 
 import java.util.List;
@@ -35,7 +38,7 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.InnerH
         //创建条目界面
         //1.得到View
         //2.构造InnerHolder
-        View view = View.inflate(parent.getContext(), R.layout.blog_list_view, null);
+        View view = View.inflate(parent.getContext(), R.layout.user_list_view, null);
         return new InnerHolder(view);
     }
 
@@ -43,6 +46,17 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.InnerH
     @Override
     public void onBindViewHolder(@NonNull UserInfoAdapter.InnerHolder holder, int position) {
         holder.setData(datas.get(position));
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), OtherUserActivity.class);
+                //传递参数
+                Bundle bundle = new Bundle();
+                bundle.putInt("userId", 2);
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -55,17 +69,17 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.InnerH
 
     public class InnerHolder extends RecyclerView.ViewHolder{
         private ImageView icon;
-//        private TextView title;
+        private TextView title;
 
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
             //找到条目的控件
-            icon = (ImageView)itemView.findViewById(R.id.user_icon);
-//            title = (TextView)itemView.findViewById(R.id.tv_title);
+            icon = (ImageView)itemView.findViewById(R.id.iv_icon);
+            title = (TextView)itemView.findViewById(R.id.tv_title);
         }
 
         public void setData(UserInfo UserInfoBean){
-//            title.setText(blogBean.getBlogTitle().toString());
+            title.setText(UserInfoBean.getUserNickname().toString());
             Glide.with(itemView).asBitmap()
                     .load(UserInfoBean.getUserPic().toString())
                     .centerCrop().into(new BitmapImageViewTarget(icon){
