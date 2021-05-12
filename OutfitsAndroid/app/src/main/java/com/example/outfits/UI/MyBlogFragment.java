@@ -40,7 +40,7 @@ public class MyBlogFragment extends Fragment {
     private View view;
     public RecyclerView recyclerView;
     private List<Blog> blogLists;
-    public BlogAdapter blogAdapter;
+    public static BlogAdapter blogAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 

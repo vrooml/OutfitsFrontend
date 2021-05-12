@@ -1,6 +1,7 @@
 package com.example.outfits.RetrofitStuff;
 
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
 import com.example.outfits.Bean.UserInfo;
@@ -78,7 +79,7 @@ public interface PostInterfaces{
 
     //获取我的收藏
     @POST("/blog/getCollection")
-    Call<ResponseModel<Blog[]>> getCollection(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+    Call<ResponseModel<Collection[]>> getCollection(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
 
     //获取我的发布
     @POST("/user/getBlog")

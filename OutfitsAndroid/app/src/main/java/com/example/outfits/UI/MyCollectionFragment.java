@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.outfits.Adapter.CollectionAdapter;
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.Bean.Collection;
 import com.example.outfits.R;
 import com.example.outfits.Adapter.BlogAdapter;
 import com.example.outfits.Utils.RetrofitUtil;
@@ -44,8 +46,8 @@ public class MyCollectionFragment extends Fragment {
 
     private View view;
     public RecyclerView recyclerView;
-    private List<Blog> blogLists;
-    private BlogAdapter blogAdapter;
+    private List<Collection> collectionList;
+    public static CollectionAdapter collectionAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     // TODO: Rename and change types of parameters
@@ -56,81 +58,33 @@ public class MyCollectionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyCollectionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MyCollectionFragment newInstance(String param1, String param2) {
+    public static MyCollectionFragment newInstance(List<Collection> collectionList) {
         MyCollectionFragment fragment = new MyCollectionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.collectionList = collectionList;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if(view == null) {
-            view = inflater.inflate(R.layout.fragment_my_collection, container, false);
-        }
-        initData();
-        initView();
-        return view;
-    }
-
-    private void initView() {
+        view = inflater.inflate(R.layout.fragment_my_collection,container,false);
         //获取SwipeRefreshLayout
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.sr_myCollection);
         //获取RecyclerView
         recyclerView = (RecyclerView)view.findViewById(R.id.rv_myCollection);
         //创建adapter
-        blogAdapter = new BlogAdapter(this, blogLists);
-        //设置adapter
-        recyclerView.setAdapter(blogAdapter);
+        collectionAdapter = new CollectionAdapter(this, collectionList);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
         //设置分割线
         recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
-        //设置下拉刷新
-        handleDownPullUpdate();
-    }
-
-    private void handleDownPullUpdate() {
-        swipeRefreshLayout.setEnabled(true);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 3000);
-            }
-        });
-    }
-
-    private void initData() {
-        blogLists = new ArrayList<>();
-        Request();
-    }
-    private void Request(){
-        //blogLists = RetrofitUtil.getCollection("token", 3);
+        //设置adapter
+        recyclerView.setAdapter(collectionAdapter);
+        return view;
     }
 }

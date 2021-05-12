@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.Clothes;
+import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
 import com.example.outfits.Bean.SubTypeClothingBean;
@@ -23,8 +24,11 @@ import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.RegisterRequest;
 import com.example.outfits.RetrofitStuff.ResponseModel;
+import com.example.outfits.ShowFansListActivity;
 import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.ClothesFragment;
+import com.example.outfits.UI.MyBlogFragment;
+import com.example.outfits.UI.MyCollectionFragment;
 import com.example.outfits.UI.OutfitFragment;
 import com.example.outfits.UI.OutfitTypeFragment;
 
@@ -432,7 +436,7 @@ public class RetrofitUtil{
      *
      * @param token token
      * */
-    public static void getBlog(String token, GetBlogRequest getBlogRequest, List<Blog> blogList, LoadingDialog dialog){
+    public static void getBlog(String token, GetBlogRequest getBlogRequest, List<Blog> blogList,LoadingDialog dialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<Blog[]>> call=request.getBlog(token,getBlogRequest);
         call.enqueue(new Callback<ResponseModel<Blog[]>>() {
@@ -442,8 +446,8 @@ public class RetrofitUtil{
                     if(response.body().getCode()==SUCCESS_CODE){
                         for(Blog i : response.body().getData()){
                             blogList.add(i);
-                            Toast.makeText(MyApplication.getContext(), blogList.get(0).getBlogTitle().toString(), Toast.LENGTH_SHORT);
                         }
+                        MyBlogFragment.blogAdapter.notifyDataSetChanged();
                     }else {
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -463,17 +467,18 @@ public class RetrofitUtil{
      *
      * @param token token
      * */
-    public static void getCollection(String token,GetBlogRequest getBlogRequest, List<Blog> blogList, LoadingDialog dialog){
+    public static void getCollection(String token,GetBlogRequest getBlogRequest, List<Collection> collectionList, LoadingDialog dialog){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<Blog[]>> call=request.getCollection(token,getBlogRequest);
-        call.enqueue(new Callback<ResponseModel<Blog[]>>() {
+        Call<ResponseModel<Collection[]>> call=request.getCollection(token,getBlogRequest);
+        call.enqueue(new Callback<ResponseModel<Collection[]>>() {
             @Override
-            public void onResponse(Call<ResponseModel<Blog[]>> call, Response<ResponseModel<Blog[]>> response) {
+            public void onResponse(Call<ResponseModel<Collection[]>> call, Response<ResponseModel<Collection[]>> response) {
                 if(response.body()!=null){
                     if(response.body().getCode() == SUCCESS_CODE) {
-                        for(Blog i : response.body().getData()){
-                            blogList.add(i);
+                        for(Collection i : response.body().getData()){
+                            collectionList.add(i);
                         }
+                        MyCollectionFragment.collectionAdapter.notifyDataSetChanged();
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -481,7 +486,7 @@ public class RetrofitUtil{
             }
 
             @Override
-            public void onFailure(Call<ResponseModel<Blog[]>> call, Throwable t) {
+            public void onFailure(Call<ResponseModel<Collection[]>> call, Throwable t) {
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -493,7 +498,7 @@ public class RetrofitUtil{
      *
      * @param token token
      * */
-    public  static List<UserInfo> getSubscriber(String token, GetBlogRequest getBlogRequest, List<UserInfo> userInfoList){
+    public  static void getSubscriber(String token, GetBlogRequest getBlogRequest, List<UserInfo> userInfoList){
         final PostInterfaces request = retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo[]>> call = request.getSubscriber(token, getBlogRequest);
         call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
@@ -503,9 +508,8 @@ public class RetrofitUtil{
                     if(response.body().getCode() == SUCCESS_CODE) {
                         for(UserInfo i : response.body().getData()){
                             userInfoList.add(i);
-                            Toast.makeText(MyApplication.getContext(), String.valueOf(userInfoList.size()), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(MyApplication.getContext(), userInfoList.get(0).getUserNickname(), Toast.LENGTH_SHORT).show();
                         }
+                        ShowFansListActivity.userInfoAdapter.notifyDataSetChanged();
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -517,7 +521,6 @@ public class RetrofitUtil{
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
-        return userInfoList;
     }
 
     /**

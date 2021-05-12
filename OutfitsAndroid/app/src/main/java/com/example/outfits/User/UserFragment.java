@@ -113,7 +113,7 @@ public class UserFragment extends Fragment{
         blocUser = view.findViewById(R.id.blog_user);
         blocFollow = view.findViewById(R.id.blog_follow);
         mFragmentArray.add(MyBlogFragment.newInstance(null));
-        mFragmentArray.add(MyCollectionFragment.newInstance("", ""));
+        mFragmentArray.add(MyCollectionFragment.newInstance(null));
         BlogViewPagerAdapter blogViewPagerAdapter = new BlogViewPagerAdapter(getFragmentManager());
         BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null);
         blogViewPagerAdapter.setList(mFragmentArray);

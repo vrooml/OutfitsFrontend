@@ -108,10 +108,8 @@ public class UserFragment extends Fragment{
         blocUser = view.findViewById(R.id.blog_user);
         blocFollow = view.findViewById(R.id.blog_follow);
         mFragmentArray.add(MyBlogFragment.newInstance(null));
-        mFragmentArray.add(MyCollectionFragment.newInstance("", ""));
-        BlogViewPagerAdapter blogViewPagerAdapter = new BlogViewPagerAdapter(getFragmentManager());
+        mFragmentArray.add(MyCollectionFragment.newInstance(null));
         BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null);
-        blogViewPagerAdapter.setList(mFragmentArray);
         viewPager2 = view.findViewById(R.id.vp_blog);
         viewPager2.setAdapter(blogFragmentAdapter);
 
@@ -148,7 +146,6 @@ public class UserFragment extends Fragment{
             public void onClick(View v){
                 //传递关于“我的博客”数据进入
                 viewPager2.setCurrentItem(0);
-                Toast.makeText(getContext(), "长度为" + mFragmentArray.size(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -156,7 +153,6 @@ public class UserFragment extends Fragment{
             public void onClick(View v){
                 //传递关于“我的收藏”数据进入
                 viewPager2.setCurrentItem(1);
-                Toast.makeText(getContext(), "这是MyCollectionFragment", Toast.LENGTH_LONG).show();
             }
         });
     }
