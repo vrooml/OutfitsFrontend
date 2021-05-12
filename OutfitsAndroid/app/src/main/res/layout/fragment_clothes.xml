@@ -16,12 +16,4 @@
                 android:layout_height="wrap_content"
                 />
     </androidx.core.widget.NestedScrollView>
-    <ImageView
-            android:id="@+id/add_outfit"
-            android:src="@drawable/blue_add_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal"/>
 </LinearLayout>

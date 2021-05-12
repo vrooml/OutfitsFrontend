@@ -1,12 +1,11 @@
 package com.example.outfits.Utils;
 
-import android.app.Dialog;
 import android.util.Log;
 import android.widget.Toast;
 
 
 import com.example.outfits.Bean.Blog;
-import com.example.outfits.Bean.Clothes;
+
 import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
@@ -14,6 +13,7 @@ import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.MyApplication;
+import com.example.outfits.RetrofitStuff.AddOutfitRequest;
 import com.example.outfits.RetrofitStuff.AuthCodeRequest;
 import com.example.outfits.RetrofitStuff.ForgetpasswordRequest;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
@@ -29,11 +29,10 @@ import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.ClothesFragment;
 import com.example.outfits.UI.MyBlogFragment;
 import com.example.outfits.UI.MyCollectionFragment;
-import com.example.outfits.UI.OutfitFragment;
+import com.example.outfits.UI.ChooseClothesFragment;
+import com.example.outfits.UI.MyOutfitFragment;
 import com.example.outfits.UI.OutfitTypeFragment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -231,7 +230,41 @@ public class RetrofitUtil{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
                 }
-                Log.e("debug","onResponse: "+"GetClothing!"+clothesFragment.type.getTypeName());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<SubTypeClothingBean[]>> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 获取某类别衣物
+     *
+     * @param getClothingRequest 获取某类别衣物请求体
+     * @param subTypeClothingBeans 要填充的子类别数组
+     */
+    public static void postGetClothing(String token,GetClothingRequest getClothingRequest,List<SubTypeClothingBean> subTypeClothingBeans,ChooseClothesFragment chooseClothesFragment,LoadingDialog dialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<SubTypeClothingBean[]>> call=request.postGetClothing(token,getClothingRequest);
+        call.enqueue(new Callback<ResponseModel<SubTypeClothingBean[]>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<SubTypeClothingBean[]>> call,Response<ResponseModel<SubTypeClothingBean[]>> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        subTypeClothingBeans.clear();
+                        for(SubTypeClothingBean i : response.body().getData()){
+                            subTypeClothingBeans.add(i);
+                        }
+                        chooseClothesFragment.adapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
@@ -313,7 +346,7 @@ public class RetrofitUtil{
      *
      * @param occasions 要填充的场合
      */
-    public static void getOccasion(String token,List<Occasion> occasions,OutfitFragment outfitFragment){
+    public static void getOccasion(String token,List<Occasion> occasions,MyOutfitFragment myOutfitFragment){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel<Occasion[]>> call=request.getOccasion(token);
         call.enqueue(new Callback<ResponseModel<Occasion[]>>(){
@@ -326,7 +359,7 @@ public class RetrofitUtil{
                             occasions.add(i);
                         }
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                        outfitFragment.init();
+                        myOutfitFragment.init();
 
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
@@ -368,6 +401,34 @@ public class RetrofitUtil{
 
             @Override
             public void onFailure(Call<ResponseModel<Outfit[]>> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 上传新搭配
+     *
+     */
+    public static void postAddOutfit(String token,AddOutfitRequest addOutfitRequest,LoadingDialog dialog){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postAddOutfit(token,addOutfitRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"添加搭配成功",Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }

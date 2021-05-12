@@ -1,6 +1,13 @@
 package com.example.outfits.UI;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
 import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -9,44 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.example.outfits.Adapter.ClothesFragmentAdapter;
-import com.example.outfits.Adapter.OutfitFragmentAdapter;
-import com.example.outfits.Bean.Occasion;
-import com.example.outfits.Bean.Type;
 import com.example.outfits.R;
-import com.example.outfits.Utils.RetrofitUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import q.rorbin.verticaltablayout.VerticalTabLayout;
-import q.rorbin.verticaltablayout.adapter.TabAdapter;
-import q.rorbin.verticaltablayout.widget.QTabView;
-import q.rorbin.verticaltablayout.widget.TabView;
 
 public class OutfitFragment extends Fragment{
-    VerticalTabLayout tabLayout;
-    ViewPager2 viewPager;
-    List<Occasion> occasions;
+    ViewPager2 viewPager2;
     TextView myOutfit;
     TextView recommendOutfit;
     ConstraintLayout rootLayout;
-    TabAdapter tabAdapter;
-    OutfitFragmentAdapter outfitFragmentAdapter;
-
-
 
     public OutfitFragment(){
         // Required empty public constructor
     }
 
+
     public static OutfitFragment newInstance(){
-        return new OutfitFragment();
+        OutfitFragment fragment=new OutfitFragment();
+        return fragment;
     }
 
     @Override
@@ -58,14 +43,27 @@ public class OutfitFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater,ViewGroup container,
                              Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_outfit,container,false);
-        tabLayout=view.findViewById(R.id.outfit_tab_layout);
-        viewPager=view.findViewById(R.id.outfit_viewpager);
+        viewPager2=view.findViewById(R.id.outfit_viewpager);
         myOutfit=view.findViewById(R.id.my_outfit);
         recommendOutfit=view.findViewById(R.id.recommend_outfit);
         rootLayout=view.findViewById(R.id.outfit_toolbar);
-        occasions=new ArrayList<>();
-        RetrofitUtil.getOccasion("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo",occasions,this);
-        setupWithViewPager(viewPager,tabLayout);
+        FragmentStateAdapter adapter=new FragmentStateAdapter(this){
+            @NonNull
+            @Override
+            public Fragment createFragment(int position){
+                if(position==0){
+                    return MyOutfitFragment.newInstance();
+                }else{
+                    return RecommendOutfitFragment.newInstance("","");
+                }
+            }
+
+            @Override
+            public int getItemCount(){
+                return 2;
+            }
+        };
+
         myOutfit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -76,7 +74,7 @@ public class OutfitFragment extends Fragment{
                 myOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
                 recommendOutfit.setTextSize(16);
                 recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
-
+                viewPager2.setCurrentItem(0,true);
             }
         });
 
@@ -90,79 +88,38 @@ public class OutfitFragment extends Fragment{
                 myOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
                 recommendOutfit.setTextSize(20);
                 recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
+                viewPager2.setCurrentItem(1,true);
             }
         });
+        viewPager2.setAdapter(adapter);
 
-        tabAdapter=new TabAdapter() {
-
-            @Override
-            public int getCount() {
-                return occasions.size();
-            }
-
-            @Override
-            public TabView.TabBadge getBadge(int position) {
-                return null;
-            }
-
-            @Override
-            public TabView.TabIcon getIcon(int position) {
-                return null;
-            }
-
-            @Override
-            public TabView.TabTitle getTitle(int position) {
-                return new QTabView.TabTitle.Builder()
-                        .setTextColor(0xff9b8f92,0xFF87a8be)
-                        .setTextSize(14)
-                        .setContent(occasions.get(position).getOccasionName())
-                        .build();
-            }
-
-            @Override
-            public int getBackground(int position) {
-                return 0;
-            }
-        };
-
-        outfitFragmentAdapter=new OutfitFragmentAdapter(this,occasions);
-
-        return view;
-    }
-
-    public void init(){
-        tabLayout.setTabAdapter(tabAdapter);
-        viewPager.setAdapter(outfitFragmentAdapter);
-        outfitFragmentAdapter.notifyDataSetChanged();
-        viewPager.setUserInputEnabled(false);
-    }
-
-    public void setupWithViewPager(@Nullable ViewPager2 viewPager,@Nullable VerticalTabLayout tabLayout) {
-        tabLayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabView tab, int position) {
-                if (viewPager != null && viewPager.getAdapter().getItemCount() >= position) {
-                    viewPager.setCurrentItem(position);
-                }
-            }
-            @Override
-            public void onTabReselected(TabView tab, int position) {
-            }
-        });
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-            }
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tabLayout.setTabSelected(position,true);
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                super.onPageScrollStateChanged(state);
+                switch (position) {
+                    case 0:
+                        Transition transition = new ChangeBounds();
+                        transition.setDuration(1000);
+                        TransitionManager.beginDelayedTransition(rootLayout,transition);
+                        myOutfit.setTextSize(20);
+                        myOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
+                        recommendOutfit.setTextSize(16);
+                        recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
+                        break;
+                    case 1:
+                        transition = new ChangeBounds();
+                        transition.setDuration(1000);
+                        TransitionManager.beginDelayedTransition(rootLayout,transition);
+                        myOutfit.setTextSize(16);
+                        myOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
+                        recommendOutfit.setTextSize(20);
+                        recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
+                        break;
+                }
             }
         });
+
+        return view;
     }
 }

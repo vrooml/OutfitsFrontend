@@ -1,5 +1,6 @@
 package com.example.outfits.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.outfits.Adapter.OutfitRecyclerAdapter;
 import com.example.outfits.Bean.Occasion;
@@ -28,6 +30,7 @@ public class OutfitTypeFragment extends Fragment{
     public List<Outfit> outfits;
     public LoadingDialog dialog;
     public Occasion occasion;
+    public ImageView addOutfitButton;
 
     public OutfitTypeFragment(){
         // Required empty public constructor
@@ -49,6 +52,15 @@ public class OutfitTypeFragment extends Fragment{
                              Bundle savedInstanceState){
         View view=inflater.inflate(R.layout.fragment_outfit_type,container,false);
         recyclerView=view.findViewById(R.id.outfit_type_recyclerview);
+        addOutfitButton=view.findViewById(R.id.add_outfit);
+        addOutfitButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent=new Intent(getActivity(),AddOutfitActivity.class);
+                intent.putExtra("occasionId",occasion.getOccasionId());
+                startActivity(intent);
+            }
+        });
         outfits=new ArrayList<>();
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);

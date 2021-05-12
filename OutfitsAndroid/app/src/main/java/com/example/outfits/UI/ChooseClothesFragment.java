@@ -45,13 +45,10 @@ import static com.example.outfits.Utils.ConstantUtil.SUCCESS_CODE;
 
 public class ChooseClothesFragment extends Fragment{
     RecyclerView recyclerView;
-    public static ChooseClothesRecyclerAdapter adapter;
+    public ChooseClothesRecyclerAdapter adapter;
     public List<SubTypeClothingBean> subTypeClothingBeans;
     public LoadingDialog dialog;
     public Type type;
-    public int mode=ADD_MODE;
-    public final static int ADD_MODE=1;
-    public final static int CHOOSE_MODE=2;
 
     public ChooseClothesFragment(){
         // Required empty public constructor
@@ -76,8 +73,7 @@ public class ChooseClothesFragment extends Fragment{
         recyclerView=view.findViewById(R.id.clothes_recyclerview);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter=new ChooseClothesRecyclerAdapter(subTypeClothingBeans,this,mode);
-
+        adapter=new ChooseClothesRecyclerAdapter(subTypeClothingBeans,this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -91,31 +87,8 @@ public class ChooseClothesFragment extends Fragment{
                 .setCancelable(false)
                 .create();
         dialog.show();
-        final PostInterfaces request=RetrofitUtil.retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<SubTypeClothingBean[]>> call=request.postGetClothing("",getClothingRequest);
-        call.enqueue(new Callback<ResponseModel<SubTypeClothingBean[]>>(){
-            @Override
-            public void onResponse(Call<ResponseModel<SubTypeClothingBean[]>> call,Response<ResponseModel<SubTypeClothingBean[]>> response){
-                if(response.body()!=null){
-                    if(response.body().getCode()==SUCCESS_CODE){
-                        subTypeClothingBeans.clear();
-                        for(SubTypeClothingBean i : response.body().getData()){
-                            subTypeClothingBeans.add(i);
-                        }
-                        ChooseClothesFragment.adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }else{
-                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<SubTypeClothingBean[]>> call,Throwable t){
-                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
+        RetrofitUtil.postGetClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
+                ,getClothingRequest,subTypeClothingBeans,this,dialog);
 
     }
 
@@ -130,7 +103,7 @@ public class ChooseClothesFragment extends Fragment{
             }
 
 
-            RetrofitUtil.postUploadClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo"
+            RetrofitUtil.postUploadClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
 //                    SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,subtypeIds
                     ,getImgList(pictures));

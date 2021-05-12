@@ -1,36 +1,48 @@
-package com.example.outfits.Closet;
+package com.example.outfits.UI;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
+import android.transition.ChangeBounds;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.outfits.Adapter.OutfitFragmentAdapter;
+import com.example.outfits.Bean.Occasion;
 import com.example.outfits.R;
+import com.example.outfits.Utils.RetrofitUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
-public class ClosetFragment extends Fragment{
+public class MyOutfitFragment extends Fragment{
     VerticalTabLayout tabLayout;
     ViewPager2 viewPager;
+    List<Occasion> occasions;
+
+    TabAdapter tabAdapter;
+    OutfitFragmentAdapter outfitFragmentAdapter;
 
 
-    public ClosetFragment(){
+
+    public MyOutfitFragment(){
         // Required empty public constructor
     }
 
-    public static ClosetFragment newInstance(){
-        return new ClosetFragment();
+    public static MyOutfitFragment newInstance(){
+        return new MyOutfitFragment();
     }
 
     @Override
@@ -41,31 +53,18 @@ public class ClosetFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,
                              Bundle savedInstanceState){
-        View view=inflater.inflate(R.layout.fragment_closet,container,false);
-        tabLayout=view.findViewById(R.id.closet_tab_layout);
-        viewPager=view.findViewById(R.id.closet_viewpager);
-
+        View view=inflater.inflate(R.layout.fragment_my_outfit,container,false);
+        tabLayout=view.findViewById(R.id.outfit_tab_layout);
+        viewPager=view.findViewById(R.id.outfit_viewpager);
+        occasions=new ArrayList<>();
+        RetrofitUtil.getOccasion("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo",occasions,this);
         setupWithViewPager(viewPager,tabLayout);
 
-//        tabLayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabView tab,int position) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabView tab, int position) {
-//
-//            }
-//        });
+        tabAdapter=new TabAdapter() {
 
-        tabLayout.setTabAdapter(new TabAdapter() {
-            String test[]={
-                    "111","222","333"
-            };
             @Override
             public int getCount() {
-                return test.length;
+                return occasions.size();
             }
 
             @Override
@@ -81,9 +80,9 @@ public class ClosetFragment extends Fragment{
             @Override
             public TabView.TabTitle getTitle(int position) {
                 return new QTabView.TabTitle.Builder()
-                        .setTextColor(0xff000000,0xFF87a8be)
-                        .setTextSize(18)
-                        .setContent(test[position])
+                        .setTextColor(0xff9b8f92,0xFF87a8be)
+                        .setTextSize(14)
+                        .setContent(occasions.get(position).getOccasionName())
                         .build();
             }
 
@@ -91,13 +90,18 @@ public class ClosetFragment extends Fragment{
             public int getBackground(int position) {
                 return 0;
             }
-        });
+        };
 
-//        ClothesAdapter clothesAdapter=new ClothesAdapter(this,subTypes,clothes);
-//        viewPager.setAdapter(clothesAdapter);
-
+        outfitFragmentAdapter=new OutfitFragmentAdapter(this,occasions);
 
         return view;
+    }
+
+    public void init(){
+        tabLayout.setTabAdapter(tabAdapter);
+        viewPager.setAdapter(outfitFragmentAdapter);
+        outfitFragmentAdapter.notifyDataSetChanged();
+        viewPager.setUserInputEnabled(false);
     }
 
     public void setupWithViewPager(@Nullable ViewPager2 viewPager,@Nullable VerticalTabLayout tabLayout) {
@@ -127,13 +131,5 @@ public class ClosetFragment extends Fragment{
                 super.onPageScrollStateChanged(state);
             }
         });
-    }
-
-    class ViewPagerViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
-        public ViewPagerViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView=itemView.findViewById(R.id.textView);
-        }
     }
 }

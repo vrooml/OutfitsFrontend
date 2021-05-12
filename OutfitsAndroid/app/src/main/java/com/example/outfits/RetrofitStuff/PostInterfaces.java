@@ -67,6 +67,11 @@ public interface PostInterfaces{
     Call<ResponseModel<Outfit[]>> postGetOutfit(@Header("token") String token,
                                                 @Body GetOutfitRequest getOutfitRequest);
 
+    //请求添加搭配
+    @POST("/match/addMatch")
+    Call<ResponseModel> postAddOutfit(@Header("token") String token,
+                                                @Body AddOutfitRequest addOutfitRequest);
+
 
     //获取个人资料
     @FormUrlEncoded

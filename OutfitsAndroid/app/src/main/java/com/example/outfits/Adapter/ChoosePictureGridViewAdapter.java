@@ -6,40 +6,49 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.outfits.Bean.Clothes;
 import com.example.outfits.R;
 import com.example.outfits.UI.AddOutfitActivity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChoosePictureGridViewAdapter extends BaseAdapter{
 
     private List<Uri> images;
+    private List<Clothes> clothes;
+    private List<Integer> gridChosenImageIds;
 
     private Context context;
 
     private LayoutInflater inflater;
 
-
     private int maxImages=9;
 
-    public ChoosePictureGridViewAdapter(List<Uri> datas,Context context) {
+    public ChoosePictureGridViewAdapter(List<Uri> datas,List<Clothes> clothes,Context context) {
         this.images = datas;
+        this.clothes=clothes;
         this.context = context;
         inflater = LayoutInflater.from(context);
+        gridChosenImageIds=new ArrayList<>();
+        for(int i:AddOutfitActivity.chosenImageIds){
+            if(images.contains(i)){
+                gridChosenImageIds.add(i);
+            }
+        }
     }
 
 
     //得到数量
     @Override
     public int getCount(){
-        int count=1;
+        int count=0;
         if(images!=null){
-            count=images.size()+1;
+            count=images.size();
         }
         if (count>maxImages) {
             return images.size();
@@ -85,21 +94,20 @@ public class ChoosePictureGridViewAdapter extends BaseAdapter{
                     .load(images.get(i))
                     .into(viewHolder.ivimage);
             viewHolder.btcheck.setVisibility(View.VISIBLE);
-//            设置删除按钮监听
-            ViewHolder finalViewHolder=viewHolder;
-            viewHolder.btcheck.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    if(!finalViewHolder.isChecked){
-                        AddOutfitActivity.chosenImages.add(images.get(i));
-                        finalViewHolder.btcheck.setBackgroundResource(R.drawable.checked);
-                    }else{
-                        AddOutfitActivity.chosenImages.remove(images.get(i));
-                        finalViewHolder.btcheck.setBackgroundResource(R.drawable.unchecked);
-                    }
-                }
-            });
         }
+        for(int j=0;j<images.size();j++){
+            if(AddOutfitActivity.chosenImageIds.contains(clothes.get(i).getClothingId())){
+                viewHolder.btcheck.setBackgroundResource(R.drawable.checked);
+            }else{
+                viewHolder.btcheck.setBackgroundResource(R.drawable.unchecked);
+            }
+        }
+        viewHolder.btcheck.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                choiceState(i);
+            }
+        });
         return convertView;
     }
 
@@ -107,13 +115,13 @@ public class ChoosePictureGridViewAdapter extends BaseAdapter{
 
     public class ViewHolder{
         public final ImageView ivimage;
-        public final Button btcheck;
+        public final ImageView btcheck;
+        public boolean isChecked=false;
         public final View root;
-        public final boolean isChecked=false;
 
         public ViewHolder(View root){
             ivimage=(ImageView)root.findViewById(R.id.iv_image);
-            btcheck=(Button)root.findViewById(R.id.btn_check);
+            btcheck=(ImageView)root.findViewById(R.id.btn_check);
             this.root=root;
         }
     }
@@ -121,6 +129,17 @@ public class ChoosePictureGridViewAdapter extends BaseAdapter{
 
     public void notifyDataSetChanged(List<Uri> images){
         this.images=images;
+        this.notifyDataSetChanged();
+    }
+
+    public void choiceState(int position) {
+        if (gridChosenImageIds.contains(clothes.get(position).getClothingId())){
+            gridChosenImageIds.remove((Integer)clothes.get(position).getClothingId());
+            AddOutfitActivity.chosenImageIds.remove((Integer)clothes.get(position).getClothingId());
+        } else {
+            gridChosenImageIds.add(clothes.get(position).getClothingId());
+            AddOutfitActivity.chosenImageIds.add(clothes.get(position).getClothingId());
+        }
         this.notifyDataSetChanged();
     }
 }

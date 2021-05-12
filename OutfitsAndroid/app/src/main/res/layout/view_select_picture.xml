@@ -12,12 +12,11 @@
                 android:scaleType="centerCrop"
                 android:clickable="false"/>
 
-        <Button
+        <ImageView
                 android:id="@+id/btn_check"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
-                android:clickable="false"
                 android:background="@drawable/unchecked" />
 
 </RelativeLayout>

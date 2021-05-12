@@ -6,14 +6,19 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.outfits.Adapter.ClothesFragmentAdapter;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.MyApplication;
 import com.example.outfits.R;
+import com.example.outfits.RetrofitStuff.AddOutfitRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
+import com.example.outfits.Utils.LoadingDialog;
 import com.example.outfits.Utils.RetrofitUtil;
 
 import java.util.ArrayList;
@@ -27,15 +32,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.outfits.MyApplication.getContext;
 import static com.example.outfits.Utils.ConstantUtil.FAILED;
 import static com.example.outfits.Utils.ConstantUtil.SUCCESS_CODE;
 import static com.example.outfits.Utils.RetrofitUtil.retrofit;
 
 public class AddOutfitActivity extends AppCompatActivity{
-    public static List<Uri> chosenImages=new ArrayList<>();
+    public static List<Integer> chosenImageIds=new ArrayList<>();
     public VerticalTabLayout tabLayout;
     ViewPager2 viewPager;
+    EditText editIntroduceText;
     List<Type> types;
+    int occasionId;
     public TabAdapter tabAdapter;
     ClothesFragmentAdapter clothesFragmentAdapter;
 
@@ -43,9 +51,10 @@ public class AddOutfitActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_outfit);
-
+        occasionId=getIntent().getIntExtra("occasionId",0);
         tabLayout=findViewById(R.id.closet_tab_layout);
         viewPager=findViewById(R.id.closet_viewpager);
+        editIntroduceText=findViewById(R.id.edit_introduce);
         types=new ArrayList<>();
         setupWithViewPager(viewPager,tabLayout);
         tabAdapter=new TabAdapter() {
@@ -91,21 +100,34 @@ public class AddOutfitActivity extends AppCompatActivity{
                         for(Type i:response.body().getData()){
                             types.add(i);
                         }
-                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                         init();
 
                     }else{
-                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel<Type[]>> call,Throwable t){
-                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
         clothesFragmentAdapter=new ClothesFragmentAdapter(getSupportFragmentManager(),getLifecycle(),types);
+        TextView commitAdd=findViewById(R.id.add_button);
+        commitAdd.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                LoadingDialog dialog=new LoadingDialog.Builder(getContext())
+                        .setMessage("上传搭配中...")
+                        .setCancelable(false)
+                        .create();
+                dialog.show();
+                AddOutfitRequest addOutfitRequest=new AddOutfitRequest(occasionId,editIntroduceText.getText().toString(),chosenImageIds);
+//                RetrofitUtil.postAddOutfit("",addOutfitRequest,dialog);
+            }
+        });
 
     }
 
@@ -143,5 +165,11 @@ public class AddOutfitActivity extends AppCompatActivity{
                 super.onPageScrollStateChanged(state);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        chosenImageIds.clear();
     }
 }

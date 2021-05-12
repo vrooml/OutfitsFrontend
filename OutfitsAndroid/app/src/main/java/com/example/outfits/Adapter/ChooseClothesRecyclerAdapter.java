@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
+import com.example.outfits.MyApplication;
 import com.example.outfits.R;
+import com.example.outfits.UI.AddOutfitActivity;
 import com.example.outfits.UI.ClothesDetailActivity;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -27,13 +31,11 @@ import java.util.List;
 public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClothesRecyclerAdapter.ViewHolder>{
     List<SubTypeClothingBean> subTypeClothingBeans;
     Fragment fragment;
-    int mode;
 
 
-    public ChooseClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Fragment fragment,int mode){
+    public ChooseClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Fragment fragment){
         this.subTypeClothingBeans=subTypeClothingBeans;
         this.fragment=fragment;
-        this.mode=mode;
     }
 
 
@@ -53,6 +55,7 @@ public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClo
             if(clothing!=null){
                 for(int i=0;i<clothing.length;i++){
                     holder.pictures.add(Uri.parse(clothing[i].getClothingPic()));
+                    holder.clothes.add(clothing[i]);
                 }
             }
         }
@@ -64,19 +67,11 @@ public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClo
                     Intent intent=new Intent(fragment.getActivity(),ClothesDetailActivity.class);
                     intent.putExtra("clothes",subTypeClothingBeans.get(position).getClothing()[position2]);
                     fragment.startActivity(intent);
-                }else{
-                    Matisse.from(fragment)
-                            .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
-                            .countable(true)//true:选中后显示数字;false:选中后显示对号
-                            .maxSelectable(10)//可选的最大数
-                            .capture(false)//选择照片时，是否显示拍照
-                            .imageEngine(new GlideEngine())//图片加载引擎
-                            .forResult(subTypeClothingBeans.get(position).getSubtypeId());
                 }
             }
         });
 
-        choosePictureGridViewAdapter=new ChoosePictureGridViewAdapter(holder.pictures,fragment.getContext());
+        choosePictureGridViewAdapter=new ChoosePictureGridViewAdapter(holder.pictures,holder.clothes,fragment.getContext());
         holder.addPictureGrid.setAdapter(choosePictureGridViewAdapter);
 
 
@@ -94,7 +89,7 @@ public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClo
         TextView subTypeName;
         GridView addPictureGrid;
         List<Uri> pictures=new ArrayList<>();//图片路径列表
-
+        List<Clothes> clothes=new ArrayList<>();
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             subTypeName=itemView.findViewById(R.id.subtype_name);
