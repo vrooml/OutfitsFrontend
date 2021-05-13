@@ -16,10 +16,10 @@ import { VueMasonryPlugin } from 'vue-masonry'
 
 Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'http://121.5.100.116:8080'
-// axios.interceptors.request.use(config => {
-//   config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzIiwiaWF0IjoxNjIwNTUwNzQ1LCJzdWIiOiIxODk2MDE0NzI3MiIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDgwOTk0NX0.HjCnvUYa6m7MjRUMpMd_hfiTNwE71oMdAaNnzcr_-Wo'
-//   return config
-// })
+axios.interceptors.request.use(config => {
+  config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
+  return config
+})
 Vue.use(VueMasonryPlugin)
 Vue.use(Mint)
 Vue.config.productionTip = false
