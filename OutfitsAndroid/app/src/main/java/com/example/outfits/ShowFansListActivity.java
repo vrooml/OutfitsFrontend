@@ -79,8 +79,7 @@ public class ShowFansListActivity extends BaseActivity{
         goback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1=new Intent(ShowFansListActivity.this, UserFragment.class);
-                startActivityForResult(intent1,1);
+                finish();
             }
         });
     }

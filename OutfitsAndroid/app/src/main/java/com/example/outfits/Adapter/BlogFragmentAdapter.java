@@ -2,6 +2,8 @@ package com.example.outfits.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.outfits.Bean.Blog;
@@ -20,11 +22,19 @@ import java.util.List;
 public class BlogFragmentAdapter extends FragmentStateAdapter {
     List<Blog> blogs;
     Fragment fragment;
+    int userId;
 
-    public BlogFragmentAdapter(@NonNull Fragment fragment, List<Blog> blogs) {
+    public BlogFragmentAdapter(@NonNull Fragment fragment, List<Blog> blogs, int userId) {
         super(fragment);
         this.blogs = blogs;
         this.fragment = fragment;
+        this.userId = userId;
+    }
+
+    public BlogFragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<Blog> blogs, int userId) {
+        super(fragmentManager, lifecycle);
+        this.blogs = blogs;
+        this.userId = userId;
     }
 
     @NonNull
@@ -32,30 +42,32 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         if(position == 0){
             List<Blog> blogList = new ArrayList<>();
-            LoadingDialog dialog = new LoadingDialog.Builder(fragment.getContext())
+            LoadingDialog dialog = new LoadingDialog.Builder(MyApplication.getContext())
                     .setMessage("加载中...")
                     .setCancelable(false)
                     .create();
-            //               dialog.show();
-            GetBlogRequest getBlogRequest = new GetBlogRequest(2);
-
+            //dialog.show();
+            GetBlogRequest getBlogRequest = new GetBlogRequest(userId);
             RetrofitUtil.getBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
-                    ,getBlogRequest, blogList, dialog);
+                    ,getBlogRequest, blogList, null);
             return MyBlogFragment.newInstance(blogList);
         }
         else {
             List<Collection> collectionList = new ArrayList<>();
-            LoadingDialog dialog = new LoadingDialog.Builder(fragment.getContext())
+            LoadingDialog dialog = new LoadingDialog.Builder(MyApplication.getContext())
                     .setMessage("加载中...")
                     .setCancelable(false)
                     .create();
-            //             dialog.show();
-            GetBlogRequest getBlogRequest = new GetBlogRequest(2);
+
+            //dialog.show();
+            GetBlogRequest getBlogRequest = new GetBlogRequest(userId);
             RetrofitUtil.getCollection(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
-                    ,getBlogRequest, collectionList, dialog);
+                    ,getBlogRequest, collectionList, null);
             return MyCollectionFragment.newInstance(collectionList);
         }
     }
+
+
 
     @Override
     public int getItemCount() {

@@ -132,7 +132,7 @@ public class UserFragment extends Fragment{
         icon = view.findViewById(R.id.user_image);
         mFragmentArray.add(MyBlogFragment.newInstance(null));
         mFragmentArray.add(MyCollectionFragment.newInstance(null));
-        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null);
+        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null, 2);
         viewPager2 = view.findViewById(R.id.vp_blog);
         viewPager2.setAdapter(blogFragmentAdapter);
 
@@ -230,16 +230,13 @@ public class UserFragment extends Fragment{
 
         btn_modify.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
                 startActivity(intent);
             }
         });
 
         btn_createBlog.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //和Web嵌入交互
-                Intent intent = new Intent(getActivity(), OtherUserActivity.class);
-                startActivity(intent);
             }
         });
 

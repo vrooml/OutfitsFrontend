@@ -52,7 +52,7 @@ public class UserInfoAdapter extends RecyclerView.Adapter<UserInfoAdapter.InnerH
                 Intent intent = new Intent(v.getContext(), OtherUserActivity.class);
                 //传递参数
                 Bundle bundle = new Bundle();
-                bundle.putInt("userId", 2);
+                bundle.putInt("userId", datas.get(position).getUserId());
                 intent.putExtras(bundle);
                 v.getContext().startActivity(intent);
             }
