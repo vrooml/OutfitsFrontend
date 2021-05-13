@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.example.outfits.Adapter.BlogFragmentAdapter;
+import com.example.outfits.Adapter.BlogViewPagerAdapter;
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
@@ -38,8 +41,6 @@ import static com.example.outfits.Utils.ConstantUtil.FAILED;
 import static com.example.outfits.Utils.ConstantUtil.SUCCESS_CODE;
 
 public class OtherUserActivity extends AppCompatActivity {
-    private RecyclerView list;
-    private List<Blog> datas;
     private TextView fllowCount;
     private TextView fansCount;
     private Button btn_modify;
@@ -47,9 +48,11 @@ public class OtherUserActivity extends AppCompatActivity {
     private TextView blocUser;
     private TextView blocFollow;
     private ViewPager2 viewPager2;
-    private List<Fragment> mFragmentArray=new ArrayList<>();
     private TextView name;
     private ImageView icon;
+    private ImageView goBack;
+    private List<Fragment> fragmentList = new ArrayList<>();
+    public static BlogViewPagerAdapter blogViewPagerAdapter;
 
 
     @Override
@@ -67,12 +70,8 @@ public class OtherUserActivity extends AppCompatActivity {
         blocFollow = findViewById(R.id.blog_follow);
         name = findViewById(R.id.user_name);
         icon = findViewById(R.id.user_image);
-        mFragmentArray.add(MyBlogFragment.newInstance(null));
-        mFragmentArray.add(MyCollectionFragment.newInstance(null));
-//        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null);
         viewPager2 = findViewById(R.id.vp_blog);
-        //      viewPager2.setAdapter(blogFragmentAdapter);
-
+        goBack = findViewById(R.id.goback);
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
 
         //获取用户头像和昵称
@@ -146,6 +145,26 @@ public class OtherUserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseModel<UserInfo[]>> call, Throwable t) {
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(getSupportFragmentManager(), getLifecycle(), null, 2);
+        viewPager2.setAdapter(blogFragmentAdapter);
+        blocUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager2.setCurrentItem(0);
+            }
+        });
+        blocFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager2.setCurrentItem(1);
+            }
+        });
+        goBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
