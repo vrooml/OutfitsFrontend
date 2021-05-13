@@ -6,8 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.UI.ChooseClothesFragment;
+import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.ClothesFragment;
 
 import java.util.List;
@@ -41,7 +43,7 @@ public class ClothesFragmentAdapter extends FragmentStateAdapter{
 //        ClothesFragment clothesFragment=new ClothesFragment();
 //        clothesFragment.type=types.get(position);
 //        return clothesFragment;
-        return ClothesFragment.newInstance(types.get(position));
+        return ClothesFragment.newInstance(types.get(position),(ClosetFragment)fragment);
     }
 
 
@@ -54,5 +56,9 @@ public class ClothesFragmentAdapter extends FragmentStateAdapter{
         return 0;
     }
 
+    public void RefreshFragments(List<Type> types){
+        this.types=types;
+        notifyDataSetChanged();
+    }
 
 }

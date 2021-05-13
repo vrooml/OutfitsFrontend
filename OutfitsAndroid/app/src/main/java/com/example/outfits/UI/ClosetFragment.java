@@ -100,6 +100,7 @@ public class ClosetFragment extends Fragment{
         viewPager.setAdapter(clothesFragmentAdapter);
         clothesFragmentAdapter.notifyDataSetChanged();
         viewPager.setUserInputEnabled(false);
+        clothesFragmentAdapter.RefreshFragments(types);
     }
 
     public void setupWithViewPager(@Nullable ViewPager2 viewPager,@Nullable VerticalTabLayout tabLayout) {

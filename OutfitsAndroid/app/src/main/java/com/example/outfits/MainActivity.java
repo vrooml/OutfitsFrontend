@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity{
         MainActivityPagerAdapter adapter=new MainActivityPagerAdapter(getSupportFragmentManager());
         mFragmentArray.add(ClosetFragment.newInstance());
         mFragmentArray.add(OutfitFragment.newInstance());
-        mFragmentArray.add(ChatFragment.newInstance("",""));
+        mFragmentArray.add(ChatFragment.newInstance());
         mFragmentArray.add(UserFragment.newInstance("",""));
         adapter.setList(mFragmentArray);
 

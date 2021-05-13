@@ -1,8 +1,6 @@
 package com.example.outfits;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,49 +11,38 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.outfits.RetrofitStuff.AuthCodeRequest;
+import com.example.outfits.RetrofitStuff.ForgetpasswordRequest;
 import com.example.outfits.RetrofitStuff.RegisterRequest;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.example.outfits.Utils.SharedPreferencesUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-public class RegisterActivity extends BaseActivity{
-    private ImageView boy;
-    private ImageView girl;
+public class ForgetPasswordActivity extends BaseActivity{
     private EditText registerPhonenumEdit;
-    private EditText registerNicknameEdit;
     private EditText registerCodeEdit;
     private Button getCodeButton;
     private EditText registerPasswordEdit;
     private EditText registerConfirmPasswordEdit;
-    private Button registerButton;
+    private Button modifyPasswordButton;
     private int i=60;
-    public static final String regularStr=
-            "^(?=.*[a-zA-Z0-9].*)(?=.*[a-zA-Z\\W].*)(?=.*[0-9\\W].*).{6,20}$";
+    public static final String regularStr="^(?=.*[a-zA-Z0-9].*)(?=.*[a-zA-Z\\W].*)(?=.*[0-9\\W].*).{6,20}$";
 
     String sex=null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_forget_password);
         registerPhonenumEdit=findViewById(R.id.editTextPersonName);
-        registerNicknameEdit=findViewById(R.id.editTextNickName);
         registerCodeEdit=findViewById(R.id.register_inputcode);
         getCodeButton=findViewById(R.id.register_getcode);
         registerPasswordEdit=findViewById(R.id.register_inputpassword);
         registerConfirmPasswordEdit=findViewById(R.id.register_inputpassword_verify);
-        registerButton=findViewById(R.id.register_button);
-        boy=findViewById(R.id.register_boy);
-        girl=findViewById(R.id.register_girl);
+        modifyPasswordButton=findViewById(R.id.register_button);
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        modifyPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                register();
+                modifyPassword();
             }
         });
         getCodeButton.setOnClickListener(new View.OnClickListener() {
@@ -64,25 +51,9 @@ public class RegisterActivity extends BaseActivity{
                 sendMsgCode(registerPhonenumEdit.getText().toString());
             }
         });
-        boy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boy.setImageResource(R.drawable.boy);
-                girl.setImageResource(R.drawable.girl_unselected);
-                sex="男";
-            }
-        });
-        girl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boy.setImageResource(R.drawable.boy_unselected);
-                girl.setImageResource(R.drawable.girl);
-                sex="女";
-            }
-        });
     }
 
-    private void register(){
+    private void modifyPassword(){
         String password = registerPasswordEdit.getText().toString();
         String passwordVerify = registerConfirmPasswordEdit.getText().toString();
         String smsCode=registerCodeEdit.getText().toString();
@@ -106,18 +77,16 @@ public class RegisterActivity extends BaseActivity{
             registerConfirmPasswordEdit.setText("");
             registerPasswordEdit.setText("");
         }else {
-            RegisterRequest registerRequest=new RegisterRequest(registerPhonenumEdit.getText().toString()
+            ForgetpasswordRequest forgetpasswordRequest=new ForgetpasswordRequest(
+                    registerPhonenumEdit.getText().toString()
                     ,registerCodeEdit.getText().toString()
-                    , SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
-                    ,registerPasswordEdit.getText().toString()
-                    ,registerNicknameEdit.getText().toString()
-                    ,sex);
-            RetrofitUtil.postRegister(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"smsCodeToken"),registerRequest,this);
+                    ,registerPasswordEdit.getText().toString());
+            RetrofitUtil.postForgetPassword(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"smsCodeToken"),forgetpasswordRequest,this);
         }
     }
 
     private void sendMsgCode(String phone){
-        String codeMsg="注册";
+        String codeMsg="修改密码";
         AuthCodeRequest authCodeRequest=new AuthCodeRequest(phone,codeMsg);
         RetrofitUtil.postAuthCode(authCodeRequest);
         getCodeButton.setClickable(false);
@@ -161,4 +130,3 @@ public class RegisterActivity extends BaseActivity{
         }
     };
 }
-

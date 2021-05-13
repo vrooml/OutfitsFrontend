@@ -20,6 +20,7 @@ import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
 import com.example.outfits.Utils.LoadingDialog;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,13 +120,9 @@ public class AddOutfitActivity extends AppCompatActivity{
         commitAdd.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                LoadingDialog dialog=new LoadingDialog.Builder(getContext())
-                        .setMessage("上传搭配中...")
-                        .setCancelable(false)
-                        .create();
-                dialog.show();
                 AddOutfitRequest addOutfitRequest=new AddOutfitRequest(occasionId,editIntroduceText.getText().toString(),chosenImageIds);
-//                RetrofitUtil.postAddOutfit("",addOutfitRequest,dialog);
+                RetrofitUtil.postAddOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),addOutfitRequest);
+                finish();
             }
         });
 

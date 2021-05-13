@@ -19,13 +19,13 @@ public class SharedPreferencesUtil{
 
     //获取SharedPreferences存储内容
     public static String getStoredMessage(Context context,String key){
-        sp=context.getSharedPreferences("FzuGang",Context.MODE_PRIVATE);
+        sp=context.getSharedPreferences("Outfits",Context.MODE_PRIVATE);
         return sp.getString(key,null);
     }
 
     //存储信息
     public static void setStoredMessage(Context context,String key,String value){
-        sp=context.getSharedPreferences("FzuGang",Context.MODE_PRIVATE);
+        sp=context.getSharedPreferences("Outfits",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sp.edit();
         editor.putString(key,value);
         editor.commit();

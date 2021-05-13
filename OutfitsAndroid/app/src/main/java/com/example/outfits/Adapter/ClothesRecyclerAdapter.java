@@ -1,5 +1,6 @@
 package com.example.outfits.Adapter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -11,14 +12,23 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
+import com.example.outfits.Bean.Type;
+import com.example.outfits.MyApplication;
 import com.example.outfits.R;
+import com.example.outfits.RetrofitStuff.DeleteOccasionRequest;
+import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.ClothesDetailActivity;
+import com.example.outfits.UI.MyOutfitFragment;
 import com.example.outfits.Utils.LoadingDialog;
+import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
+import com.kongzue.dialog.v2.SelectDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -31,10 +41,12 @@ import static com.example.outfits.Adapter.AddPictureGridViewAdapter.ADD_MODE;
 public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecyclerAdapter.ViewHolder>{
     List<SubTypeClothingBean> subTypeClothingBeans;
     Fragment fragment;
+    Type type;
 
 
-    public ClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Fragment fragment){
+    public ClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Type type,Fragment fragment){
         this.subTypeClothingBeans=subTypeClothingBeans;
+        this.type=type;
         this.fragment=fragment;
     }
 
@@ -59,7 +71,7 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
             }
         }
         //设置图片添加adapter
-        addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,fragment.getContext(),ADD_MODE);
+        addPictureAdapter=new AddPictureGridViewAdapter(holder.pictures,subTypeClothingBeans.get(position),fragment.getContext(),ADD_MODE,(ClosetFragment)fragment.getParentFragment());
         //设置Gridview点击事件
         holder.addPictureGrid.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -68,6 +80,7 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
                     Intent intent=new Intent(fragment.getActivity(),ClothesDetailActivity.class);
                     SubTypeClothingBean subTypeClothingBean=subTypeClothingBeans.get(position);
                     intent.putExtra("clothes",subTypeClothingBean.getClothing()[position2]);
+                    intent.putExtra("type",type);
                     fragment.startActivity(intent);
                 }else{
                     Matisse.from(fragment)
@@ -95,12 +108,14 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView subTypeName;
         GridView addPictureGrid;
+        ConstraintLayout rootLayout;
         List<Uri> pictures=new ArrayList<>();//图片路径列表
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             subTypeName=itemView.findViewById(R.id.subtype_name);
             addPictureGrid=itemView.findViewById(R.id.subtype_gridview);
+            rootLayout=itemView.findViewById(R.id.root_layout);
         }
 
 

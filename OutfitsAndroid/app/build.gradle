@@ -63,6 +63,8 @@ dependencies {
     //下拉刷新框架
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'
     implementation  'com.scwang.smart:refresh-header-material:2.0.3'
+
+    implementation 'com.kongzue.dialog:dialog:2.4.8'
 }
 repositories {
     mavenCentral()

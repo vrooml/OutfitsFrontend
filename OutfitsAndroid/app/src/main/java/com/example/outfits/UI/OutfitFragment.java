@@ -54,7 +54,7 @@ public class OutfitFragment extends Fragment{
                 if(position==0){
                     return MyOutfitFragment.newInstance();
                 }else{
-                    return RecommendOutfitFragment.newInstance("","");
+                    return RecommendOutfitFragment.newInstance();
                 }
             }
 

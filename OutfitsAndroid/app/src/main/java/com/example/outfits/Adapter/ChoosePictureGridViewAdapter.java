@@ -89,9 +89,8 @@ public class ChoosePictureGridViewAdapter extends BaseAdapter{
             viewHolder=(ViewHolder)convertView.getTag();
         }
         if(images!=null&&i<images.size()){
-            final File file=new File(images.get(i).toString());
             Glide.with(context)
-                    .load(images.get(i))
+                    .load(images.get(i).toString())
                     .into(viewHolder.ivimage);
             viewHolder.btcheck.setVisibility(View.VISIBLE);
         }

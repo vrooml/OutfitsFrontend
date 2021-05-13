@@ -9,8 +9,10 @@ import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -20,8 +22,12 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 public interface PostInterfaces{
+
+//TODO 登录注册等
+
     //获取验证码
     @POST("/user/sendSmsCode")
     Call<ResponseModel<String>> postAuthCode(@Body AuthCodeRequest authCodeRequest);
@@ -42,6 +48,8 @@ public interface PostInterfaces{
     @POST("/user/modifyInfo")
     Call<ResponseModel> postModifyUserInfo(@Header("token") String token,@Body ModifyUserInfoRequest modifyUserInfoRequest);
 
+//TODO 衣柜
+
     //请求子类别的衣物
     @POST("/wardrobe/getClothing")
     Call<ResponseModel<SubTypeClothingBean[]>> postGetClothing(@Header("token") String token,
@@ -58,9 +66,25 @@ public interface PostInterfaces{
                                            @Part("subtypeId") List<Integer> subtypeIds,
                                            @Part List<MultipartBody.Part> uploadPic);
 
+    //删除衣物
+    @POST("/wardrobe/deleteClothing")
+    Call<ResponseModel> postDeleteClothing(@Body DeleteClothingRequest deleteClothingRequest);
+
+//TODO 搭配
+
     //请求场合
     @POST("/match/listOccasion")
     Call<ResponseModel<Occasion[]>> getOccasion(@Header("token") String token);
+
+    //新建场合
+    @POST("/match/addOccasion")
+    Call<ResponseModel> addOccasion(@Header("token") String token,
+                                    @Body AddOccasionRequest addOccasionRequest);
+
+    //删除场合
+    @POST("/match/deleteOccasion")
+    Call<ResponseModel> deleteOccasion(@Header("token") String token,
+                                    @Body DeleteOccasionRequest deleteOccasionRequest);
 
     //请求子类别的搭配
     @POST("/match/listMatch")
@@ -72,9 +96,14 @@ public interface PostInterfaces{
     Call<ResponseModel> postAddOutfit(@Header("token") String token,
                                                 @Body AddOutfitRequest addOutfitRequest);
 
+    //请求添加搭配
+    @POST("/match/deleteMatch")
+    Call<ResponseModel> postDeleteOutfit(@Header("token") String token,
+                                      @Body DeleteOutfitRequest deleteOutfitRequest);
+
+//TODO 我的
 
     //获取个人资料
-    @FormUrlEncoded
     @POST("/user/getDetail")
     Call<ResponseModel<UserInfo>> getUserInfo(@Header("token") String token);
 
@@ -84,7 +113,7 @@ public interface PostInterfaces{
 
     //修改个人资料
     @POST("/user/modifyInfo")
-    Call<ResponseModel> modifyUserInfo(@Header("token") String token,@Body UserInfo userInfoNew);
+    Call<ResponseModel> modifyUserInfo(@Header("token") String token,@Body ModifyUserInfoRequest modifyUserInfoRequest);
 
     //获取我的收藏
     @POST("/blog/getCollection")

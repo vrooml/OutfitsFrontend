@@ -1,5 +1,6 @@
 package com.example.outfits.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +29,9 @@ import com.zhihu.matisse.Matisse;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -40,14 +45,17 @@ public class ClothesFragment extends Fragment{
     public List<SubTypeClothingBean> subTypeClothingBeans;
     public LoadingDialog dialog;
     public Type type;
+    public ClosetFragment closetFragment;
+
 
     public ClothesFragment(){
         // Required empty public constructor
     }
 
-    public static ClothesFragment newInstance(Type type){
+    public static ClothesFragment newInstance(Type type,ClosetFragment closetFragment){
         ClothesFragment fragment=new ClothesFragment();
         fragment.type=type;
+        fragment.closetFragment=closetFragment;
         return fragment;
     }
 
@@ -64,7 +72,7 @@ public class ClothesFragment extends Fragment{
         recyclerView=view.findViewById(R.id.clothes_recyclerview);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter=new ClothesRecyclerAdapter(subTypeClothingBeans,this);
+        adapter=new ClothesRecyclerAdapter(subTypeClothingBeans,type,this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -73,14 +81,8 @@ public class ClothesFragment extends Fragment{
     public void onResume(){
         super.onResume();
         GetClothingRequest getClothingRequest=new GetClothingRequest(type.getTypeId());
-        dialog=new LoadingDialog.Builder(getContext())
-                .setMessage("加载中...")
-                .setCancelable(false)
-                .create();
-        dialog.show();
-        RetrofitUtil.postGetClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
-                ,getClothingRequest,subTypeClothingBeans,this,dialog);
-
+        RetrofitUtil.postGetClothing(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
+                ,getClothingRequest,subTypeClothingBeans,this,null);
     }
 
     @Override
@@ -92,12 +94,11 @@ public class ClothesFragment extends Fragment{
             for(int i=0;i<pictures.size();i++){
                 subtypeIds.add(subtypeId);
             }
-
-
-            RetrofitUtil.postUploadClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
-//                    SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
+//            String s=String.valueOf(subtypeIds);
+//            RequestBody subtypeIdRequest=RequestBody.create(MediaType.parse("multipart/form-data"),String.valueOf(subtypeIds));
+            RetrofitUtil.postUploadClothing(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,subtypeIds
-                    ,getImgList(pictures));
+                    ,getImgList(pictures),closetFragment);
         }
     }
 
@@ -118,7 +119,7 @@ public class ClothesFragment extends Fragment{
             //将路径file转化为RequestBody
             RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
             //将RequestBody转化为MultipartBody.Part
-            MultipartBody.Part finalRequest=MultipartBody.Part.createFormData("pictures[]",file.getName(),requestBody);//pics[]为后端的key
+            MultipartBody.Part finalRequest=MultipartBody.Part.createFormData("clothingPic",file.getName(),requestBody);
             result.add(finalRequest);
         }
         return result;

@@ -20,8 +20,10 @@ import android.widget.RadioGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Bean.UserInfo;
+import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.Utils.MyGlideEngine;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
@@ -75,9 +77,8 @@ public class UserInfoActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserInfo userInfoNew=new UserInfo(nickname.getText().toString(),
-                        sex1, profile.getText().toString(), userId);
-                RetrofitUtil.modifyUserInfo("token", userInfoNew);
+                ModifyUserInfoRequest modifyUserInfoRequest=new ModifyUserInfoRequest(nickname.getText().toString(),sex1,profile.getText().toString());
+                RetrofitUtil.modifyUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"), modifyUserInfoRequest);
             }
         });
         sex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

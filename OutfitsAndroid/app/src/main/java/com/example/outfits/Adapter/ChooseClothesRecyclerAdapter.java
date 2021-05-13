@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.outfits.Bean.Clothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
+import com.example.outfits.Bean.Type;
 import com.example.outfits.MyApplication;
 import com.example.outfits.R;
 import com.example.outfits.UI.AddOutfitActivity;
@@ -29,12 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClothesRecyclerAdapter.ViewHolder>{
+    private Type type;
     List<SubTypeClothingBean> subTypeClothingBeans;
     Fragment fragment;
 
 
-    public ChooseClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Fragment fragment){
+    public ChooseClothesRecyclerAdapter(List<SubTypeClothingBean> subTypeClothingBeans,Type type,Fragment fragment){
         this.subTypeClothingBeans=subTypeClothingBeans;
+        this.type=type;
         this.fragment=fragment;
     }
 
@@ -66,6 +69,7 @@ public class ChooseClothesRecyclerAdapter extends RecyclerView.Adapter<ChooseClo
                 if(position2!=holder.pictures.size()){
                     Intent intent=new Intent(fragment.getActivity(),ClothesDetailActivity.class);
                     intent.putExtra("clothes",subTypeClothingBeans.get(position).getClothing()[position2]);
+                    intent.putExtra("type",type);
                     fragment.startActivity(intent);
                 }
             }

@@ -26,6 +26,7 @@ import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
 import com.example.outfits.Utils.LoadingDialog;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 import com.zhihu.matisse.Matisse;
 
 import java.io.File;
@@ -73,7 +74,7 @@ public class ChooseClothesFragment extends Fragment{
         recyclerView=view.findViewById(R.id.clothes_recyclerview);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter=new ChooseClothesRecyclerAdapter(subTypeClothingBeans,this);
+        adapter=new ChooseClothesRecyclerAdapter(subTypeClothingBeans,type,this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -82,32 +83,9 @@ public class ChooseClothesFragment extends Fragment{
     public void onResume(){
         super.onResume();
         GetClothingRequest getClothingRequest=new GetClothingRequest(type.getTypeId());
-        dialog=new LoadingDialog.Builder(getContext())
-                .setMessage("加载中...")
-                .setCancelable(false)
-                .create();
-        dialog.show();
-        RetrofitUtil.postGetClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
-                ,getClothingRequest,subTypeClothingBeans,this,dialog);
+        RetrofitUtil.postGetClothing(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
+                ,getClothingRequest,subTypeClothingBeans,this,null);
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode,int resultCode,Intent data){
-        if(resultCode==RESULT_OK){
-            int subtypeId=requestCode;
-            List<Uri> pictures=Matisse.obtainResult(data);
-            List<Integer> subtypeIds=new ArrayList<>();
-            for(int i=0;i<pictures.size();i++){
-                subtypeIds.add(subtypeId);
-            }
-
-
-            RetrofitUtil.postUploadClothing("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
-//                    SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
-                    ,subtypeIds
-                    ,getImgList(pictures));
-        }
     }
 
     private List<MultipartBody.Part> getImgList(List<Uri> origin){

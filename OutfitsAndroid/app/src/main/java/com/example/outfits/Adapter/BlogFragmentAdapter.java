@@ -6,11 +6,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.Collection;
+import com.example.outfits.MyApplication;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.UI.MyBlogFragment;
 import com.example.outfits.UI.MyCollectionFragment;
 import com.example.outfits.Utils.LoadingDialog;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,8 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
                     .create();
             //               dialog.show();
             GetBlogRequest getBlogRequest = new GetBlogRequest(2);
-            RetrofitUtil.getBlog("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
+
+            RetrofitUtil.getBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,getBlogRequest, blogList, dialog);
             return MyBlogFragment.newInstance(blogList);
         }
@@ -48,7 +51,7 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
                     .create();
             //             dialog.show();
             GetBlogRequest getBlogRequest = new GetBlogRequest(2);
-            RetrofitUtil.getCollection("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw"
+            RetrofitUtil.getCollection(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,getBlogRequest, collectionList, dialog);
             return MyCollectionFragment.newInstance(collectionList);
         }
