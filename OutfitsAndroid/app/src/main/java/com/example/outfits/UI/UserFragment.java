@@ -230,7 +230,7 @@ public class UserFragment extends Fragment{
 
         btn_modify.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+                Intent intent = new Intent(getActivity(), ModifyActivity.class);
                 startActivity(intent);
             }
         });

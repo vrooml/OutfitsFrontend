@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.outfits.RetrofitStuff.AuthCodeRequest;
 import com.example.outfits.RetrofitStuff.RegisterRequest;
-import com.example.outfits.User.UserFragment;
+import com.example.outfits.UI.UserFragment;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.example.outfits.Utils.SharedPreferencesUtil;
 

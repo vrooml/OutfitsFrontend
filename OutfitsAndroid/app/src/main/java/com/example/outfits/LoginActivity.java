@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.outfits.RetrofitStuff.LoginRequest;
-import com.example.outfits.User.UserFragment;
 import com.example.outfits.Utils.RetrofitUtil;
 
 public class LoginActivity extends BaseActivity{
