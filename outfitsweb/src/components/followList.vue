@@ -141,6 +141,13 @@ export default {
       this.getBlogInfo()
     },
     getBlogInfo () {
+      console.log('token')
+      const token = window.android.getToken()
+      axios.interceptors.request.use(config => {
+        config.headers.token = token
+        // config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
+        return config
+      })
       console.log('获取订阅用户的博客')
       const that = this
       this.$axios.post('/blog/getSubscription', {
@@ -164,8 +171,7 @@ export default {
     }
   },
   mounted () {
-    // this.getBlogInfo()
-    // this.getToken('token')
+    this.getBlogInfo()
   }
 }
 </script>

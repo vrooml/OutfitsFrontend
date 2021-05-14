@@ -58,6 +58,16 @@ export default {
       // console.log(this.$route.params.blogId)
     },
     getBlogDetail () {
+      console.log('token')
+      const token = window.android.getToken()
+      axios.interceptors.request.use(config => {
+        config.headers.token = token
+        // config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
+        return config
+      })
+      console.log('blogId')
+      const aBlogId = window.android.getBlogID()
+      this.blogId = aBlogId
       console.log('获取博客详细信息')
       const that = this
       this.$axios.post('/blog/getDetail', {
@@ -138,22 +148,10 @@ export default {
         }).finally(() => {
         })
       }
-    },
-    getBInfo (myblogId, token) {
-      console.log('token')
-      axios.interceptors.request.use(config => {
-        config.headers.token = token
-        // config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
-        return config
-      })
-      this.blogId = myblogId
-      this.getBlogDetail()
-      Toast(myblogId)
     }
   },
   mounted () {
-    // this.getInfo()
-    // this.getBlogDetail()
+    this.getBlogDetail()
   }
 }
 </script>
