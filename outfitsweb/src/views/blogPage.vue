@@ -125,6 +125,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          Toast(error)
         }).finally(() => {
         })
       }
@@ -152,6 +153,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          Toast(error)
         }).finally(() => {
         })
       }

@@ -210,7 +210,8 @@ export default {
         margin:0 20px;
       }
       .index_nav_tabItem_choose {
-        font-weight: 600;
+        font-weight: 700;
+        font-size: 20px;
       }
     }
     #index-nav-search {

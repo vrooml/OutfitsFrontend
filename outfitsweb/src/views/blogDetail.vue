@@ -33,6 +33,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import axios from 'axios'
 export default {
   name: 'blogDetail.vue',
   data () {
@@ -75,6 +76,7 @@ export default {
         }
       }).catch(error => {
         console.log(error)
+        Toast(error)
       }).finally(() => {
       })
     },
@@ -104,6 +106,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          Toast(error)
         }).finally(() => {
         })
       }
@@ -131,13 +134,21 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          Toast(error)
         }).finally(() => {
         })
       }
     },
-    getBlogId (myblogId) {
+    getBInfo (myblogId, token) {
+      console.log('token')
+      axios.interceptors.request.use(config => {
+        config.headers.token = token
+        // config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
+        return config
+      })
       this.blogId = myblogId
       this.getBlogDetail()
+      Toast(myblogId)
     }
   },
   mounted () {

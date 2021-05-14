@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   name: 'App',
@@ -14,17 +14,17 @@ export default {
     }
   },
   methods: {
-    getToken (token) {
-      console.log('token')
-      axios.interceptors.request.use(config => {
-        config.headers.token = token
-        config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
-        return config
-      })
-    }
+    // getToken (token) {
+    //   console.log('token')
+    //   axios.interceptors.request.use(config => {
+    //     config.headers.token = token
+    //     config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
+    //     return config
+    //   })
+    // }
   },
   mounted () {
-    this.getToken('getToken')
+    // this.getToken('getToken')
   }
 }
 </script>
