@@ -24,6 +24,7 @@ import com.example.outfits.R;
 import com.example.outfits.RetrofitStuff.DeleteOutfitRequest;
 import com.example.outfits.UI.AddOutfitActivity;
 import com.example.outfits.UI.ClothesDetailActivity;
+import com.example.outfits.UI.MyOutfitFragment;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.example.outfits.Utils.SharedPreferencesUtil;
 import com.kongzue.dialog.v2.SelectDialog;
@@ -96,7 +97,7 @@ public class OutfitRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         public void onClick(DialogInterface dialog, int which) {
                             DeleteOutfitRequest deleteOutfitRequest=new DeleteOutfitRequest(outfits.get(position).getMatchId());
                             RetrofitUtil.postDeleteOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
-                                    deleteOutfitRequest);
+                                    deleteOutfitRequest,(MyOutfitFragment)fragment.getParentFragment());
                             dialog.dismiss();
                         }
                     });

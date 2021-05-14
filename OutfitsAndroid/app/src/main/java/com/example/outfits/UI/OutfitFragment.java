@@ -71,9 +71,7 @@ public class OutfitFragment extends Fragment{
                 transition.setDuration(1000);
                 TransitionManager.beginDelayedTransition(rootLayout,transition);
                 myOutfit.setTextSize(20);
-                myOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
                 recommendOutfit.setTextSize(16);
-                recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
                 viewPager2.setCurrentItem(0,true);
             }
         });
@@ -85,9 +83,7 @@ public class OutfitFragment extends Fragment{
                 transition.setDuration(1000);
                 TransitionManager.beginDelayedTransition(rootLayout,transition);
                 myOutfit.setTextSize(16);
-                myOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
                 recommendOutfit.setTextSize(20);
-                recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
                 viewPager2.setCurrentItem(1,true);
             }
         });
@@ -103,18 +99,14 @@ public class OutfitFragment extends Fragment{
                         transition.setDuration(1000);
                         TransitionManager.beginDelayedTransition(rootLayout,transition);
                         myOutfit.setTextSize(20);
-                        myOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
                         recommendOutfit.setTextSize(16);
-                        recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
                         break;
                     case 1:
                         transition = new ChangeBounds();
                         transition.setDuration(1000);
                         TransitionManager.beginDelayedTransition(rootLayout,transition);
                         myOutfit.setTextSize(16);
-                        myOutfit.setTextColor(getActivity().getResources().getColor(R.color.black));
                         recommendOutfit.setTextSize(20);
-                        recommendOutfit.setTextColor(getActivity().getResources().getColor(R.color.main_color));
                         break;
                 }
             }

@@ -578,7 +578,7 @@ public class RetrofitUtil{
      *
      * @param deleteOutfitRequest 要删除的搭配id
      */
-    public static void postDeleteOutfit(String token,DeleteOutfitRequest deleteOutfitRequest){
+    public static void postDeleteOutfit(String token,DeleteOutfitRequest deleteOutfitRequest,MyOutfitFragment myOutfitFragment){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel> call=request.postDeleteOutfit(token,deleteOutfitRequest);
         call.enqueue(new Callback<ResponseModel>(){
@@ -587,6 +587,7 @@ public class RetrofitUtil{
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
                         Toast.makeText(MyApplication.getContext(), "已删除搭配", Toast.LENGTH_SHORT).show();
+                        myOutfitFragment.init();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
