@@ -24,7 +24,7 @@
             android:layout_weight="1">
 
         <Button
-                android:id="@+id/hotter"
+                android:id="@+id/too_hot"
                 android:text="有点热"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -34,13 +34,13 @@
                 app:cornerRadius="200dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/colder"
+                app:layout_constraintBottom_toTopOf="@id/too_cold"
                 app:layout_constraintVertical_chainStyle="packed"
                 android:layout_marginBottom="40dp"
                 android:layout_marginStart="60dp" />
 
         <Button
-                android:id="@+id/colder"
+                android:id="@+id/too_cold"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:text="有点冷"
@@ -49,9 +49,9 @@
                 android:backgroundTint="#8CB6D5"
                 app:cornerRadius="200dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/hotter"
-                app:layout_constraintTop_toBottomOf="@id/hotter"
-                app:layout_constraintEnd_toEndOf="@+id/hotter" />
+                app:layout_constraintStart_toStartOf="@id/too_hot"
+                app:layout_constraintTop_toBottomOf="@id/too_hot"
+                app:layout_constraintEnd_toEndOf="@+id/too_hot" />
 
         <Button
                 android:id="@+id/save"

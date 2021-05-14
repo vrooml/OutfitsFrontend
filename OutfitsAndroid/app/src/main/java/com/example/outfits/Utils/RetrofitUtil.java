@@ -10,6 +10,7 @@ import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
+import com.example.outfits.Bean.RecommendClothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
@@ -28,6 +29,7 @@ import com.example.outfits.RetrofitStuff.ForgetpasswordRequest;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.GetClothingRequest;
 import com.example.outfits.RetrofitStuff.GetOutfitRequest;
+import com.example.outfits.RetrofitStuff.GetRecommendOutfitRequest;
 import com.example.outfits.RetrofitStuff.LoginRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
@@ -42,6 +44,7 @@ import com.example.outfits.UI.MyCollectionFragment;
 import com.example.outfits.UI.ChooseClothesFragment;
 import com.example.outfits.UI.MyOutfitFragment;
 import com.example.outfits.UI.OutfitTypeFragment;
+import com.example.outfits.UI.RecommendOutfitFragment;
 
 import java.util.List;
 import java.util.Map;
@@ -600,6 +603,37 @@ public class RetrofitUtil{
             }
         });
     }
+
+    /**
+     * 获取推荐搭配
+     *
+     */
+    public static void postGetRecommendOutfit(String token,GetRecommendOutfitRequest getRecommendOutfitRequest,List<RecommendClothes> recommendClothes,RecommendOutfitFragment recommendOutfitFragment){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<List<RecommendClothes>>> call=request.postGetRecommendOutfit(token,getRecommendOutfitRequest);
+        call.enqueue(new Callback<ResponseModel<List<RecommendClothes>>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<List<RecommendClothes>>> call,Response<ResponseModel<List<RecommendClothes>>> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        recommendClothes.clear();
+                        for(RecommendClothes i : response.body().getData()){
+                            recommendClothes.add(i);
+                        }
+                        recommendOutfitFragment.notifyDataSetChanged();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<RecommendClothes>>> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     /**
      * 获取某类别衣物(选择界面)

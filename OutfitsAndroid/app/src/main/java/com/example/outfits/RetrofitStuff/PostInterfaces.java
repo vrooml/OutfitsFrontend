@@ -4,6 +4,7 @@ import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
+import com.example.outfits.Bean.RecommendClothes;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
@@ -100,6 +101,16 @@ public interface PostInterfaces{
     @POST("/match/deleteMatch")
     Call<ResponseModel> postDeleteOutfit(@Header("token") String token,
                                       @Body DeleteOutfitRequest deleteOutfitRequest);
+
+    //请求推荐搭配
+    @POST("/match/recommand")
+    Call<ResponseModel<List<RecommendClothes>>> postGetRecommendOutfit(@Header("token") String token,
+                                                              @Body GetRecommendOutfitRequest getRecommendOutfitRequest);
+
+    //获取天气
+    @POST("/match/getWeather")
+    Call<ResponseModel> postGetWeather(@Header("token") String token,
+                                       @Body GetWeatherRequest getWeatherRequest);
 
 //TODO 我的
 
