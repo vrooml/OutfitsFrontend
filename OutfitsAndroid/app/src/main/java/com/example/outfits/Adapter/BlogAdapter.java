@@ -78,6 +78,12 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.InnerHolder> {
                     icon.setImageDrawable(circularBitmapDrawable);
                 }
             });
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 }

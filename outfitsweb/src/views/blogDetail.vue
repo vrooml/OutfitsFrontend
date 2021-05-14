@@ -1,43 +1,156 @@
 <template>
-  <div id="blogDetails">
-    <div id="blog-detail">
+  <div id="blogDetail">
+    <vue-scroll>
+      <div id="blog-detail">
 
-      <div id="blog-detail-context">
-        <div id="blog-detail-title">
-          <div>今天找到一家超好看的店铺！！！今天找到一家超好看的店铺！！！今天找到一家超好看的店铺！！！今天找到一家超好看的店铺！！！</div>
-        </div>
-        <div id="blog-detail-second">
-          <div id="detail-time">2021年4月7日</div>
-          <div id="detail-love">
-            <span class="mui-icon mui-icon-chatbubble"></span>
+        <div id="blog-detail-context">
+          <div id="blog-detail-title">
+            <div>{{data.title}}</div>
+          </div>
+          <div id="blog-detail-second">
+            <div id="detail-time">{{data.time}}</div>
+            <div id="detail-love">
+              <svg v-show="data.favorite === 1" class="icon" aria-hidden="true" @click="collect()">
+                <use xlink:href="#icon-aixin"></use>
+              </svg>
+              <svg v-show="data.favorite === 0" class="icon" aria-hidden="true" @click="collect()">
+                <use xlink:href="#icon-icon-test"></use>
+              </svg>
+            </div>
+          </div>
+          <div id="blog-detail-img">
+            <img :src="data.picture" />
+          </div>
+          <div id="detail-content">
+            {{data.article}}
           </div>
         </div>
-        <div id="blog-detail-img">
-          <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1685625409,2887309201&fm=26&gp=0.jpg" />
-        </div>
-        <div id="detail-content">
-          {{content}}
-        </div>
       </div>
-    </div>
+    </vue-scroll>
+
   </div>
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
   name: 'blogDetail.vue',
   data () {
     return {
-      content: '从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老板是个吝啬的人，从不信任别人，坚决要求随 时知道彼得的工作进度，以防止他偷懒。但是彼得又不想让老板呆在他的办公室里站在背后盯着他，于是就对老板做出承诺：无论何时，只要我的工作取得了一点进 展我都会及时让你知道。彼得通过周期性地使用“带类型的引用”(原文为：“typed reference” 也就是delegate？？)“回调”他的老板来实现他的承诺，如下'
+      blogId: '',
+      data: {
+        article: '晗杰最美 从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老',
+        blogId: 6,
+        favorite: 0,
+        picture: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1685625409,2887309201&fm=26&gp=0.jpg',
+        time: '2021-05-09 18:22:06',
+        title: '博客2',
+        userId: 2,
+        user_nickname: 'sdagsgsgsgsd金',
+        user_pic: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2062164223,3783917881&fm=26&gp=0.jpg',
+        user_state: 2
+      }
     }
+  },
+  methods: {
+    getInfo () {
+      // console.log(this.$route.params.blogId)
+    },
+    getBlogDetail () {
+      console.log('获取博客详细信息')
+      const that = this
+      this.$axios.post('/blog/getDetail', {
+        blogId: this.blogId
+      }, {
+        header: {
+          'Content-Type': 'application/json' // 如果写成contentType会报错
+        }
+      }).then(res => {
+        console.log(res)
+        if (res.data.code === 200) {
+          // let temp = {}
+          that.data = res.data.data
+        } else {
+          Toast(res.data.msg)
+        }
+      }).catch(error => {
+        console.log(error)
+      }).finally(() => {
+      })
+    },
+    follow () {
+      console.log('关注')
+      if (this.data.user_state === 1) {
+        Toast('不能关注自己哦')
+      } else if (this.data.user_state === 2 || this.data.user_state === 3) {
+        console.log('关注用户')
+        this.$axios.post('/user/subscribe', {
+          userId: this.data.userId
+        }, {
+          header: {
+            'Content-Type': 'application/json' // 如果写成contentType会报错
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.code === 200) {
+            // let temp = {}
+            if (res.data.msg === '关注成功') {
+              this.data.user_state = 2
+            } else if (res.data.msg === '取消关注成功') {
+              this.data.user_state = 3
+            }
+          } else {
+            Toast(res.data.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        }).finally(() => {
+        })
+      }
+    },
+    collect () {
+      console.log('收藏')
+      if (this.data.favorite === 0 || this.data.favorite === 1) {
+        this.$axios.post('/blog/collect', {
+          blogId: this.data.blogId
+        }, {
+          header: {
+            'Content-Type': 'application/json' // 如果写成contentType会报错
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.code === 200) {
+            // let temp = {}
+            if (res.data.msg === '收藏成功') {
+              this.data.favorite = 1
+            } else if (res.data.msg === '删除成功') {
+              this.data.favorite = 0
+            }
+          } else {
+            Toast(res.data.msg)
+          }
+        }).catch(error => {
+          console.log(error)
+        }).finally(() => {
+        })
+      }
+    },
+    getBlogId (myblogId) {
+      this.blogId = myblogId
+      this.getBlogDetail()
+    }
+  },
+  mounted () {
+    // this.getInfo()
+    // this.getBlogDetail()
   }
 }
 </script>
 
 <style scoped lang="less">
-  #blogDetails {
+  #blogDetail {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -52,43 +165,51 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-  #blog-detail-img {
-    width:100%;
-  img {
-    width:100%;
-    object-fit: cover;
-  }
-  }
-  #blog-detail-context {
-    width:100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px 10px;
-  >div {
-    margin: 8px 0;
-  }
-  #blog-detail-title {
-    width: 100%;
-    text-align: left;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 26px;
-  }
-  #blog-detail-second {
-    width:100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 400;
-  }
-  #detail-content {
-    text-align: left;
-    text-indent: 2em;
-  }
-  }
+    #blog-detail-img {
+      width:100%;
+      img {
+        width:100%;
+        object-fit: cover;
+      }
+    }
+    #blog-detail-context {
+      width:100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 10px 10px 20px 10px;
+      >div {
+        margin: 8px 0;
+      }
+      #blog-detail-title {
+        width: 100%;
+        text-align: left;
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 26px;
+      }
+      #blog-detail-second {
+        width:100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 400;
+        #detail-love {
+          width: 30px;
+          height:30px;
+          >svg {
+            width: 30px;
+            height:30px;
+          }
+        }
+      }
+      #detail-content {
+        text-align: left;
+        text-indent: 2em;
+      }
+    }
   }
 </style>

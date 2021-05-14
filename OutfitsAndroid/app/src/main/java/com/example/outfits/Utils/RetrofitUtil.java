@@ -824,5 +824,32 @@ public class RetrofitUtil{
         });
     }
 
-    
+    /**
+     * 发布博客
+     *
+     * @param token token
+     */
+    public static void postBlog(String token, String blogArticle, String blogTitle, List<MultipartBody.Part> uploadPic){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postBlog(token, blogArticle, blogTitle, uploadPic);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+     //                   Toast.makeText(MyApplication.getContext(),"上传衣物成功！",Toast.LENGTH_SHORT).show();
+     //                   closetFragment.init();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                    Log.e("onResponse: ",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),"FAILED",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

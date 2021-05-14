@@ -142,4 +142,11 @@ public interface PostInterfaces{
     @POST("/user/getSubscription")
     Call<ResponseModel<UserInfo[]>> getSubscription(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
 
+    //发布博客
+    @Multipart
+    @POST("/blog/post")
+    Call<ResponseModel> postBlog(@Header("token") String token,
+                                           @Part("blogArticle") String blogArticle,
+                                           @Part("blogTitle") String blogTitle,
+                                           @Part List<MultipartBody.Part> uploadPic);
 }
