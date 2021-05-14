@@ -1,9 +1,12 @@
 package com.example.outfits.UI;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
@@ -28,6 +31,7 @@ import com.example.outfits.CustomView.ScrollableViewPager;
 import com.example.outfits.ModifyActivity;
 import com.example.outfits.MyApplication;
 import com.example.outfits.OtherUserActivity;
+import com.example.outfits.PostBlogActivity;
 import com.example.outfits.R;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
@@ -35,8 +39,12 @@ import com.example.outfits.RetrofitStuff.ResponseModel;
 import com.example.outfits.ShowFansListActivity;
 import com.example.outfits.ShowFocusListActivity;
 import com.example.outfits.UserInfoActivity;
+import com.example.outfits.Utils.MyGlideEngine;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +53,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.outfits.Utils.ConstantUtil.FAILED;
 import static com.example.outfits.Utils.ConstantUtil.SUCCESS_CODE;
 
@@ -78,6 +87,7 @@ public class UserFragment extends Fragment{
     private TextView blocFollow;
     private ViewPager2 viewPager2;
     private List<Fragment> mFragmentArray=new ArrayList<>();
+    private static final int REQUEST_CODE_CHOOSE = 0X13;
 
     public UserFragment(){
         // Required empty public constructor
@@ -237,6 +247,8 @@ public class UserFragment extends Fragment{
 
         btn_createBlog.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+                Intent intent = new Intent(getActivity(), PostBlogActivity.class);
+                startActivity(intent);
             }
         });
 
