@@ -1,69 +1,66 @@
 package com.example.outfits.Bean;
 
 public class UserInfo {
-    public UserInfo(String userNickname, String userSex, String userProfile, int userId) {
-        this.userNickname = userNickname;
-        this.userSex = userSex;
-        this.userProfile = userProfile;
-        this.userId = userId;
-    }
-
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
-    }
-
-    public void setUserPic(String userPic) {
-        this.userPic = userPic;
-    }
-
+    private int userId;
+    private String userAccount;
     private String userNickname;
-    private String userSex;
-
-    public String getUserNickname() {
-        return userNickname;
-    }
-
-    public String getUserPic() {
-        return userPic;
-    }
-
     private String userPic;
-
-    public String getUserSex() {
-        return userSex;
+    private String sex;
+    private String profile;
+    public UserInfo(int userId,String userAccount,String userNickname,String userPic,String sex,String profile){
+        this.userId=userId;
+        this.userAccount=userAccount;
+        this.userNickname=userNickname;
+        this.userPic=userPic;
+        this.sex=sex;
+        this.profile=profile;
     }
 
-    public String getUserProfile() {
-        return userProfile;
-    }
-
-    public void setUserSex(String userSex) {
-        this.userSex = userSex;
-    }
-
-    public void setUserProfile(String userProfile) {
-        this.userProfile = userProfile;
-    }
-
-    private String userProfile;
-
-    public int getUserId() {
+    public int getUserId(){
         return userId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserId(int userId){
+        this.userId=userId;
     }
 
-    private int userId;
-
-    public String getUserAccount() {
+    public String getUserAccount(){
         return userAccount;
     }
 
-    public void setUserAccount(String userAccount) {
-        this.userAccount = userAccount;
+    public void setUserAccount(String userAccount){
+        this.userAccount=userAccount;
     }
 
-    private String userAccount;
+    public String getUserNickname(){
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname){
+        this.userNickname=userNickname;
+    }
+
+    public String getUserPic(){
+        return userPic;
+    }
+
+    public void setUserPic(String userPic){
+        this.userPic=userPic;
+    }
+
+    public String getSex(){
+        return sex;
+    }
+
+    public void setSex(String sex){
+        this.sex=sex;
+    }
+
+    public String getProfile(){
+        return profile;
+    }
+
+    public void setProfile(String profile){
+        this.profile=profile;
+    }
 }

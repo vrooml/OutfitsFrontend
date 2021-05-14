@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -14,6 +17,7 @@ import com.example.outfits.Adapter.MainActivityPagerAdapter;
 import com.example.outfits.CustomView.ScrollableViewPager;
 import com.example.outfits.UI.ChatFragment;
 import com.example.outfits.UI.ClosetFragment;
+import com.example.outfits.UI.MyOutfitFragment;
 import com.example.outfits.UI.OutfitFragment;
 import com.example.outfits.UI.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,6 +42,8 @@ public class MainActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initBottomNavigationView();
+        requestReadExternalPermission();
+
     }
 
     //初始化底部栏
@@ -74,8 +80,8 @@ public class MainActivity extends BaseActivity{
 
         MainActivityPagerAdapter adapter=new MainActivityPagerAdapter(getSupportFragmentManager());
         mFragmentArray.add(ClosetFragment.newInstance());
-        mFragmentArray.add(OutfitFragment.newInstance("",""));
-        mFragmentArray.add(ChatFragment.newInstance("",""));
+        mFragmentArray.add(OutfitFragment.newInstance());
+        mFragmentArray.add(ChatFragment.newInstance());
         mFragmentArray.add(UserFragment.newInstance("",""));
         adapter.setList(mFragmentArray);
 
@@ -136,5 +142,37 @@ public class MainActivity extends BaseActivity{
         return false;
     }
 
+    @SuppressLint("NewApi")
+    private void requestReadExternalPermission(){
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }else{
+                // 0 是自己定义的请求coude
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+        }else{
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[],int[] grantResults){
+        switch(requestCode){
+            case 0:{
+                if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    // permission was granted
+                    // request successfully, handle you transactions
+                }else{
+                    System.exit(0);
+                    // permission denied
+                    // request failed
+                }
+                return;
+            }
+            default:
+                break;
+        }
+    }
 
 }

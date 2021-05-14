@@ -37,87 +37,43 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class MyBlogFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private View view;
     public RecyclerView recyclerView;
     private List<Blog> blogLists;
-    private BlogAdapter blogAdapter;
+    public static BlogAdapter blogAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public MyBlogFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyBlogFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MyBlogFragment newInstance(String param1, String param2) {
+    public static MyBlogFragment newInstance(List<Blog> blogList) {
         MyBlogFragment fragment = new MyBlogFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.blogLists = blogList;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if(view == null) {
-            view = inflater.inflate(R.layout.fragment_my_blog, container, false);
-        }
-        initData();
-        initView();
-        return view;
-    }
-
-    private void initData() {
-        blogLists = new ArrayList<>();
-        Request();
-    }
-    private void Request(){
-        blogLists = RetrofitUtil.getBlog("token", 3);
-    }
-
-    private void initView() {
+        view = inflater.inflate(R.layout.fragment_my_blog,container,false);
         //获取SwipeRefreshLayout
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.sr_myBlog);
         //获取RecyclerView
         recyclerView = (RecyclerView)view.findViewById(R.id.rv_myBlog);
-        //创建adapter
-        blogAdapter = new BlogAdapter(view.getContext(), blogLists);
+        blogAdapter = new BlogAdapter(this, blogLists);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        //设置分割线
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         //设置adapter
         recyclerView.setAdapter(blogAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        //设置分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(view.getContext(), DividerItemDecoration.VERTICAL));
-        //设置下拉刷新
-        handleDownPullUpdate();
+        return view;
     }
 
     private void handleDownPullUpdate() {

@@ -1,6 +1,8 @@
 package com.example.outfits.Bean;
 
-public class Clothes{
+import java.io.Serializable;
+
+public class Clothes implements Serializable{
 
     private int clothingId;
     private String clothingPic;

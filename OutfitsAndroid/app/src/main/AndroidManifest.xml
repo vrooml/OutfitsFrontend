@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.example.outfits">
-
     <!-- 检测网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 允许应用程序联网，以便向我们的服务器端发送数据 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -16,27 +17,33 @@
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_secqurity_config"
+            android:usesCleartextTraffic="true"
+            android:requestLegacyExternalStorage="true"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.Outfits">
+        <activity android:name=".UI.AddOutfitActivity"></activity>
+        <activity android:name=".UI.ClothesDetailActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".UI.ModifyClothesActivity" />
+        <activity android:name=".UI.ChooseTypeActivity" />
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".MainActivity">
         </activity>
-        <activity android:name=".ModifyActivity">
-        </activity>
-        <activity android:name=".ShowFansListActivity">
-        </activity>
-        <activity android:name=".ShowFocusListActivity">
-        </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".ForgetPasswordActivity" />
+        <activity android:name=".ModifyActivity" />
+        <activity android:name=".ShowFansListActivity" />
+        <activity android:name=".ShowFocusListActivity" />
+        <activity android:name=".OtherUserActivity"/>
     </application>
 
 </manifest>
