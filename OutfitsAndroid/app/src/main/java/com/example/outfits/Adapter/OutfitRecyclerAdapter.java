@@ -101,7 +101,7 @@ public class OutfitRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             dialog.dismiss();
                         }
                     });
-                    return true;
+                    return false;
                 }
             });
         }else if(holder instanceof OutfitFooterViewHolder){

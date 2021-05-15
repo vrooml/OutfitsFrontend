@@ -159,7 +159,7 @@ public class MyOutfitFragment extends Fragment{
                                 RetrofitUtil.getOccasion(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),occasions,MyOutfitFragment.this);
                             }
                         });
-                        return true;
+                        return false;
                     }
                 });
             }

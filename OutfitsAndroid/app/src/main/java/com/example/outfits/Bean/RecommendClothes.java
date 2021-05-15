@@ -3,14 +3,14 @@ package com.example.outfits.Bean;
 public class RecommendClothes{
     private int clothingId;
     private String clothingPic;
-    private String clothingType;
-    private String clothingSubtype;
+    private String typeName;
+    private String subtypeName;
 
-    public RecommendClothes(int clothingId,String clothingPic,String clothingType,String clothingSubtype){
+    public RecommendClothes(int clothingId,String clothingPic,String typeName,String subtypeName){
         this.clothingId=clothingId;
         this.clothingPic=clothingPic;
-        this.clothingType=clothingType;
-        this.clothingSubtype=clothingSubtype;
+        this.typeName=typeName;
+        this.subtypeName=subtypeName;
     }
 
     public int getClothingId(){
@@ -29,19 +29,19 @@ public class RecommendClothes{
         this.clothingPic=clothingPic;
     }
 
-    public String getClothingType(){
-        return clothingType;
+    public String getTypeName(){
+        return typeName;
     }
 
-    public void setClothingType(String clothingType){
-        this.clothingType=clothingType;
+    public void setTypeName(String typeName){
+        this.typeName=typeName;
     }
 
-    public String getClothingSubtype(){
-        return clothingSubtype;
+    public String getSubtypeName(){
+        return subtypeName;
     }
 
-    public void setClothingSubtype(String clothingSubtype){
-        this.clothingSubtype=clothingSubtype;
+    public void setSubtypeName(String subtypeName){
+        this.subtypeName=subtypeName;
     }
 }

@@ -2,6 +2,7 @@ package com.example.outfits.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,18 +30,13 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.InnerHolder> {
         this.datas = datas;
     }
 
-    //创建条目界面
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //创建条目界面
-        //1.得到View
-        //2.构造InnerHolder
-        View view = View.inflate(parent.getContext(), R.layout.blog_list_view, null);
+        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_list_view,parent,false);
         return new InnerHolder(view);
     }
 
-    //用于绑定holder，一般用来设置数据
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         holder.setData(datas.get(position));
@@ -67,17 +63,9 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.InnerHolder> {
 
         public void setData(Blog blogBean){
             title.setText(blogBean.getBlogTitle().toString());
-            Glide.with(itemView).asBitmap()
+            Glide.with(itemView)
                     .load(blogBean.getBlogPic().toString())
-                    .centerCrop().into(new BitmapImageViewTarget(icon){
-                @Override
-                protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
-                            .create(itemView.getResources(), resource);
-                    circularBitmapDrawable.setCircular(true);
-                    icon.setImageDrawable(circularBitmapDrawable);
-                }
-            });
+                    .centerCrop().into(icon);
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

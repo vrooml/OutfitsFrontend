@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -20,14 +19,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Adapter.BlogFragmentAdapter;
 import com.example.outfits.Adapter.BlogViewPagerAdapter;
-import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
-import com.example.outfits.UI.MyBlogFragment;
-import com.example.outfits.UI.MyCollectionFragment;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -75,7 +72,7 @@ public class OtherUserActivity extends AppCompatActivity {
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
 
         //获取用户头像和昵称
-        Call<ResponseModel<UserInfo>> call1 = request.getIntro("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw",
+        Call<ResponseModel<UserInfo>> call1 = request.getInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(userId));
         call1.enqueue(new Callback<ResponseModel<UserInfo>>() {
             @Override

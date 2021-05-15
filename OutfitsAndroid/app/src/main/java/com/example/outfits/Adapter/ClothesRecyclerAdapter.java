@@ -21,6 +21,7 @@ import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.MyApplication;
 import com.example.outfits.R;
+import com.example.outfits.RetrofitStuff.DeleteClothingRequest;
 import com.example.outfits.RetrofitStuff.DeleteOccasionRequest;
 import com.example.outfits.UI.ClosetFragment;
 import com.example.outfits.UI.ClothesDetailActivity;
@@ -91,6 +92,21 @@ public class ClothesRecyclerAdapter extends RecyclerView.Adapter<ClothesRecycler
                             .imageEngine(new GlideEngine())//图片加载引擎
                             .forResult(subTypeClothingBeans.get(position).getSubtypeId());
                 }
+            }
+        });
+        holder.addPictureGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent,View view,int position2,long id){
+                SelectDialog.show(fragment.getContext(), "要删除这件衣物吗？", "", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SubTypeClothingBean subTypeClothingBean=subTypeClothingBeans.get(position);
+                        DeleteClothingRequest deleteClothingRequest=new DeleteClothingRequest(subTypeClothingBean.getClothing()[position2].getClothingId());
+                        RetrofitUtil.postDeleteClothing(deleteClothingRequest,(ClosetFragment)fragment.getParentFragment());
+                        dialog.dismiss();
+                    }
+                });
+                return true;
             }
         });
         holder.addPictureGrid.setAdapter(addPictureAdapter);

@@ -93,7 +93,6 @@ public class RetrofitUtil{
                         Toast.makeText(MyApplication.getContext(),authCodeRequest.getPhone(),Toast.LENGTH_SHORT).show();
                         Toast.makeText(MyApplication.getContext(),"验证码发送成功，注意查收",Toast.LENGTH_SHORT).show();
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"smsCodeToken",response.body().getData());
-                        Toast.makeText(MyApplication.getContext(),response.body().getData(),Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -214,6 +213,7 @@ public class RetrofitUtil{
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"sex",userInfo.getSex());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"avatar",userInfo.getUserPic());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"profile",userInfo.getProfile());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userId",String.valueOf(userInfo.getUserId()));
 
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
@@ -716,10 +716,12 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<Blog[]>> call, Response<ResponseModel<Blog[]>> response) {
                 if(response.body() != null){
                     if(response.body().getCode()==SUCCESS_CODE){
+                        blogList.clear();
                         for(Blog i : response.body().getData()){
                             blogList.add(i);
                         }
                         MyBlogFragment.blogAdapter.notifyDataSetChanged();
+                        MyBlogFragment.swipeRefreshLayout.setRefreshing(false);
                     }else {
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -747,10 +749,12 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<Collection[]>> call, Response<ResponseModel<Collection[]>> response) {
                 if(response.body()!=null){
                     if(response.body().getCode() == SUCCESS_CODE) {
+                        collectionList.clear();
                         for(Collection i : response.body().getData()){
                             collectionList.add(i);
                         }
                         MyCollectionFragment.collectionAdapter.notifyDataSetChanged();
+                        MyCollectionFragment.swipeRefreshLayout.setRefreshing(false);
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }

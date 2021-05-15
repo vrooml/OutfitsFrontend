@@ -120,7 +120,7 @@ public interface PostInterfaces{
 
     //获取用户资料
     @POST("/user/getIntro")
-    Call<ResponseModel<UserInfo>> getIntro(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+    Call<ResponseModel<UserInfo>> getInfo(@Header("token") String token,@Body GetBlogRequest getBlogRequest);
 
     //修改个人资料
     @POST("/user/modifyInfo")

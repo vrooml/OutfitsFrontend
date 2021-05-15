@@ -128,22 +128,22 @@ public class AddPictureGridViewAdapter extends BaseAdapter{
             viewHolder.ivimage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
 
-        if(mode==ADD_MODE&&i!=images.size()){
-            viewHolder.ivimage.setOnLongClickListener(new View.OnLongClickListener(){
-                @Override
-                public boolean onLongClick(View v){
-                    SelectDialog.show(context, "要删除这件衣物吗？", "", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DeleteClothingRequest deleteClothingRequest=new DeleteClothingRequest(subTypeClothingBean.getClothing()[i].getClothingId());
-                            RetrofitUtil.postDeleteClothing(deleteClothingRequest,closetFragment);
-                            dialog.dismiss();
-                        }
-                    });
-                    return true;
-                }
-            });
-        }
+//        if(mode==ADD_MODE&&i!=images.size()){
+//            viewHolder.ivimage.setOnLongClickListener(new View.OnLongClickListener(){
+//                @Override
+//                public boolean onLongClick(View v){
+//                    SelectDialog.show(context, "要删除这件衣物吗？", "", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            DeleteClothingRequest deleteClothingRequest=new DeleteClothingRequest(subTypeClothingBean.getClothing()[i].getClothingId());
+//                            RetrofitUtil.postDeleteClothing(deleteClothingRequest,closetFragment);
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    return false;
+//                }
+//            });
+//        }
 
         return convertView;
     }

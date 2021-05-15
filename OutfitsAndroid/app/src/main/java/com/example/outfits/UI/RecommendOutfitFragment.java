@@ -3,6 +3,7 @@ package com.example.outfits.UI;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -58,27 +59,33 @@ public class RecommendOutfitFragment extends Fragment{
         GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
         RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,this);
         recommendOutfitAdapter=new RecommendOutfitAdapter(this,recommendClothesList);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recommendOutfitAdapter);
 
         tooHot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                offset=-1;
+                offset-=1;
+                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+                RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
             }
         });
 
         tooCold.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                offset=1;
+                offset+=1;
+                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+                RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
             }
         });
 
         saveOutfit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                AddOutfitRequest addOutfitRequest=new AddOutfitRequest()
-                RetrofitUtil.postAddOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),);
+//                AddOutfitRequest addOutfitRequest=new AddOutfitRequest()
+//                RetrofitUtil.postAddOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),);
             }
         });
 
@@ -87,5 +94,7 @@ public class RecommendOutfitFragment extends Fragment{
 
     public void notifyDataSetChanged(){
         recommendOutfitAdapter.notifyDataSetChanged();
+        recommendOutfitAdapter=new RecommendOutfitAdapter(this,recommendClothesList);
+        recyclerView.setAdapter(recommendOutfitAdapter);
     }
 }
