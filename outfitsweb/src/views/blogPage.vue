@@ -55,15 +55,15 @@ export default {
   data () {
     return {
       data: {
-        article: '晗杰最美 从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老',
+        article: '晗杰最美 从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老',
         blogId: 6,
         favorite: 0,
-        picture: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1685625409,2887309201&fm=26&gp=0.jpg',
+        picture: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1674770964,3952856125&fm=11&gp=0.jpg',
         time: '2021-05-09 18:22:06',
-        title: '博客2',
+        title: '博客,这里是博客的名字，可以长这样哦',
         userId: 2,
-        user_nickname: 'sdagsgsgsgsd金',
-        user_pic: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2062164223,3783917881&fm=26&gp=0.jpg',
+        user_nickname: '最帅的那个用户',
+        user_pic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1441836571,2166773131&fm=26&gp=0.jpg',
         user_state: 2
       }
     }
@@ -160,7 +160,7 @@ export default {
     }
   },
   mounted () {
-    // this.getInfo()
+    this.getBlogDetail()
   }
 }
 </script>
@@ -295,6 +295,7 @@ export default {
       #detail-content {
         text-align: left;
         text-indent: 2em;
+        width: 100%;
       }
     }
   }
