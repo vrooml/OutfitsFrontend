@@ -11,7 +11,7 @@
             android:layout_height="60dp"
             android:gravity="center"
             app:contentInsetStart="0dp"
-            android:background="#ffffff"
+            android:background="@color/main_color"
             android:elevation="5dp"
             >
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="详情"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -31,16 +31,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/textView7" />
 
-            <Button
-                    android:id="@+id/add_button"
+            <ImageView
+                    android:id="@+id/edit_clothes_button"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
-                    android:background="@drawable/add_button"
+                    android:background="@drawable/edit_pic_btn_white"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>

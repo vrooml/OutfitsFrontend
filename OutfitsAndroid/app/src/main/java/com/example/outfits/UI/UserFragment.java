@@ -1,5 +1,6 @@
 package com.example.outfits.UI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -26,11 +27,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Adapter.BlogFragmentAdapter;
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.UserInfo;
+import com.example.outfits.LoginActivity;
 import com.example.outfits.ModifyActivity;
 import com.example.outfits.MyApplication;
 import com.example.outfits.PostBlogActivity;
 import com.example.outfits.R;
+import com.example.outfits.RetrofitStuff.DeleteClothingRequest;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
@@ -39,6 +43,7 @@ import com.example.outfits.ShowFocusListActivity;
 import com.example.outfits.Utils.RetrofitUtil;
 import com.example.outfits.Utils.SharedPreferencesUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kongzue.dialog.v2.SelectDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +113,22 @@ public class UserFragment extends Fragment{
 
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
 
+        icon.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v){
+                SelectDialog.show(UserFragment.this.getContext(), "要退出登录吗？", "", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"token",null);
+                        Intent intent = new Intent(getActivity(),LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
+                return false;
+            }
+        });
+
         //获取用户头像和昵称
         Call<ResponseModel<UserInfo>> call1 = request.getInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(
@@ -126,7 +147,7 @@ public class UserFragment extends Fragment{
                             @Override
                             protected void setResource(Bitmap resource) {
                                 RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
-                                        .create(getContext().getResources(), resource);
+                                        .create(MyApplication.getContext().getResources(), resource);
                                 circularBitmapDrawable.setCircular(true);
                                 icon.setImageDrawable(circularBitmapDrawable);
                             }
@@ -147,7 +168,7 @@ public class UserFragment extends Fragment{
         Call<ResponseModel<UserInfo[]>> call2 = request.getSubscriber(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(
 //                        Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))
-                        6
+                        Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))
                 ));
         call2.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override

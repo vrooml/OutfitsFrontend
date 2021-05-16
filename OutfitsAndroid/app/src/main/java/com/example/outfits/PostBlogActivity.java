@@ -31,35 +31,33 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class PostBlogActivity extends AppCompatActivity {
+public class PostBlogActivity extends AppCompatActivity{
     private Button goback;
-    private ImageView add;
     public static EditText content;
     private ImageView icon;
     public static EditText title;
     private TextView post;
-    public  static List<Uri> list = new ArrayList<>();
-    private static final int REQUEST_CODE_CHOOSE = 23;
+    public static List<Uri> list=new ArrayList<>();
+    private static final int REQUEST_CODE_CHOOSE=23;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_blog);
-        goback = findViewById(R.id.btn_back);
-        add = findViewById(R.id.btn_addicon);
-        content = findViewById(R.id.et_content);
-        icon = findViewById(R.id.choose);
-        title = findViewById(R.id.et_title);
-        post = findViewById(R.id.tv_post);
-        goback.setOnClickListener(new View.OnClickListener() {
+        goback=findViewById(R.id.btn_back);
+        content=findViewById(R.id.et_content);
+        icon=findViewById(R.id.choose);
+        title=findViewById(R.id.et_title);
+        post=findViewById(R.id.tv_post);
+        goback.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View v){
                 finish();
             }
         });
-        add.setOnClickListener(new View.OnClickListener() {
+        icon.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View v){
                 Matisse
                         .from(PostBlogActivity.this)
                         //选择视频和图片
@@ -82,48 +80,43 @@ public class PostBlogActivity extends AppCompatActivity {
                         .forResult(REQUEST_CODE_CHOOSE);
             }
         });
-        post.setOnClickListener(new View.OnClickListener() {
+        post.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                String titleForBlog = title.getText().toString();
-                String contentForBlog = content.getText().toString();
-                RetrofitUtil.postBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(), "token"),
-                        contentForBlog, titleForBlog, getImgList(list));
-                finish();
+            public void onClick(View v){
+                String titleForBlog=title.getText().toString();
+                String contentForBlog=content.getText().toString();
+                RetrofitUtil.postBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
+                        contentForBlog,titleForBlog,getImg(list.get(0)),PostBlogActivity.this);
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK){
-            list = Matisse.obtainResult(data);
-            List<String> path = Matisse.obtainPathResult(data);
+    protected void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode==REQUEST_CODE_CHOOSE&&resultCode==RESULT_OK){
+            list=Matisse.obtainResult(data);
+            List<String> path=Matisse.obtainPathResult(data);
             icon.setImageURI(list.get(0));
         }
     }
 
-    private List<MultipartBody.Part> getImgList(List<Uri> origin){
-        List<MultipartBody.Part> result=new ArrayList<>();
-        for(Uri i: origin){
-            //将contentUri转化为真实路径Uri
-            String res=null;
-            String[] proj={MediaStore.Images.Media.DATA};
-            Cursor cursor=this.getContentResolver().query(i,proj,null,null,null);
-            if(cursor.moveToFirst()){
-                int column_index=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                res=cursor.getString(column_index);
-            }
-            cursor.close();
-            //将路径uri转化为file
-            File file=new File(res);
-            //将路径file转化为RequestBody
-            RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
-            //将RequestBody转化为MultipartBody.Part
-            MultipartBody.Part finalRequest=MultipartBody.Part.createFormData("pictures[]",file.getName(),requestBody);//pics[]为后端的key
-            result.add(finalRequest);
+    private MultipartBody.Part getImg(Uri origin){
+        //将contentUri转化为真实路径Uri
+        String res=null;
+        String[] proj={MediaStore.Images.Media.DATA};
+        Cursor cursor=this.getContentResolver().query(origin,proj,null,null,null);
+        if(cursor.moveToFirst()){
+            int column_index=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res=cursor.getString(column_index);
         }
-        return result;
+        cursor.close();
+        //将路径uri转化为file
+        File file=new File(res);
+        //将路径file转化为RequestBody
+        RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
+        //将RequestBody转化为MultipartBody.Part
+        MultipartBody.Part finalRequest=MultipartBody.Part.createFormData("blogPic",file.getName(),requestBody);//后端的key
+        return finalRequest;
     }
 }

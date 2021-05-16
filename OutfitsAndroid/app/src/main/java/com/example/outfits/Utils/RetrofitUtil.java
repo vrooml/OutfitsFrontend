@@ -18,6 +18,7 @@ import com.example.outfits.ForgetPasswordActivity;
 import com.example.outfits.LoginActivity;
 import com.example.outfits.MainActivity;
 import com.example.outfits.MyApplication;
+import com.example.outfits.PostBlogActivity;
 import com.example.outfits.RegisterActivity;
 import com.example.outfits.RetrofitStuff.AddOccasionRequest;
 import com.example.outfits.RetrofitStuff.AddOutfitRequest;
@@ -31,6 +32,7 @@ import com.example.outfits.RetrofitStuff.GetClothingRequest;
 import com.example.outfits.RetrofitStuff.GetOutfitRequest;
 import com.example.outfits.RetrofitStuff.GetRecommendOutfitRequest;
 import com.example.outfits.RetrofitStuff.LoginRequest;
+import com.example.outfits.RetrofitStuff.ModifyClothesRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.RegisterRequest;
@@ -90,7 +92,6 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<String>> call,Response<ResponseModel<String>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        Toast.makeText(MyApplication.getContext(),authCodeRequest.getPhone(),Toast.LENGTH_SHORT).show();
                         Toast.makeText(MyApplication.getContext(),"验证码发送成功，注意查收",Toast.LENGTH_SHORT).show();
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"smsCodeToken",response.body().getData());
                     }else{
@@ -420,6 +421,34 @@ public class RetrofitUtil{
         });
     }
 
+    /**
+     * 修改衣物
+     *
+     * @param modifyClothesRequest 修改衣物
+     */
+    public static void postModifyClothes(String token,ModifyClothesRequest modifyClothesRequest,ClothesDetailActivity clothesDetailActivity){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postModifyClothes(token,modifyClothesRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"修改衣物成功！",Toast.LENGTH_SHORT).show();
+                        clothesDetailActivity.finish();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 //TODO 搭配界面
 
@@ -621,6 +650,7 @@ public class RetrofitUtil{
                             recommendClothes.add(i);
                         }
                         recommendOutfitFragment.notifyDataSetChanged();
+                        Toast.makeText(MyApplication.getContext(),"获取新的推荐~",Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -833,7 +863,7 @@ public class RetrofitUtil{
      *
      * @param token token
      */
-    public static void postBlog(String token, String blogArticle, String blogTitle, List<MultipartBody.Part> uploadPic){
+    public static void postBlog(String token,String blogArticle,String blogTitle,MultipartBody.Part uploadPic,PostBlogActivity postBlogActivity){
         final PostInterfaces request=retrofit.create(PostInterfaces.class);
         Call<ResponseModel> call=request.postBlog(token, blogArticle, blogTitle, uploadPic);
         call.enqueue(new Callback<ResponseModel>(){
@@ -841,8 +871,8 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-     //                   Toast.makeText(MyApplication.getContext(),"上传衣物成功！",Toast.LENGTH_SHORT).show();
-     //                   closetFragment.init();
+                        Toast.makeText(MyApplication.getContext(),"发布博客成功！",Toast.LENGTH_SHORT).show();
+                        postBlogActivity.finish();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }

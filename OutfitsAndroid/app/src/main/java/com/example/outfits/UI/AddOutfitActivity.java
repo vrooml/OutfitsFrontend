@@ -120,9 +120,15 @@ public class AddOutfitActivity extends AppCompatActivity{
         commitAdd.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                AddOutfitRequest addOutfitRequest=new AddOutfitRequest(occasionId,editIntroduceText.getText().toString(),chosenImageIds);
-                RetrofitUtil.postAddOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),addOutfitRequest);
-                finish();
+                if(editIntroduceText.getText().toString().equals("")){
+                    Toast.makeText(MyApplication.getContext(),"请输入介绍",Toast.LENGTH_SHORT).show();
+                }else if(chosenImageIds.size()==0){
+                    Toast.makeText(MyApplication.getContext(),"请先选择衣物",Toast.LENGTH_SHORT).show();
+                }else{
+                    AddOutfitRequest addOutfitRequest=new AddOutfitRequest(occasionId,editIntroduceText.getText().toString(),chosenImageIds);
+                    RetrofitUtil.postAddOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),addOutfitRequest);
+                    finish();
+                }
             }
         });
 

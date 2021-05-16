@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.outfits.Adapter.RecommendOutfitAdapter;
 import com.example.outfits.Bean.RecommendClothes;
@@ -67,6 +68,7 @@ public class RecommendOutfitFragment extends Fragment{
             @Override
             public void onClick(View v){
                 offset-=1;
+                Toast.makeText(MyApplication.getContext(),String.valueOf(offset),Toast.LENGTH_SHORT).show();
                 GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
                 RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
             }
@@ -76,6 +78,7 @@ public class RecommendOutfitFragment extends Fragment{
             @Override
             public void onClick(View v){
                 offset+=1;
+                Toast.makeText(MyApplication.getContext(),String.valueOf(offset),Toast.LENGTH_SHORT).show();
                 GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
                 RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
             }

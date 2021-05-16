@@ -71,6 +71,10 @@ public interface PostInterfaces{
     @POST("/wardrobe/deleteClothing")
     Call<ResponseModel> postDeleteClothing(@Body DeleteClothingRequest deleteClothingRequest);
 
+    //修改衣物
+    @POST("/wardrobe/modifyClothing")
+    Call<ResponseModel> postModifyClothes(@Header("token") String token,@Body ModifyClothesRequest modifyClothesRequest);
+
 //TODO 搭配
 
     //请求场合
@@ -148,5 +152,5 @@ public interface PostInterfaces{
     Call<ResponseModel> postBlog(@Header("token") String token,
                                            @Part("blogArticle") String blogArticle,
                                            @Part("blogTitle") String blogTitle,
-                                           @Part List<MultipartBody.Part> uploadPic);
+                                           @Part MultipartBody.Part uploadPic);
 }

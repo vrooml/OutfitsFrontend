@@ -36,7 +36,7 @@ public class RecommendOutfitAdapter extends RecyclerView.Adapter<RecommendOutfit
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,int position) {
         Glide.with(MyApplication.getContext())
-                .load("http://"+clothesList.get(position).getClothingPic())
+                .load(clothesList.get(position).getClothingPic())
                 .into(holder.clothesImage);
         holder.type.setText(clothesList.get(position).getTypeName());
         holder.subtype.setText(clothesList.get(position).getSubtypeName());

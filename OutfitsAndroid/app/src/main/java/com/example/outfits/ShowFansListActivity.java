@@ -50,7 +50,7 @@ public class ShowFansListActivity extends BaseActivity{
         //创建适配器
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo[]>> call = request.getSubscriber(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
-                new GetBlogRequest(2));
+                new GetBlogRequest(6));
         call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
             public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {

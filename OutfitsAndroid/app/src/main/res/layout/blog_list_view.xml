@@ -12,6 +12,7 @@
             app:cardElevation="5dp"
             android:layout_margin="10dp">
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/root_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
