@@ -34,11 +34,11 @@ public class RegisterActivity extends BaseActivity{
     private EditText registerPasswordEdit;
     private EditText registerConfirmPasswordEdit;
     private Button registerButton;
+    String sex=null;
     private int i=60;
     public static final String regularStr=
             "^(?=.*[a-zA-Z0-9].*)(?=.*[a-zA-Z\\W].*)(?=.*[0-9\\W].*).{6,20}$";
 
-    String sex=null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -88,7 +88,9 @@ public class RegisterActivity extends BaseActivity{
         String smsCode=registerCodeEdit.getText().toString();
         String phone =registerPhonenumEdit.getText().toString();
         Pattern pattern=Pattern.compile(regularStr);
-        if("".equals(phone))
+        if(sex==null){
+            Toast.makeText(this,"请选择性别",Toast.LENGTH_SHORT).show();
+        }else if("".equals(phone))
             Toast.makeText(this,"请输入手机号",Toast.LENGTH_SHORT).show();
         else if("".equals(smsCode)){
             Toast.makeText(this,"请输入验证码",Toast.LENGTH_SHORT).show();

@@ -3,16 +3,35 @@ package com.example.outfits.UI;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.outfits.Adapter.RecommendOutfitAdapter;
+import com.example.outfits.Bean.RecommendClothes;
+import com.example.outfits.MyApplication;
 import com.example.outfits.R;
+import com.example.outfits.RetrofitStuff.AddOutfitRequest;
+import com.example.outfits.RetrofitStuff.GetRecommendOutfitRequest;
+import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecommendOutfitFragment extends Fragment{
     RecyclerView recyclerView;
+    Button tooHot;
+    Button tooCold;
+    Button saveOutfit;
+    int offset=0;
+    RecommendOutfitAdapter recommendOutfitAdapter;
+    List<RecommendClothes> recommendClothesList;
 
 
     public RecommendOutfitFragment(){
@@ -32,6 +51,53 @@ public class RecommendOutfitFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container,
                              Bundle savedInstanceState){
-        return inflater.inflate(R.layout.fragment_recommend_outfit,container,false);
+        View view=inflater.inflate(R.layout.fragment_recommend_outfit,container,false);
+        recyclerView=view.findViewById(R.id.recommend_outfit_recyclerView);
+        tooCold=view.findViewById(R.id.too_cold);
+        tooHot=view.findViewById(R.id.too_hot);
+        saveOutfit=view.findViewById(R.id.save);
+        recommendClothesList=new ArrayList<>();
+        GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+        RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,this);
+        recommendOutfitAdapter=new RecommendOutfitAdapter(this,recommendClothesList);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(recommendOutfitAdapter);
+
+        tooHot.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                offset-=1;
+                Toast.makeText(MyApplication.getContext(),String.valueOf(offset),Toast.LENGTH_SHORT).show();
+                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+                RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
+            }
+        });
+
+        tooCold.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                offset+=1;
+                Toast.makeText(MyApplication.getContext(),String.valueOf(offset),Toast.LENGTH_SHORT).show();
+                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+                RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
+            }
+        });
+
+        saveOutfit.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+//                AddOutfitRequest addOutfitRequest=new AddOutfitRequest()
+//                RetrofitUtil.postAddOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),);
+            }
+        });
+
+        return view;
+    }
+
+    public void notifyDataSetChanged(){
+        recommendOutfitAdapter.notifyDataSetChanged();
+        recommendOutfitAdapter=new RecommendOutfitAdapter(this,recommendClothesList);
+        recyclerView.setAdapter(recommendOutfitAdapter);
     }
 }

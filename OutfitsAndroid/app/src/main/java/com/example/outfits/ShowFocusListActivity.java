@@ -16,6 +16,7 @@ import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
 import com.example.outfits.UI.UserFragment;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,8 @@ public class ShowFocusListActivity extends BaseActivity{
         list.setLayoutManager(layoutManager);
         //创建适配器
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
-        Call<ResponseModel<UserInfo[]>> call = request.getSubscription("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw",
-                new GetBlogRequest(2));
+        Call<ResponseModel<UserInfo[]>> call = request.getSubscription(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
+                new GetBlogRequest(6));
         call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
             public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {

@@ -18,15 +18,16 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:networkSecurityConfig="@xml/network_secqurity_config"
-            android:usesCleartextTraffic="true"
             android:requestLegacyExternalStorage="true"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.Outfits">
-        <activity android:name=".UI.AddOutfitActivity"></activity>
+            android:theme="@style/Theme.Outfits"
+            android:usesCleartextTraffic="true">
+        <activity android:name=".UI.BlogDetailActivity"></activity>
+        <activity android:name=".PostBlogActivity" />
+        <activity android:name=".UI.AddOutfitActivity" />
         <activity android:name=".UI.ClothesDetailActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".UI.ModifyClothesActivity" />
         <activity android:name=".UI.ChooseTypeActivity" />
         <activity android:name=".WelcomeActivity">
             <intent-filter>
@@ -35,15 +36,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ForgetPasswordActivity" />
         <activity android:name=".ModifyActivity" />
         <activity android:name=".ShowFansListActivity" />
         <activity android:name=".ShowFocusListActivity" />
-        <activity android:name=".OtherUserActivity"/>
+        <activity android:name=".OtherUserActivity" />
     </application>
 
 </manifest>

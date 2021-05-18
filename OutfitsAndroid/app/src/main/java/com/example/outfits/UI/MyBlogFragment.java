@@ -15,9 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.outfits.Bean.Blog;
+import com.example.outfits.MyApplication;
 import com.example.outfits.R;
 import com.example.outfits.Adapter.BlogAdapter;
+import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.Utils.RetrofitUtil;
+import com.example.outfits.Utils.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,23 +33,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyBlogFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyBlogFragment extends Fragment {
 
     private View view;
     public RecyclerView recyclerView;
     private List<Blog> blogLists;
     public static BlogAdapter blogAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    public static SwipeRefreshLayout swipeRefreshLayout;
 
 
     public MyBlogFragment() {
         // Required empty public constructor
     }
+
     public static MyBlogFragment newInstance(List<Blog> blogList) {
         MyBlogFragment fragment = new MyBlogFragment();
         fragment.blogLists = blogList;
@@ -69,25 +68,17 @@ public class MyBlogFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.rv_myBlog);
         blogAdapter = new BlogAdapter(this, blogLists);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        //设置分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         //设置adapter
         recyclerView.setAdapter(blogAdapter);
-        return view;
-    }
-
-    private void handleDownPullUpdate() {
         swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 3000);
+                GetBlogRequest getBlogRequest = new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId")));
+                RetrofitUtil.getBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
+                        ,getBlogRequest, blogLists, null);
             }
         });
+        return view;
     }
 }

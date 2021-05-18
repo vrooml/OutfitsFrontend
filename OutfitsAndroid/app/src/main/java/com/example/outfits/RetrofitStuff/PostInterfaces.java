@@ -4,6 +4,7 @@ import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
+import com.example.outfits.Bean.RecommendClothes;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
@@ -70,6 +71,10 @@ public interface PostInterfaces{
     @POST("/wardrobe/deleteClothing")
     Call<ResponseModel> postDeleteClothing(@Body DeleteClothingRequest deleteClothingRequest);
 
+    //修改衣物
+    @POST("/wardrobe/modifyClothing")
+    Call<ResponseModel> postModifyClothes(@Header("token") String token,@Body ModifyClothesRequest modifyClothesRequest);
+
 //TODO 搭配
 
     //请求场合
@@ -101,6 +106,16 @@ public interface PostInterfaces{
     Call<ResponseModel> postDeleteOutfit(@Header("token") String token,
                                       @Body DeleteOutfitRequest deleteOutfitRequest);
 
+    //请求推荐搭配
+    @POST("/match/recommand")
+    Call<ResponseModel<List<RecommendClothes>>> postGetRecommendOutfit(@Header("token") String token,
+                                                              @Body GetRecommendOutfitRequest getRecommendOutfitRequest);
+
+    //获取天气
+    @POST("/match/getWeather")
+    Call<ResponseModel> postGetWeather(@Header("token") String token,
+                                       @Body GetWeatherRequest getWeatherRequest);
+
 //TODO 我的
 
     //获取个人资料
@@ -109,7 +124,7 @@ public interface PostInterfaces{
 
     //获取用户资料
     @POST("/user/getIntro")
-    Call<ResponseModel<UserInfo>> getIntro(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+    Call<ResponseModel<UserInfo>> getInfo(@Header("token") String token,@Body GetBlogRequest getBlogRequest);
 
     //修改个人资料
     @POST("/user/modifyInfo")
@@ -131,4 +146,11 @@ public interface PostInterfaces{
     @POST("/user/getSubscription")
     Call<ResponseModel<UserInfo[]>> getSubscription(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
 
+    //发布博客
+    @Multipart
+    @POST("/blog/post")
+    Call<ResponseModel> postBlog(@Header("token") String token,
+                                           @Part("blogArticle") String blogArticle,
+                                           @Part("blogTitle") String blogTitle,
+                                           @Part MultipartBody.Part uploadPic);
 }

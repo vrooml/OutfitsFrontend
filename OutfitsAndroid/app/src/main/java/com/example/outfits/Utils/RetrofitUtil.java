@@ -10,6 +10,7 @@ import com.example.outfits.Bean.Blog;
 import com.example.outfits.Bean.Collection;
 import com.example.outfits.Bean.Occasion;
 import com.example.outfits.Bean.Outfit;
+import com.example.outfits.Bean.RecommendClothes;
 import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.Type;
 import com.example.outfits.Bean.UserInfo;
@@ -17,6 +18,7 @@ import com.example.outfits.ForgetPasswordActivity;
 import com.example.outfits.LoginActivity;
 import com.example.outfits.MainActivity;
 import com.example.outfits.MyApplication;
+import com.example.outfits.PostBlogActivity;
 import com.example.outfits.RegisterActivity;
 import com.example.outfits.RetrofitStuff.AddOccasionRequest;
 import com.example.outfits.RetrofitStuff.AddOutfitRequest;
@@ -28,7 +30,9 @@ import com.example.outfits.RetrofitStuff.ForgetpasswordRequest;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.GetClothingRequest;
 import com.example.outfits.RetrofitStuff.GetOutfitRequest;
+import com.example.outfits.RetrofitStuff.GetRecommendOutfitRequest;
 import com.example.outfits.RetrofitStuff.LoginRequest;
+import com.example.outfits.RetrofitStuff.ModifyClothesRequest;
 import com.example.outfits.RetrofitStuff.ModifyUserInfoRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.RegisterRequest;
@@ -42,6 +46,7 @@ import com.example.outfits.UI.MyCollectionFragment;
 import com.example.outfits.UI.ChooseClothesFragment;
 import com.example.outfits.UI.MyOutfitFragment;
 import com.example.outfits.UI.OutfitTypeFragment;
+import com.example.outfits.UI.RecommendOutfitFragment;
 
 import java.util.List;
 import java.util.Map;
@@ -87,10 +92,8 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<String>> call,Response<ResponseModel<String>> response){
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
-                        Toast.makeText(MyApplication.getContext(),authCodeRequest.getPhone(),Toast.LENGTH_SHORT).show();
                         Toast.makeText(MyApplication.getContext(),"验证码发送成功，注意查收",Toast.LENGTH_SHORT).show();
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"smsCodeToken",response.body().getData());
-                        Toast.makeText(MyApplication.getContext(),response.body().getData(),Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -211,6 +214,7 @@ public class RetrofitUtil{
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"sex",userInfo.getSex());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"avatar",userInfo.getUserPic());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"profile",userInfo.getProfile());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userId",String.valueOf(userInfo.getUserId()));
 
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
@@ -417,6 +421,34 @@ public class RetrofitUtil{
         });
     }
 
+    /**
+     * 修改衣物
+     *
+     * @param modifyClothesRequest 修改衣物
+     */
+    public static void postModifyClothes(String token,ModifyClothesRequest modifyClothesRequest,ClothesDetailActivity clothesDetailActivity){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postModifyClothes(token,modifyClothesRequest);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"修改衣物成功！",Toast.LENGTH_SHORT).show();
+                        clothesDetailActivity.finish();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 //TODO 搭配界面
 
@@ -602,6 +634,38 @@ public class RetrofitUtil{
     }
 
     /**
+     * 获取推荐搭配
+     *
+     */
+    public static void postGetRecommendOutfit(String token,GetRecommendOutfitRequest getRecommendOutfitRequest,List<RecommendClothes> recommendClothes,RecommendOutfitFragment recommendOutfitFragment){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<List<RecommendClothes>>> call=request.postGetRecommendOutfit(token,getRecommendOutfitRequest);
+        call.enqueue(new Callback<ResponseModel<List<RecommendClothes>>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<List<RecommendClothes>>> call,Response<ResponseModel<List<RecommendClothes>>> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        recommendClothes.clear();
+                        for(RecommendClothes i : response.body().getData()){
+                            recommendClothes.add(i);
+                        }
+                        recommendOutfitFragment.notifyDataSetChanged();
+                        Toast.makeText(MyApplication.getContext(),"获取新的推荐~",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<List<RecommendClothes>>> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    /**
      * 获取某类别衣物(选择界面)
      *
      * @param getClothingRequest 获取某类别衣物请求体
@@ -682,10 +746,12 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<Blog[]>> call, Response<ResponseModel<Blog[]>> response) {
                 if(response.body() != null){
                     if(response.body().getCode()==SUCCESS_CODE){
+                        blogList.clear();
                         for(Blog i : response.body().getData()){
                             blogList.add(i);
                         }
                         MyBlogFragment.blogAdapter.notifyDataSetChanged();
+                        MyBlogFragment.swipeRefreshLayout.setRefreshing(false);
                     }else {
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -713,10 +779,12 @@ public class RetrofitUtil{
             public void onResponse(Call<ResponseModel<Collection[]>> call, Response<ResponseModel<Collection[]>> response) {
                 if(response.body()!=null){
                     if(response.body().getCode() == SUCCESS_CODE) {
+                        collectionList.clear();
                         for(Collection i : response.body().getData()){
                             collectionList.add(i);
                         }
                         MyCollectionFragment.collectionAdapter.notifyDataSetChanged();
+                        MyCollectionFragment.swipeRefreshLayout.setRefreshing(false);
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -790,5 +858,32 @@ public class RetrofitUtil{
         });
     }
 
-    
+    /**
+     * 发布博客
+     *
+     * @param token token
+     */
+    public static void postBlog(String token,String blogArticle,String blogTitle,MultipartBody.Part uploadPic,PostBlogActivity postBlogActivity){
+        final PostInterfaces request=retrofit.create(PostInterfaces.class);
+        Call<ResponseModel> call=request.postBlog(token, blogArticle, blogTitle, uploadPic);
+        call.enqueue(new Callback<ResponseModel>(){
+            @Override
+            public void onResponse(Call<ResponseModel> call,Response<ResponseModel> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        Toast.makeText(MyApplication.getContext(),"发布博客成功！",Toast.LENGTH_SHORT).show();
+                        postBlogActivity.finish();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                    Log.e("onResponse: ",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),"FAILED",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
