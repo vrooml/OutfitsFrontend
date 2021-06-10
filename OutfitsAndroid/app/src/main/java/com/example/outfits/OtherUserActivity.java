@@ -38,7 +38,7 @@ import static com.example.outfits.Utils.ConstantUtil.FAILED;
 import static com.example.outfits.Utils.ConstantUtil.SUCCESS_CODE;
 
 public class OtherUserActivity extends AppCompatActivity {
-    private TextView fllowCount;
+    private TextView followCount;
     private TextView fansCount;
     private Button btn_modify;
     private FloatingActionButton btn_createBlog;
@@ -59,10 +59,9 @@ public class OtherUserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         int userId = bundle.getInt("userId");
-        fllowCount = findViewById(R.id.followCount);
+        followCount = findViewById(R.id.followCount);
         fansCount = findViewById(R.id.fansCount);
         btn_modify = findViewById(R.id.btn_modify);
-        btn_createBlog = findViewById(R.id.btn_createBlog);
         blocUser = findViewById(R.id.blog_user);
         blocFollow = findViewById(R.id.blog_follow);
         name = findViewById(R.id.user_name);
@@ -104,7 +103,7 @@ public class OtherUserActivity extends AppCompatActivity {
         });
 
         //获取用户粉丝数
-        Call<ResponseModel<UserInfo[]>> call2 = request.getSubscriber("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw",
+        Call<ResponseModel<UserInfo[]>> call2 = request.getSubscriber(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(userId));
         call2.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
@@ -125,14 +124,14 @@ public class OtherUserActivity extends AppCompatActivity {
         });
 
         //获取用户关注数
-        Call<ResponseModel<UserInfo[]>> call3 = request.getSubscription("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw",
+        Call<ResponseModel<UserInfo[]>> call3 = request.getSubscription(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(userId));
         call3.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
             public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {
                 if(response.body() != null){
                     if(response.body().getCode() == SUCCESS_CODE) {
-                        fllowCount.setText(String.valueOf(response.body().getData().length));
+                        followCount.setText(String.valueOf(response.body().getData().length));
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -144,7 +143,7 @@ public class OtherUserActivity extends AppCompatActivity {
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
             }
         });
-        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(getSupportFragmentManager(), getLifecycle(), null, 2);
+        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(getSupportFragmentManager(), getLifecycle(), null, userId);
         viewPager2.setAdapter(blogFragmentAdapter);
         blocUser.setOnClickListener(new View.OnClickListener() {
             @Override
