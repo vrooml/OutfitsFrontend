@@ -4,9 +4,15 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.outfits.Utils.RetrofitUtil;
 import com.example.outfits.Utils.SharedPreferencesUtil;
@@ -25,6 +31,7 @@ public class WelcomeActivity extends BaseActivity{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         requestReadExternalPermission();
+        checkLocationPermission();
 
     }
 
@@ -97,6 +104,16 @@ public class WelcomeActivity extends BaseActivity{
         }
     }
 
+    private void checkLocationPermission(){
+
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+                !=PackageManager.PERMISSION_GRANTED){//未开启定位权限
+            //开启定位权限,200是标识码
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},200);
+        }
+
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[],int[] grantResults){
@@ -113,6 +130,13 @@ public class WelcomeActivity extends BaseActivity{
                 }
                 return;
             }
+            case 200:
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED){//用户同意权限,执行我们的操作
+
+                }else{//用户拒绝之后,当然我们也可以弹出一个窗口,直接跳转到系统设置页面
+                    Toast.makeText(this,"未开启定位权限,请手动到设置去开启权限",Toast.LENGTH_LONG).show();
+                }
+                break;
             default:
                 break;
         }

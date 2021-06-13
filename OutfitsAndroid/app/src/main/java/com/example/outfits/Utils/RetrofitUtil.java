@@ -761,7 +761,9 @@ public class RetrofitUtil{
             @Override
             public void onFailure(Call<ResponseModel<Blog[]>> call, Throwable t) {
                 Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();;
+                if(dialog!=null){
+                    dialog.dismiss();
+                }
             }
         });
     }

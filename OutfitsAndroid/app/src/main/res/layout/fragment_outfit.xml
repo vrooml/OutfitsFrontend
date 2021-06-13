@@ -31,7 +31,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:id="@+id/my_outfit"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp" />
 
             <TextView
@@ -45,27 +45,56 @@
                     android:id="@+id/recommend_outfit"
                     app:layout_constraintStart_toEndOf="@+id/my_outfit"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginBottom="16dp" />
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="36℃"
+                    android:text="36"
+                    android:id="@+id/temperature"
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="3sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginEnd="24dp" />
+                    app:layout_constraintEnd_toStartOf="@id/postfix" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="℃"
+                    android:id="@+id/postfix"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/phenomenon"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/temperature"
+                    android:layout_marginTop="2dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phenomenon"
+                    android:text="晴"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBaseline_toBaselineOf="@id/temperature"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/outfit_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+    </androidx.viewpager2.widget.ViewPager2>
 
 </LinearLayout>
