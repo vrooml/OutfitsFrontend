@@ -171,7 +171,7 @@ export default {
   methods: {
     search () {
       console.log('搜索博客')
-      this.saveItem(this.text)
+      // this.saveItem(this.text)
       const that = this
       this.$axios.post('/blog/search', {
         keyword: that.text
@@ -190,6 +190,7 @@ export default {
         }
       }).catch(error => {
         console.log(error)
+        Toast(error)
       }).finally(() => {
       })
     },

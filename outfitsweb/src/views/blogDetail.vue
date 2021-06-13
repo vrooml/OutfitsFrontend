@@ -33,6 +33,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import axios from 'axios'
 export default {
   name: 'blogDetail.vue',
   data () {
@@ -57,6 +58,16 @@ export default {
       // console.log(this.$route.params.blogId)
     },
     getBlogDetail () {
+      console.log('token')
+      // const token = window.android.getToken()
+      axios.interceptors.request.use(config => {
+        // config.headers.token = token
+        config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIwODM4MjExLCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMTA5NzQxMX0.n4guRYmW5gmbi5LwrWAqlM9khpdnY08WdUaFIW6GgJk'
+        return config
+      })
+      console.log('blogId')
+      const aBlogId = this.$route.query.blogId
+      this.blogId = aBlogId
       console.log('获取博客详细信息')
       const that = this
       this.$axios.post('/blog/getDetail', {
@@ -75,6 +86,7 @@ export default {
         }
       }).catch(error => {
         console.log(error)
+        Toast(error)
       }).finally(() => {
       })
     },
@@ -104,6 +116,7 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          Toast(error)
         }).finally(() => {
         })
       }
@@ -131,18 +144,18 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          Toast(error)
         }).finally(() => {
         })
       }
     },
-    getBlogId (myblogId) {
-      this.blogId = myblogId
-      this.getBlogDetail()
+    getBlogId () {
+      const id = this.$route.query.blogId
+      console.log(id)
     }
   },
   mounted () {
-    // this.getInfo()
-    // this.getBlogDetail()
+    this.getBlogDetail()
   }
 }
 </script>
@@ -209,6 +222,7 @@ export default {
       #detail-content {
         text-align: left;
         text-indent: 2em;
+        width: 100%;
       }
     }
   }
