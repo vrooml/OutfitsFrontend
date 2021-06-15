@@ -1,8 +1,20 @@
 <template>
 <div id="followList">
+  <div id="content" v-if="block.length === 0">
+    <div>
+      <div>
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-kong"></use>
+        </svg>
+      </div>
+      <div>
+        没有搜索内容
+      </div>
+    </div>
+  </div>
   <div v-masonry  transition-duration="0.3s" i tem-selector=".item">
     <div v-masonry-tile class="item"
-         v-for="(item, index) in blocks"
+         v-for="(item, index) in block"
          :key=" '2' + index ">
       <div class="content">
         <div class="content-photo" @click="toBlog(item)">
@@ -31,16 +43,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div id="content" v-if="blocks.length === 0">
-    <div>
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icon-kong"></use>
-      </svg>
-    </div>
-    <div>
-      没有搜索内容
     </div>
   </div>
 </div>
@@ -167,7 +169,8 @@ export default {
           blogId: '0008',
           article: ' 测试：晗杰晗杰你最美，晗杰晗杰你最棒。'
         }
-      ]
+      ],
+      block: []
     }
   },
   methods: {
@@ -230,6 +233,21 @@ export default {
     min-height: 100%;
     background-color: #faf7f8;
     z-index: 2019;
+    #content {
+      >div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        >div {
+          color: black;
+          font-weight: 700;
+          font-size: 18px;
+        }
+      }
+    }
     .item {
       width:50%;
       display: flex;
@@ -334,17 +352,6 @@ export default {
             }
           }
         }
-      }
-    }
-    #content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      >div {
-        color: black;
-        font-weight: 700;
-        font-size: 18px;
       }
     }
   }

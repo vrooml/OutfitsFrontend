@@ -1,5 +1,17 @@
 <template>
 <div id="recommendList">
+  <div id="content" v-if="blocks.length === 0">
+    <div>
+      <div>
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-kong"></use>
+        </svg>
+      </div>
+      <div>
+        没有搜索内容
+      </div>
+    </div>
+  </div>
   <div v-masonry  transition-duration="0.3s" i tem-selector=".item">
     <div v-masonry-tile class="item"
          v-for="(item, index) in blocks"
@@ -31,16 +43,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div id="content" v-if="blocks.length === 0">
-    <div>
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icon-kong"></use>
-      </svg>
-    </div>
-    <div>
-      没有搜索内容
     </div>
   </div>
 </div>
@@ -206,6 +208,21 @@ export default {
 
 <style scoped lang="less">
   #recommendList {
+    #content {
+      >div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        >div {
+          color: black;
+          font-weight: 700;
+          font-size: 18px;
+        }
+      }
+    }
     width:100%;
     min-height: 100%;
     background-color: #faf7f8;
@@ -314,17 +331,6 @@ export default {
             }
           }
         }
-      }
-    }
-    #content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      >div {
-        color: black;
-        font-weight: 700;
-        font-size: 18px;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div id="blogDetail">
+  <div id="blogPage">
     <vue-scroll>
       <div id="blog-detail">
 
@@ -33,22 +33,20 @@
 
 <script>
 import { Toast } from 'mint-ui'
-import axios from 'axios'
 export default {
-  name: 'blogDetail.vue',
+  name: 'blogPage.vue',
   data () {
     return {
-      blogId: '',
       data: {
-        article: '晗杰最美 从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老',
+        article: '晗杰最美 从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老从前，在南方一块奇异的土地上，有个工人名叫彼得，他非常勤奋，对他的老板总是百依百顺。但是他的老',
         blogId: 6,
         favorite: 0,
-        picture: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1685625409,2887309201&fm=26&gp=0.jpg',
+        picture: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1674770964,3952856125&fm=11&gp=0.jpg',
         time: '2021-05-09 18:22:06',
-        title: '博客2',
+        title: '博客,这里是博客的名字，可以长这样哦',
         userId: 2,
-        user_nickname: 'sdagsgsgsgsd金',
-        user_pic: 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2062164223,3783917881&fm=26&gp=0.jpg',
+        user_nickname: '最帅的那个用户',
+        user_pic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1441836571,2166773131&fm=26&gp=0.jpg',
         user_state: 2
       }
     }
@@ -57,21 +55,17 @@ export default {
     getInfo () {
       // console.log(this.$route.params.blogId)
     },
+    toBack () {
+      this.$router.back()
+    },
+    toUser (item) {
+      window.android.toUser(item.userId)
+    },
     getBlogDetail () {
-      console.log('token')
-      // const token = window.android.getToken()
-      axios.interceptors.request.use(config => {
-        // config.headers.token = token
-        config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIwODM4MjExLCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMTA5NzQxMX0.n4guRYmW5gmbi5LwrWAqlM9khpdnY08WdUaFIW6GgJk'
-        return config
-      })
-      console.log('blogId')
-      const aBlogId = this.$route.query.blogId
-      this.blogId = aBlogId
       console.log('获取博客详细信息')
       const that = this
       this.$axios.post('/blog/getDetail', {
-        blogId: this.blogId
+        blogId: this.$route.params.blogId
       }, {
         header: {
           'Content-Type': 'application/json' // 如果写成contentType会报错
@@ -86,12 +80,10 @@ export default {
         }
       }).catch(error => {
         console.log(error)
-        Toast(error)
       }).finally(() => {
       })
     },
     follow () {
-      console.log('关注')
       if (this.data.user_state === 1) {
         Toast('不能关注自己哦')
       } else if (this.data.user_state === 2 || this.data.user_state === 3) {
@@ -148,10 +140,6 @@ export default {
         }).finally(() => {
         })
       }
-    },
-    getBlogId () {
-      const id = this.$route.query.blogId
-      console.log(id)
     }
   },
   mounted () {
@@ -161,13 +149,16 @@ export default {
 </script>
 
 <style scoped lang="less">
-  #blogDetail {
+  #blogPage {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+  }
+  .__vuescroll {
+    height: calc(100% - 60px) !important;
   }
   #blog-detail {
     width:100%;
