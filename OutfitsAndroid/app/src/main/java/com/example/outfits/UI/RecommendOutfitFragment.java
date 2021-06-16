@@ -57,7 +57,7 @@ public class RecommendOutfitFragment extends Fragment{
         tooHot=view.findViewById(R.id.too_hot);
         saveOutfit=view.findViewById(R.id.save);
         recommendClothesList=new ArrayList<>();
-        GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+        GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset,OutfitFragment.getCityName());
         RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,this);
         recommendOutfitAdapter=new RecommendOutfitAdapter(this,recommendClothesList);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -69,7 +69,7 @@ public class RecommendOutfitFragment extends Fragment{
             public void onClick(View v){
                 offset-=1;
                 Toast.makeText(MyApplication.getContext(),String.valueOf(offset),Toast.LENGTH_SHORT).show();
-                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset,OutfitFragment.getCityName());
                 RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
             }
         });
@@ -79,7 +79,7 @@ public class RecommendOutfitFragment extends Fragment{
             public void onClick(View v){
                 offset+=1;
                 Toast.makeText(MyApplication.getContext(),String.valueOf(offset),Toast.LENGTH_SHORT).show();
-                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset);
+                GetRecommendOutfitRequest getRecommendOutfitRequest=new GetRecommendOutfitRequest(offset,OutfitFragment.getCityName());
                 RetrofitUtil.postGetRecommendOutfit(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),getRecommendOutfitRequest,recommendClothesList,RecommendOutfitFragment.this);
             }
         });

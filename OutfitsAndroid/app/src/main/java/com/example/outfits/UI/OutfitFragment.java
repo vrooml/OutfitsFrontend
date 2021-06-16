@@ -30,12 +30,16 @@ import com.example.outfits.MyApplication;
 import com.example.outfits.R;
 
 public class OutfitFragment extends Fragment{
+    private static String cityName;
     ViewPager2 viewPager2;
     TextView myOutfit;
     TextView recommendOutfit;
     TextView temperature;
     TextView phenomenon;
-    String cityName;
+
+    public static String getCityName(){
+        return cityName;
+    }
 
     ConstraintLayout rootLayout;
     public LocationClient mLocationClient = null;
@@ -189,6 +193,7 @@ public class OutfitFragment extends Fragment{
             Log.e("TAG", "location.getAddrStr()=" + location.getAddrStr());
             //打印出当前城市
             Log.e("TAG", "location.getCity()=" + location.getCity());
+            cityName=location.getCity();
             //返回码
             int i = location.getLocType();
             String districtID =location.getAdCode();
