@@ -1,133 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="97dp"
-        android:text="个人简介："
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            app:contentInsetStart="0dp"
+            android:background="@color/main_color"
+            android:elevation="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="165dp"
+                    android:text="编辑资料"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                    android:id="@+id/goback"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/abc_vector_test" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/default_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            android:layout_marginTop="50dp" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="141dp"
-        android:layout_marginTop="46dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        tools:srcCompat="@tools:sample/avatars" />
+            android:id="@+id/register_boy2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:srcCompat="@drawable/boy_unselected"
+            app:layout_constraintTop_toBottomOf="@+id/user_image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/register_girl2"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="50dp" />
 
-    <EditText
-        android:id="@+id/editTextTextMultiLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="22dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+    <ImageView
+            android:id="@+id/register_girl2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:srcCompat="@drawable/girl_unselected"
+            app:layout_constraintTop_toTopOf="@+id/register_boy2"
+            app:layout_constraintBottom_toBottomOf="@+id/register_boy2"
+            app:layout_constraintLeft_toRightOf="@+id/register_boy2"
+            app:layout_constraintRight_toRightOf="parent" />
 
     <Button
-        android:id="@+id/btn_modify"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="71dp"
-        android:text="确定"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:cornerRadius="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+            android:id="@+id/modify_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="50dp"
+            android:text="确定修改"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:backgroundTint="@color/accent_color"
+            android:textColor="@color/white"
+            app:cornerRadius="200dp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextProfile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
 
     <EditText
-        android:id="@+id/editTextTextMultiLine2"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="125dp"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            android:id="@+id/editTextNickName"
+            android:hint="请输入你的昵称"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:background="@drawable/button_style_circle"
+            android:drawablePadding="20dp"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:paddingEnd="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingStart="15dp"
+            android:textSize="12sp"
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="97dp"
-        android:text="个人简介："
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/register_boy2"
+            android:layout_marginTop="50dp" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="22dp"
-        android:text="性别："
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine2" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="412dp"
-        android:layout_height="60dp"
-        android:background="@android:color/holo_blue_dark"
-        android:text="我的资料"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+            android:id="@+id/editTextProfile"
+            android:hint="请输入你的个人简介"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:background="@drawable/button_style_circle"
+            android:drawablePadding="20dp"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:paddingEnd="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingStart="15dp"
+            android:textSize="12sp"
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="26dp"
-        android:text="男"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="69dp"
-        android:layout_marginTop="78dp"
-        android:text="女"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine2" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:background="@android:color/holo_blue_dark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNickName"
+            android:layout_marginTop="40dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
