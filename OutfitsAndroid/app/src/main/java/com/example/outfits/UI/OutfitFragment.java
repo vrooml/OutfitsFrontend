@@ -204,7 +204,7 @@ public class OutfitFragment extends Fragment{
             Log.e("TAG", "location.getCity()=" + location.getCity());
             //返回码
             int i = location.getLocType();
-            String districtID =location.getAdCode(); // 天安门区域ID
+            String districtID =location.getAdCode();
             WeatherSearchOption weatherSearchOption = new WeatherSearchOption()
                     .weatherDataType(WeatherDataType.WEATHER_DATA_TYPE_ALL)
                     .districtID(districtID);
@@ -213,17 +213,20 @@ public class OutfitFragment extends Fragment{
             mWeatherSearch.setWeatherSearchResultListener(new OnGetWeatherResultListener() {
                 @Override
                 public void onGetWeatherResultListener(final WeatherResult weatherResult) {
-                    tempetature.setText(String.valueOf(weatherResult.getRealTimeWeather().getTemperature()));
-                    phenomenon.setText(weatherResult.getRealTimeWeather().getPhenomenon());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getPhenomenon());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getWindDirection());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getWindPower());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getAirQualityIndex());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getRelativeHumidity());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getTemperature());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getSensoryTemp());
-                    Log.e("TAG", ""+weatherResult.getRealTimeWeather().getHourlyPrecipitation());
-                    Log.e("TAG", ""+weatherResult.getLocation().getCity());
+                    if(weatherResult!=null){
+                        tempetature.setText(String.valueOf(weatherResult.getRealTimeWeather().getTemperature()));
+                        phenomenon.setText(weatherResult.getRealTimeWeather().getPhenomenon());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getPhenomenon());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getWindDirection());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getWindPower());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getAirQualityIndex());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getRelativeHumidity());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getTemperature());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getSensoryTemp());
+                        Log.e("TAG", ""+weatherResult.getRealTimeWeather().getHourlyPrecipitation());
+                        Log.e("TAG", ""+weatherResult.getLocation().getCity());
+
+                    }
                 }
             });
             mWeatherSearch.request(weatherSearchOption);
