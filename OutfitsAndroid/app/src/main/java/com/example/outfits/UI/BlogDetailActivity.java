@@ -64,15 +64,13 @@ public class BlogDetailActivity extends AppCompatActivity{
         //该方法将会被js 调用
         @JavascriptInterface
         public String getToken(String jsCallJava) {
-            Log.e("chat","getToken: ");
             return SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
         }
 
         //该方法将会被js 调用
         @JavascriptInterface
-        public String getBlogId(String jsCallJava) {
-            Log.e("chat","getToken: ");
-            return SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
+        public int getBlogId(){
+            return blogId;
         }
     }
 }

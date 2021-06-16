@@ -22,7 +22,7 @@
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="发布博客"
+                    android:text="博客详情"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"

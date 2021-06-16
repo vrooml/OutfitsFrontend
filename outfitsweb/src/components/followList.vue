@@ -58,6 +58,8 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import Vue from 'vue'
+import axios from 'axios'
 // import axios from 'axios'
 export default {
   name: 'followList.vue',
@@ -191,6 +193,20 @@ export default {
       // console.log(item)
       window.android.toUser(item.userId)
     },
+    getToken () {
+      console.log('token')
+      Vue.prototype.$axios = axios
+      // axios.interceptors.request.use(config => {
+      //   config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
+      //   return config
+      // })
+      const myToken = window.android.getToken(' ')
+      console.log(myToken)
+      axios.interceptors.request.use(config => {
+        config.headers.token = myToken
+        return config
+      })
+    },
     getBlogInfo () {
       console.log('获取订阅用户的博客')
       const that = this
@@ -217,6 +233,7 @@ export default {
     }
   },
   mounted () {
+    this.getToken()
     this.getBlogInfo()
   }
 }

@@ -1,6 +1,7 @@
 package com.example.outfits.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.example.outfits.MyApplication;
+import com.example.outfits.OtherUserActivity;
 import com.example.outfits.R;
 import com.example.outfits.Utils.SharedPreferencesUtil;
 
@@ -96,6 +98,14 @@ public class ChatFragment extends Fragment{
             Log.e("chat","getToken: ");
             return SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token");
         }
+
+        //跳转到相应用户主页
+        @JavascriptInterface
+        public void toUser(String userId) {
+            Intent intent=new Intent(ChatFragment.this.getActivity(),OtherUserActivity.class);
+            startActivity(intent);
+        }
+
     }
 
 }

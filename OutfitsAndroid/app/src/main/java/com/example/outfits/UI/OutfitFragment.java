@@ -1,20 +1,9 @@
 package com.example.outfits.UI;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -27,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -41,15 +29,14 @@ import com.baidu.mapapi.search.weather.WeatherSearchOption;
 import com.example.outfits.MyApplication;
 import com.example.outfits.R;
 
-import java.util.List;
-import java.util.Locale;
-
 public class OutfitFragment extends Fragment{
     ViewPager2 viewPager2;
     TextView myOutfit;
     TextView recommendOutfit;
-    TextView tempetature;
+    TextView temperature;
     TextView phenomenon;
+    String cityName;
+
     ConstraintLayout rootLayout;
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener;
@@ -78,7 +65,7 @@ public class OutfitFragment extends Fragment{
         myOutfit=view.findViewById(R.id.my_outfit);
         recommendOutfit=view.findViewById(R.id.recommend_outfit);
         rootLayout=view.findViewById(R.id.outfit_toolbar);
-        tempetature=view.findViewById(R.id.temperature);
+        temperature=view.findViewById(R.id.temperature);
         phenomenon=view.findViewById(R.id.phenomenon);
         //定位初始化
         mLocationClient = new LocationClient(MyApplication.getContext());
@@ -214,7 +201,7 @@ public class OutfitFragment extends Fragment{
                 @Override
                 public void onGetWeatherResultListener(final WeatherResult weatherResult) {
                     if(weatherResult!=null){
-                        tempetature.setText(String.valueOf(weatherResult.getRealTimeWeather().getTemperature()));
+                        temperature.setText(String.valueOf(weatherResult.getRealTimeWeather().getTemperature()));
                         phenomenon.setText(weatherResult.getRealTimeWeather().getPhenomenon());
                         Log.e("TAG", ""+weatherResult.getRealTimeWeather().getPhenomenon());
                         Log.e("TAG", ""+weatherResult.getRealTimeWeather().getWindDirection());
