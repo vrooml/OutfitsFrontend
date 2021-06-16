@@ -14,7 +14,7 @@
         </div>
       </div>
       <vue-scroll>
-        <div id="index-content">
+        <div id="index-content" :style="screenHeight1">
           <follow-list v-if="tabType === 1"></follow-list>
           <recommend-list v-if="tabType === 2"></recommend-list>
         </div>
@@ -163,6 +163,19 @@ export default {
       ]
     }
   },
+  computed: {
+    screenHeight1: () => {
+      // const ele = document.getElementById('communityIndex')
+      // console.log('communityIndex的高度' + ele.clientHeight)
+      const num = parseInt(document.body.clientHeight)
+      const str = num - 70 + 'px'
+      console.log('height="' + str)
+      const obj = {
+        height: str
+      }
+      return obj
+    }
+  },
   methods: {
     setTabType (type) {
       this.tabType = type
@@ -221,7 +234,7 @@ export default {
   #index-content {
     width:100%;
     background-color: transparent;
-    /*padding-top: 60px;*/
+    overflow: visible
   }
 .__vuescroll {
   height: calc(100% - 60px) !important;
