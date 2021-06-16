@@ -8,7 +8,7 @@
         </svg>
       </div>
       <div>
-        没有搜索内容
+        空空如也
       </div>
     </div>
   </div>
@@ -50,7 +50,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   name: 'followList.vue',
   data () {
@@ -182,23 +182,7 @@ export default {
       // console.log(item)
       window.android.toUser(item.userId)
     },
-    getToken (token) {
-      console.log('token')
-      axios.interceptors.request.use(config => {
-        config.headers.token = token
-        // config.headers.token = 'JhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwiaWF0IjoxNjIwNzM1NjAyLCJzdWIiOiIxNTI2MDAxMTM4NSIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMDk5NDgwMn0.SM7ERdR_qw3gSHjwtoYuM9XO2Zjd7IHymHTAHusRYFw'
-        return config
-      })
-      this.getBlogInfo()
-    },
     getBlogInfo () {
-      console.log('token')
-      // const token = window.android.getToken()
-      axios.interceptors.request.use(config => {
-        // config.headers.token = token
-        config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIwODM4MjExLCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyMTA5NzQxMX0.n4guRYmW5gmbi5LwrWAqlM9khpdnY08WdUaFIW6GgJk'
-        return config
-      })
       console.log('获取订阅用户的博客')
       const that = this
       this.$axios.post('/blog/getSubscription', {
@@ -210,7 +194,7 @@ export default {
         console.log(res)
         if (res.data.code === 200) {
           // let temp = {}
-          that.blocks = that.blocks.concat(res.data.data)
+          that.block = that.block.concat(res.data.data)
         } else {
           Toast(res.data.msg)
         }
@@ -230,10 +214,13 @@ export default {
 <style scoped lang="less">
   #followList {
     width:100%;
-    min-height: 100%;
+    height: calc( 100% - 60px);
     background-color: #faf7f8;
     z-index: 2019;
+    overflow: visible;
     #content {
+      width: 100%;
+      height: 100%;
       >div {
         width: 100%;
         height: 100%;

@@ -1,6 +1,6 @@
 <template>
 <div id="recommendList">
-  <div id="content" v-if="blocks.length === 0">
+  <div id="content" v-if="block.length === 0">
     <div>
       <div>
         <svg class="icon" aria-hidden="true">
@@ -8,13 +8,13 @@
         </svg>
       </div>
       <div>
-        没有搜索内容
+        空空如也
       </div>
     </div>
   </div>
   <div v-masonry  transition-duration="0.3s" i tem-selector=".item">
     <div v-masonry-tile class="item"
-         v-for="(item, index) in blocks"
+         v-for="(item, index) in block"
          :key=" '2' + index ">
       <div class="content">
         <div class="content-photo" @click="toBlog(item)">
@@ -165,7 +165,8 @@ export default {
           blogId: '0003',
           article: ' 测试：晗杰晗杰你最美，晗杰晗杰你最棒。'
         }
-      ]
+      ],
+      block: []
     }
   },
   methods: {
@@ -181,6 +182,7 @@ export default {
       console.log('获取所有博客信息')
       const that = this
       this.$axios.post('/blog/getAll', {
+        // token: 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
       }, {
         header: {
           'Content-Type': 'application/json' // 如果写成contentType会报错
@@ -189,7 +191,7 @@ export default {
         console.log(res)
         if (res.data.code === 200) {
           // let temp = {}
-          that.blocks = that.blocks.concat(res.data.data)
+          that.block = that.block.concat(res.data.data)
         } else {
           Toast(res.data.msg)
         }
@@ -209,6 +211,8 @@ export default {
 <style scoped lang="less">
   #recommendList {
     #content {
+      width: 100%;
+      height: 100%;
       >div {
         width: 100%;
         height: 100%;
