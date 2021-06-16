@@ -196,16 +196,16 @@ export default {
     getToken () {
       console.log('token')
       Vue.prototype.$axios = axios
-      // axios.interceptors.request.use(config => {
-      //   config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
-      //   return config
-      // })
-      const myToken = window.android.getToken(' ')
-      console.log(myToken)
       axios.interceptors.request.use(config => {
-        config.headers.token = myToken
+        config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
         return config
       })
+      // const myToken = window.android.getToken(' ')
+      // console.log(myToken)
+      // axios.interceptors.request.use(config => {
+      //   config.headers.token = myToken
+      //   return config
+      // })
     },
     getBlogInfo () {
       console.log('获取订阅用户的博客')

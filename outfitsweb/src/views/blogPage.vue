@@ -1,6 +1,22 @@
 <template>
   <div id="blogPage">
-    <div id="blog-nav">
+    <div id="myLoding" v-show="loading === 1">
+      <div class="pswp__preloader__icn">
+        <div class="pswp__preloader__cut">
+          <div class="pswp__preloader__donut"></div>
+        </div>
+      </div>
+      <div id="loadText">加 载 中</div>
+    </div>
+    <div id="myLoding2" v-show="loading2 === 1">
+      <div class="pswp__preloader__icn">
+        <div class="pswp__preloader__cut">
+          <div class="pswp__preloader__donut"></div>
+        </div>
+      </div>
+<!--      <div id="loadText2">加 载 中</div>-->
+    </div>
+    <div id="blog-nav" v-show="loading === 0">
       <div id="blog-nav-left">
         <div id="blog-nav-back" @click="toBack()">
           <span class="mui-icon mui-icon-arrowleft"></span>
@@ -17,8 +33,8 @@
         <div id="blog-nav-btnInfo" v-show="data.user_state === 2" @click="follow()">已关注</div>
       </div>
     </div>
-    <vue-scroll>
-      <div id="blog-detail">
+    <vue-scroll v-show="loading === 0">
+      <div id="blog-detail" :style="screenHeight1">
 
         <div id="blog-detail-context">
           <div id="blog-detail-title">
@@ -65,7 +81,22 @@ export default {
         user_nickname: '最帅的那个用户',
         user_pic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1441836571,2166773131&fm=26&gp=0.jpg',
         user_state: 2
+      },
+      loading: 1,
+      loading2: 0
+    }
+  },
+  computed: {
+    screenHeight1: () => {
+      // const ele = document.getElementById('communityIndex')
+      // console.log('communityIndex的高度' + ele.clientHeight)
+      const num = parseInt(document.body.clientHeight)
+      const str = num - 70 + 'px'
+      console.log('height="' + str)
+      const obj = {
+        height: str
       }
+      return obj
     }
   },
   methods: {
@@ -81,6 +112,7 @@ export default {
     getBlogDetail () {
       console.log('获取博客详细信息')
       const that = this
+      this.loading = 1
       this.$axios.post('/blog/getDetail', {
         blogId: this.$route.params.blogId
       }, {
@@ -98,6 +130,7 @@ export default {
       }).catch(error => {
         console.log(error)
       }).finally(() => {
+        this.loading = 0
       })
     },
     follow () {
@@ -105,6 +138,7 @@ export default {
         Toast('不能关注自己哦')
       } else if (this.data.user_state === 2 || this.data.user_state === 3) {
         console.log('关注用户')
+        this.loading2 = 1
         this.$axios.post('/user/subscribe', {
           userId: this.data.userId
         }, {
@@ -127,12 +161,14 @@ export default {
           console.log(error)
           Toast(error)
         }).finally(() => {
+          this.loading2 = 0
         })
       }
     },
     collect () {
       console.log('收藏')
       if (this.data.favorite === 0 || this.data.favorite === 1) {
+        this.loading2 = 1
         this.$axios.post('/blog/collect', {
           blogId: this.data.blogId
         }, {
@@ -155,6 +191,7 @@ export default {
           console.log(error)
           Toast(error)
         }).finally(() => {
+          this.loading2 = 0
         })
       }
     }
@@ -173,6 +210,138 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  #myLoding {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #faf7f8;
+    .pswp__preloader__icn {
+      opacity:0.75;
+      width: 60px;
+      height: 60px;
+      -webkit-animation: clockwise 500ms linear infinite;
+      animation: clockwise 500ms linear infinite;
+    }
+    /* The idea of animating inner circle is based on Polymer loading indicator by Keanu Lee https://blog.keanulee.com/2014/10/20/the-tale-of-three-spinners.html */
+    .pswp__preloader__cut {
+      position: relative;
+      width: 30px;
+      height: 60px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .pswp__preloader__donut {
+      box-sizing: border-box;
+      width: 60px;
+      height: 60px;
+      border: 5px solid #4dcfcf;
+      border-radius: 50%;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: none;
+      margin:0;
+      -webkit-animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+      animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+    }
+    @-webkit-keyframes clockwise {
+      0% { -webkit-transform: rotate(0deg) }
+      100% { -webkit-transform: rotate(360deg) }
+    }
+    @keyframes clockwise {
+      0% { transform: rotate(0deg) }
+      100% { transform: rotate(360deg) }
+    }
+    @-webkit-keyframes donut-rotate {
+      0% { -webkit-transform: rotate(0) }
+      50% { -webkit-transform: rotate(-140deg) }
+      100% { -webkit-transform: rotate(0) }
+    }
+    @keyframes donut-rotate {
+      0% { transform: rotate(0) }
+      50% { transform: rotate(-140deg) }
+      100% { transform: rotate(0) }
+    }
+    #loadText {
+      margin: 20px 0;
+      font-size: 18px;
+      font-color: #87a8be;
+    }
+  }
+  #myLoding2 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    position: absolute;
+    z-index: 20;
+    .pswp__preloader__icn {
+      opacity:0.75;
+      width: 60px;
+      height: 60px;
+      -webkit-animation: clockwise 500ms linear infinite;
+      animation: clockwise 500ms linear infinite;
+    }
+    /* The idea of animating inner circle is based on Polymer loading indicator by Keanu Lee https://blog.keanulee.com/2014/10/20/the-tale-of-three-spinners.html */
+    .pswp__preloader__cut {
+      position: relative;
+      width: 30px;
+      height: 60px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .pswp__preloader__donut {
+      box-sizing: border-box;
+      width: 60px;
+      height: 60px;
+      border: 5px solid #000000;
+      border-radius: 50%;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: none;
+      margin:0;
+      -webkit-animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+      animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+    }
+    @-webkit-keyframes clockwise {
+      0% { -webkit-transform: rotate(0deg) }
+      100% { -webkit-transform: rotate(360deg) }
+    }
+    @keyframes clockwise {
+      0% { transform: rotate(0deg) }
+      100% { transform: rotate(360deg) }
+    }
+    @-webkit-keyframes donut-rotate {
+      0% { -webkit-transform: rotate(0) }
+      50% { -webkit-transform: rotate(-140deg) }
+      100% { -webkit-transform: rotate(0) }
+    }
+    @keyframes donut-rotate {
+      0% { transform: rotate(0) }
+      50% { transform: rotate(-140deg) }
+      100% { transform: rotate(0) }
+    }
+    /*#loadText2 {*/
+    /*  margin: 20px 0;*/
+    /*  font-size: 18px;*/
+    /*  font-color: #87a8be;*/
+    /*}*/
+  }
 }
   #blog-nav {
     width:100%;
@@ -244,7 +413,7 @@ export default {
 }
   #blog-detail {
     width:100%;
-    min-height: 100%;
+    overflow: visible;
     /*padding-top: 60px;*/
     background-color: white;
     display: flex;

@@ -12,29 +12,37 @@
       </div>
     </div>
     <vue-scroll v-show="page === 1">
-      <div id="search-content" >
-        <div id="search-history" >
-          <div class="search-type-title">
-            <span class="mui-icon mui-icon-spinner mui-spin"></span>
-            <div>搜索历史</div>
-          </div>
-          <div class="search-type">
-        <span class="search-type-item"
-              v-for="(item, index) in history"
-              :key="index" @click="chooseHistory(item)">{{item}}</span>
-          </div>
-        </div>
+      <div id="search-content" v-show="loading === 0">
+<!--        <div id="search-history" >-->
+<!--          <div class="search-type-title">-->
+<!--            <span class="mui-icon mui-icon-spinner mui-spin"></span>-->
+<!--            <div>搜索历史</div>-->
+<!--          </div>-->
+<!--          <div class="search-type">-->
+<!--        <span class="search-type-item"-->
+<!--              v-for="(item, index) in history"-->
+<!--              :key="index" @click="chooseHistory(item)">{{item}}</span>-->
+<!--          </div>-->
+<!--        </div>-->
         <div id="search-related">
           <div class="search-type-title">
             <span class="mui-icon mui-icon-paperclip"></span>
-            <div>相关</div>
+            <div>相关推荐</div>
           </div>
           <div class="search-type">
-        <span class="search-type-item"
+            <span class="search-type-item"
               v-for="(item, index) in related"
               :key="index" @click="chooseRelated(item)">{{item}}</span>
           </div>
         </div>
+      </div>
+      <div id="myLoding" v-show="loading === 1" :style="screenHeight1">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+        <div id="loadText">加 载 中</div>
       </div>
     </vue-scroll>
     <vue-scroll v-if="page === 2">
@@ -73,7 +81,7 @@
             </div>
           </div>
         </div>
-        <div id="content" v-if="block.length === 0">
+        <div id="content" :style="screenHeight1" v-if="block.length === 0">
           <div>
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-kong"></use>
@@ -166,7 +174,21 @@ export default {
           favorite: 1
         }
       ],
-      block: []
+      block: [],
+      loading: 0
+    }
+  },
+  computed: {
+    screenHeight1: () => {
+      // const ele = document.getElementById('communityIndex')
+      // console.log('communityIndex的高度' + ele.clientHeight)
+      const num = parseInt(document.body.clientHeight)
+      const str = num - 80 + 'px'
+      console.log('height="' + str)
+      const obj = {
+        height: str
+      }
+      return obj
     }
   },
   methods: {
@@ -174,6 +196,7 @@ export default {
       console.log('搜索博客')
       // this.saveItem(this.text)
       const that = this
+      this.loading = 1
       this.$axios.post('/blog/search', {
         keyword: that.text
       }, {
@@ -193,6 +216,7 @@ export default {
         console.log(error)
         Toast(error)
       }).finally(() => {
+        this.loading = 0
       })
     },
     toBack () {
@@ -261,6 +285,70 @@ export default {
     justify-content: flex-start;
     align-items: center;
     background-color: #faf7f8;
+    #myLoding {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #faf7f8;
+      .pswp__preloader__icn {
+        opacity:0.75;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: clockwise 500ms linear infinite;
+        animation: clockwise 500ms linear infinite;
+      }
+      /* The idea of animating inner circle is based on Polymer loading indicator by Keanu Lee https://blog.keanulee.com/2014/10/20/the-tale-of-three-spinners.html */
+      .pswp__preloader__cut {
+        position: relative;
+        width: 30px;
+        height: 60px;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .pswp__preloader__donut {
+        box-sizing: border-box;
+        width: 60px;
+        height: 60px;
+        border: 5px solid #4dcfcf;
+        border-radius: 50%;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: none;
+        margin:0;
+        -webkit-animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+        animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+      }
+      @-webkit-keyframes clockwise {
+        0% { -webkit-transform: rotate(0deg) }
+        100% { -webkit-transform: rotate(360deg) }
+      }
+      @keyframes clockwise {
+        0% { transform: rotate(0deg) }
+        100% { transform: rotate(360deg) }
+      }
+      @-webkit-keyframes donut-rotate {
+        0% { -webkit-transform: rotate(0) }
+        50% { -webkit-transform: rotate(-140deg) }
+        100% { -webkit-transform: rotate(0) }
+      }
+      @keyframes donut-rotate {
+        0% { transform: rotate(0) }
+        50% { transform: rotate(-140deg) }
+        100% { transform: rotate(0) }
+      }
+      #loadText {
+        margin: 20px 0;
+        font-size: 18px;
+        font-color: #87a8be;
+      }
+    }
   }
   #search-nav {
     background-color: #faf7f8;
@@ -323,6 +411,7 @@ export default {
     justify-content: flex-start;
     align-items: center;
     position: absolute;
+    margin-top: 100px;
   }
   #search-history {
     width:90%;
@@ -360,7 +449,7 @@ export default {
     }
   }
   .search-type {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
