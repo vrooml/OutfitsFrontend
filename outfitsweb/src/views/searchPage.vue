@@ -42,7 +42,7 @@
         <div v-masonry  transition-duration="0.3s" i tem-selector=".item"
              v-if="blocks.length !== 0">
           <div v-masonry-tile class="item"
-               v-for="(item, index) in blocks"
+               v-for="(item, index) in block"
                :key=" '1' + index ">
             <div class="content">
               <div class="content-photo">
@@ -73,14 +73,14 @@
             </div>
           </div>
         </div>
-        <div id="content" v-if="blocks.length === 0">
+        <div id="content" v-if="block.length === 0">
           <div>
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-kong"></use>
             </svg>
           </div>
           <div>
-            没有搜索内容
+            搜索内容为空
           </div>
         </div>
       </div>
@@ -165,7 +165,8 @@ export default {
           blog_released_time: '2021年4月8日',
           favorite: 1
         }
-      ]
+      ],
+      block: []
     }
   },
   methods: {
@@ -183,7 +184,7 @@ export default {
         console.log(res)
         if (res.data.code === 200) {
           // let temp = {}
-          that.blocks = that.blocks.concat(res.data.data)
+          that.block = that.block.concat(res.data.data)
           that.page = 2
         } else {
           Toast(res.data.msg)
@@ -291,6 +292,7 @@ export default {
         border: none;
         width: 90%;
         color: #9B8F92;
+        margin-left: 5px;
       }
       -webkit-tap-highlight-color:rgba(255,0,0,0);
       *::-webkit-input-placeholder {
