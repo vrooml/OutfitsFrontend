@@ -143,15 +143,7 @@ public class UserFragment extends Fragment{
                         name.setText(response.body().getData().getUserNickname());
                         Glide.with(getContext()).asBitmap()
                                 .load(response.body().getData().getUserPic())
-                                .centerCrop().into(new BitmapImageViewTarget(icon){
-                            @Override
-                            protected void setResource(Bitmap resource) {
-                                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
-                                        .create(MyApplication.getContext().getResources(), resource);
-                                circularBitmapDrawable.setCircular(true);
-                                icon.setImageDrawable(circularBitmapDrawable);
-                            }
-                        });
+                                .centerCrop().into(icon);
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
