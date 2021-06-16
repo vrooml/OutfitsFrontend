@@ -1,5 +1,13 @@
 <template>
 <div id="recommendList">
+  <div id="myLoding" v-show="loading === 1">
+    <div class="pswp__preloader__icn">
+      <div class="pswp__preloader__cut">
+        <div class="pswp__preloader__donut"></div>
+      </div>
+    </div>
+    <div id="loadText">加 载 中</div>
+  </div>
   <div id="content" v-if="block.length === 0">
     <div>
       <div>
@@ -166,7 +174,8 @@ export default {
           article: ' 测试：晗杰晗杰你最美，晗杰晗杰你最棒。'
         }
       ],
-      block: []
+      block: [],
+      loading: 1
     }
   },
   methods: {
@@ -181,6 +190,7 @@ export default {
     getBlogInfo () {
       console.log('获取所有博客信息')
       const that = this
+      this.loading = 1
       this.$axios.post('/blog/getAll', {
         // token: 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
       }, {
@@ -199,6 +209,7 @@ export default {
         console.log(error)
         Toast(error)
       }).finally(() => {
+        this.loading = 0
       })
     }
   },
@@ -210,6 +221,76 @@ export default {
 
 <style scoped lang="less">
   #recommendList {
+    width:100%;
+    height: 100%;
+    overflow: visible;
+    background-color: #faf7f8;
+    z-index: 2019;
+    #myLoding {
+      width: 100%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #faf7f8;
+      .pswp__preloader__icn {
+        opacity:0.75;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: clockwise 500ms linear infinite;
+        animation: clockwise 500ms linear infinite;
+      }
+      /* The idea of animating inner circle is based on Polymer loading indicator by Keanu Lee https://blog.keanulee.com/2014/10/20/the-tale-of-three-spinners.html */
+      .pswp__preloader__cut {
+        position: relative;
+        width: 30px;
+        height: 60px;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .pswp__preloader__donut {
+        box-sizing: border-box;
+        width: 60px;
+        height: 60px;
+        border: 5px solid #4dcfcf;
+        border-radius: 50%;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: none;
+        margin:0;
+        -webkit-animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+        animation: donut-rotate 1000ms cubic-bezier(.4,0,.22,1) infinite;
+      }
+      @-webkit-keyframes clockwise {
+        0% { -webkit-transform: rotate(0deg) }
+        100% { -webkit-transform: rotate(360deg) }
+      }
+      @keyframes clockwise {
+        0% { transform: rotate(0deg) }
+        100% { transform: rotate(360deg) }
+      }
+      @-webkit-keyframes donut-rotate {
+        0% { -webkit-transform: rotate(0) }
+        50% { -webkit-transform: rotate(-140deg) }
+        100% { -webkit-transform: rotate(0) }
+      }
+      @keyframes donut-rotate {
+        0% { transform: rotate(0) }
+        50% { transform: rotate(-140deg) }
+        100% { transform: rotate(0) }
+      }
+      #loadText {
+        margin: 20px 0;
+        font-size: 18px;
+        font-color: #87a8be;
+      }
+    }
     #content {
       width: 100%;
       height: 100%;
@@ -227,10 +308,6 @@ export default {
         }
       }
     }
-    width:100%;
-    min-height: 100%;
-    background-color: #faf7f8;
-    z-index: 2019;
     .item {
       width:50%;
       display: flex;
