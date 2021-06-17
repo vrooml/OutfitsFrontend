@@ -32,7 +32,6 @@ public class WelcomeActivity extends BaseActivity{
 
         requestReadExternalPermission();
         checkLocationPermission();
-
     }
 
     private void init(){
@@ -73,6 +72,7 @@ public class WelcomeActivity extends BaseActivity{
                         @Override
                         public void run(){
                             RetrofitUtil.getUserInfoAndStore(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
+                            Log.d(TAG,"token"+SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
                             Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -89,18 +89,17 @@ public class WelcomeActivity extends BaseActivity{
     @SuppressLint("NewApi")
     private void requestReadExternalPermission(){
         if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
-            Log.d(TAG,"READ permission IS NOT granted...");
+            Toast.makeText(MyApplication.getContext(),"未获得储存权限,请手动开启并重启应用",Toast.LENGTH_SHORT).show();
             if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
                 Log.d(TAG,"11111111111111");
             }else{
-                // 0 是自己定义的请求coude
+                // 0 是自己定义的请求code
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
                 Log.d(TAG,"222222222222");
             }
         }else{
             init();
-            Log.d(TAG,"READ permission is granted...");
         }
     }
 
@@ -124,7 +123,8 @@ public class WelcomeActivity extends BaseActivity{
                     // permission was granted
                     // request successfully, handle you transactions
                 }else{
-                    System.exit(0);
+                    Toast.makeText(this,"未开启权限,请手动到设置页面去开启权限",Toast.LENGTH_LONG).show();
+//                    System.exit(0);
                     // permission denied
                     // request failed
                 }
@@ -134,7 +134,7 @@ public class WelcomeActivity extends BaseActivity{
                 if(grantResults[0]==PackageManager.PERMISSION_GRANTED){//用户同意权限,执行我们的操作
 
                 }else{//用户拒绝之后,当然我们也可以弹出一个窗口,直接跳转到系统设置页面
-                    Toast.makeText(this,"未开启定位权限,请手动到设置去开启权限",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"未开启定位权限,请手动到设置页面去开启权限",Toast.LENGTH_LONG).show();
                 }
                 break;
             default:

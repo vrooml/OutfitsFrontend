@@ -47,7 +47,7 @@ public class ShowFocusListActivity extends BaseActivity{
         //创建适配器
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo[]>> call = request.getSubscription(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
-                new GetBlogRequest(6));
+                new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))));
         call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
             public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {
@@ -71,6 +71,7 @@ public class ShowFocusListActivity extends BaseActivity{
         //   Toast.makeText(this, "粉丝的数量为" + datas.size(), Toast.LENGTH_SHORT).show();
         //设置到RecyclerView中
         userInfoAdapter = new UserInfoAdapter(this, datas);
+        userInfoAdapter.source=1;
         list.setAdapter(userInfoAdapter);
         goback = (ImageView) findViewById(R.id.goback);
         goback.setOnClickListener(new View.OnClickListener() {

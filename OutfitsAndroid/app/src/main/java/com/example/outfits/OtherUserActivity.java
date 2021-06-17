@@ -9,6 +9,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -81,15 +84,7 @@ public class OtherUserActivity extends AppCompatActivity {
                         name.setText(response.body().getData().getUserNickname());
                         Glide.with(MyApplication.getContext()).asBitmap()
                                 .load(response.body().getData().getUserPic())
-                                .centerCrop().into(new BitmapImageViewTarget(icon){
-                            @Override
-                            protected void setResource(Bitmap resource) {
-                                RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory
-                                        .create(MyApplication.getContext().getResources(), resource);
-                                circularBitmapDrawable.setCircular(true);
-                                icon.setImageDrawable(circularBitmapDrawable);
-                            }
-                        });
+                                .centerCrop().into(icon);
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
@@ -145,16 +140,20 @@ public class OtherUserActivity extends AppCompatActivity {
         });
         BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(getSupportFragmentManager(), getLifecycle(), null, userId);
         viewPager2.setAdapter(blogFragmentAdapter);
-        blocUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        blocUser.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
                 viewPager2.setCurrentItem(0);
+                blocUser.setTextColor(getResources().getColor(R.color.main_color));
+                blocFollow.setTextColor(getResources().getColor(R.color.black));
             }
         });
         blocFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewPager2.setCurrentItem(1);
+                blocFollow.setTextColor(getResources().getColor(R.color.main_color));
+                blocUser.setTextColor(getResources().getColor(R.color.black));
             }
         });
         goBack.setOnClickListener(new View.OnClickListener() {

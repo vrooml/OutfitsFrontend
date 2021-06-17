@@ -50,7 +50,7 @@ public class ShowFansListActivity extends BaseActivity{
         //创建适配器
         PostInterfaces request = RetrofitUtil.retrofit.create(PostInterfaces.class);
         Call<ResponseModel<UserInfo[]>> call = request.getSubscriber(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
-                new GetBlogRequest(6));
+                new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))));
         call.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
             public void onResponse(Call<ResponseModel<UserInfo[]>> call, Response<ResponseModel<UserInfo[]>> response) {
@@ -74,14 +74,8 @@ public class ShowFansListActivity extends BaseActivity{
         //   Toast.makeText(this, "粉丝的数量为" + datas.size(), Toast.LENGTH_SHORT).show();
         //设置到RecyclerView中
         userInfoAdapter = new UserInfoAdapter(this, datas);
+        userInfoAdapter.source=2;
         list.setAdapter(userInfoAdapter);
-        goback = (ImageView) findViewById(R.id.goback1);
-        goback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
 }

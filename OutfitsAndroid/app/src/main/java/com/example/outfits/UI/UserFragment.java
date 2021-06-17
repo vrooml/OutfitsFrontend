@@ -2,14 +2,11 @@ package com.example.outfits.UI;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.transition.ChangeBounds;
@@ -24,17 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.outfits.Adapter.BlogFragmentAdapter;
-import com.example.outfits.Bean.Blog;
-import com.example.outfits.Bean.SubTypeClothingBean;
 import com.example.outfits.Bean.UserInfo;
 import com.example.outfits.LoginActivity;
 import com.example.outfits.ModifyActivity;
 import com.example.outfits.MyApplication;
 import com.example.outfits.PostBlogActivity;
 import com.example.outfits.R;
-import com.example.outfits.RetrofitStuff.DeleteClothingRequest;
 import com.example.outfits.RetrofitStuff.GetBlogRequest;
 import com.example.outfits.RetrofitStuff.PostInterfaces;
 import com.example.outfits.RetrofitStuff.ResponseModel;
@@ -52,6 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.outfits.Utils.ConstantUtil.FAILED;
 import static com.example.outfits.Utils.ConstantUtil.SUCCESS_CODE;
 
@@ -90,9 +84,40 @@ public class UserFragment extends Fragment{
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user,container,false);
         if(view != null){
-            initView();
+            final PostInterfaces request=RetrofitUtil.retrofit.create(PostInterfaces.class);
+            Call<ResponseModel<UserInfo>> call=request.getUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
+            call.enqueue(new Callback<ResponseModel<UserInfo>>(){
+                @Override
+                public void onResponse(Call<ResponseModel<UserInfo>> call,Response<ResponseModel<UserInfo>> response){
+                    if(response.body()!=null){
+                        if(response.body().getCode()==SUCCESS_CODE){
+                            UserInfo userInfo=response.body().getData();
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",userInfo.getUserNickname());
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userAccount",String.valueOf(userInfo.getUserAccount()));
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"sex",userInfo.getUserSex());
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"avatar",userInfo.getUserPic());
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"profile",userInfo.getUserProfile());
+                            SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userId",String.valueOf(userInfo.getUserId()));
+                            initView();
+                        }else{
+                            Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseModel<UserInfo>> call,Throwable t){
+                    Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        initView();
     }
 
     private void initView(){
@@ -103,11 +128,17 @@ public class UserFragment extends Fragment{
         blocUser = view.findViewById(R.id.blog_user);
         blocFollow = view.findViewById(R.id.blog_follow);
         rootLayout=view.findViewById(R.id.root_layout);
+        TextView followText=view.findViewById(R.id.follow);
+        TextView fansText=view.findViewById(R.id.fans);
         name = view.findViewById(R.id.user_name);
         icon = view.findViewById(R.id.user_image);
         mFragmentArray.add(MyBlogFragment.newInstance(null));
         mFragmentArray.add(MyCollectionFragment.newInstance(null));
-        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null, 6);
+        int userId=0;
+        if(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId")!=null&&!SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId").equals("")){
+            userId=Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"));
+        }
+        BlogFragmentAdapter blogFragmentAdapter = new BlogFragmentAdapter(this, null,userId);
         viewPager2 = view.findViewById(R.id.vp_blog);
         viewPager2.setAdapter(blogFragmentAdapter);
 
@@ -133,8 +164,9 @@ public class UserFragment extends Fragment{
         Call<ResponseModel<UserInfo>> call1 = request.getInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(
 //                        Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))
-                        6
+                        Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))
                 ));
+//        Toast.makeText(MyApplication.getContext(),SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"),Toast.LENGTH_LONG).show();
         call1.enqueue(new Callback<ResponseModel<UserInfo>>() {
             @Override
             public void onResponse(Call<ResponseModel<UserInfo>> call, Response<ResponseModel<UserInfo>> response) {
@@ -143,6 +175,7 @@ public class UserFragment extends Fragment{
                         name.setText(response.body().getData().getUserNickname());
                         Glide.with(getContext()).asBitmap()
                                 .load(response.body().getData().getUserPic())
+                                .placeholder(R.drawable.default_avatar)
                                 .centerCrop().into(icon);
                     }else{
                         Toast.makeText(MyApplication.getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
@@ -184,7 +217,7 @@ public class UserFragment extends Fragment{
         Call<ResponseModel<UserInfo[]>> call3 = request.getSubscription(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"),
                 new GetBlogRequest(
 //                        Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))
-                        6
+                        Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId"))
                 ));
         call3.enqueue(new Callback<ResponseModel<UserInfo[]>>() {
             @Override
@@ -220,10 +253,24 @@ public class UserFragment extends Fragment{
             }
         });
 
+        followText.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ShowFocusListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fansText.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), ShowFansListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btn_modify.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent(getActivity(), ModifyActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
 
@@ -257,5 +304,13 @@ public class UserFragment extends Fragment{
                 blocUser.setTextColor(getActivity().getResources().getColor(R.color.black));
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,@Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(resultCode==RESULT_OK){
+            initView();
+        }
     }
 }

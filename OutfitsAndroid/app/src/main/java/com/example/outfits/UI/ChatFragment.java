@@ -103,6 +103,7 @@ public class ChatFragment extends Fragment{
         @JavascriptInterface
         public void toUser(String userId) {
             Intent intent=new Intent(ChatFragment.this.getActivity(),OtherUserActivity.class);
+            intent.putExtra("userId",Integer.parseInt(userId));
             startActivity(intent);
         }
 

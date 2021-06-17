@@ -205,7 +205,7 @@ public class OutfitFragment extends Fragment{
             mWeatherSearch.setWeatherSearchResultListener(new OnGetWeatherResultListener() {
                 @Override
                 public void onGetWeatherResultListener(final WeatherResult weatherResult) {
-                    if(weatherResult!=null){
+                    if(weatherResult.getRealTimeWeather()!=null){
                         temperature.setText(String.valueOf(weatherResult.getRealTimeWeather().getTemperature()));
                         phenomenon.setText(weatherResult.getRealTimeWeather().getPhenomenon());
                         Log.e("TAG", ""+weatherResult.getRealTimeWeather().getPhenomenon());

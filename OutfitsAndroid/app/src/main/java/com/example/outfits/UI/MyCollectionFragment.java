@@ -43,6 +43,7 @@ public class MyCollectionFragment extends Fragment {
     private List<Collection> collectionList;
     public static CollectionAdapter collectionAdapter;
     public static SwipeRefreshLayout swipeRefreshLayout;
+    int userId=-1;
 
     public MyCollectionFragment() {
         // Required empty public constructor
@@ -51,6 +52,13 @@ public class MyCollectionFragment extends Fragment {
     public static MyCollectionFragment newInstance(List<Collection> collectionList) {
         MyCollectionFragment fragment = new MyCollectionFragment();
         fragment.collectionList = collectionList;
+        return fragment;
+    }
+
+    public static MyCollectionFragment newInstance(List<Collection> collectionList,int userId) {
+        MyCollectionFragment fragment = new MyCollectionFragment();
+        fragment.collectionList = collectionList;
+        fragment.userId=userId;
         return fragment;
     }
 
@@ -77,7 +85,12 @@ public class MyCollectionFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetBlogRequest getBlogRequest = new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId")));
+                GetBlogRequest getBlogRequest;
+                if(userId==-1){
+                    getBlogRequest = new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId")));
+                }else{
+                    getBlogRequest = new GetBlogRequest(userId);
+                }
                 RetrofitUtil.getCollection(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                         ,getBlogRequest,collectionList, null);
             }

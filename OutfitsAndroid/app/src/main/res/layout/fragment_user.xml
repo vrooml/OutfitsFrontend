@@ -14,8 +14,7 @@
             android:gravity="center"
             app:contentInsetStart="0dp"
             android:background="@color/main_color"
-            android:elevation="5dp"
-            >
+            android:elevation="5dp">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -64,6 +63,9 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="35sp"
+                android:maxEms="7"
+                android:singleLine="true"
+                android:ellipsize="marquee"
                 android:layout_marginLeft="40dp"
                 app:layout_constraintTop_toTopOf="@+id/user_image"
                 app:layout_constraintBottom_toBottomOf="@+id/user_image"

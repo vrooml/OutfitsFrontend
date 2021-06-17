@@ -45,10 +45,6 @@ public interface PostInterfaces{
     @POST("/user/info/update/password")
     Call<ResponseModel> postForgetPassword(@Header("token") String token,@Body ForgetpasswordRequest forgetpasswordRequest1);
 
-    //修改个人资料
-    @POST("/user/modifyInfo")
-    Call<ResponseModel> postModifyUserInfo(@Header("token") String token,@Body ModifyUserInfoRequest modifyUserInfoRequest);
-
 //TODO 衣柜
 
     //请求子类别的衣物
@@ -118,6 +114,13 @@ public interface PostInterfaces{
 
 //TODO 我的
 
+    //修改头像
+    //上传衣物
+    @Multipart
+    @POST("/user/uploadPic")
+    Call<ResponseModel> postUploadAvatar(@Header("token") String token,
+                                           @Part MultipartBody.Part uploadPic);
+
     //获取个人资料
     @POST("/user/getDetail")
     Call<ResponseModel<UserInfo>> getUserInfo(@Header("token") String token);
@@ -153,4 +156,9 @@ public interface PostInterfaces{
                                            @Part("blogArticle") String blogArticle,
                                            @Part("blogTitle") String blogTitle,
                                            @Part MultipartBody.Part uploadPic);
+
+    //关注/取消关注
+    @POST("/user/subscribe")
+    Call<ResponseModel> subscribe(@Header("token") String token, @Body GetBlogRequest getBlogRequest);
+
 }
