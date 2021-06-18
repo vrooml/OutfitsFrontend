@@ -3,11 +3,11 @@
       <div id="index-nav">
         <div id="index-nav-tab">
           <div class="index-nav-tabItem"
-               :class="{ index_nav_tabItem_choose: tabType === 1 }"
-               @click="setTabType(1)">关注</div>
-          <div class="index-nav-tabItem"
                :class="{ index_nav_tabItem_choose: tabType === 2 }"
                @click="setTabType(2)">推荐</div>
+          <div class="index-nav-tabItem"
+               :class="{ index_nav_tabItem_choose: tabType === 1 }"
+               @click="setTabType(1)">关注</div>
         </div>
         <div id="index-nav-search">
           <span class="mui-icon mui-icon-search" @click="toSearch()"></span>
@@ -30,7 +30,7 @@ export default {
   name: 'communityIndex',
   data () {
     return {
-      tabType: 1,
+      tabType: 2,
       blocks1: [
         {
           photo: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2023455215,2932304243&fm=26&gp=0.jpg',

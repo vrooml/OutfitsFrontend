@@ -38,7 +38,7 @@
 
         <div id="blog-detail-context">
           <div id="blog-detail-title">
-            <div>{{data.title}}</div>
+            <div>{{data.title.replace(/^\"|\"$/g,'')}}</div>
           </div>
           <div id="blog-detail-second">
             <div id="detail-time">{{data.time}}</div>
@@ -55,7 +55,7 @@
             <img :src="data.picture" />
           </div>
           <div id="detail-content">
-            {{data.article}}
+            {{data.article.replace(/^\"|\"$/g,'')}}
           </div>
         </div>
       </div>

@@ -207,7 +207,7 @@ export default {
         console.log(res)
         if (res.data.code === 200) {
           // let temp = {}
-          that.block = that.block.concat(res.data.data)
+          that.block = that.block.concat(res.data.data).reverse()
           that.page = 2
         } else {
           Toast(res.data.msg)

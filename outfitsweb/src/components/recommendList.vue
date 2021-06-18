@@ -29,7 +29,7 @@
           <img :src="item.blogPic" />
         </div>
         <div class="content-info">
-          <div class="title" @click="toBlog(item)">{{item.blogTitle}}</div>
+          <div class="title" @click="toBlog(item)">{{item.blogTitle.replace(/^\"|\"$/g,'')}}</div>
           <div class="userInfo">
             <div class="userInfos">
               <div class="user-avator">
@@ -37,7 +37,7 @@
               </div>
               <div class="user-info" @click="toUser(item)">
                 <div class="username">{{item.user_nickname}}</div>
-                <div class="publishtime">{{item.blog_released_time}}</div>
+                <div class="publishtime">{{item.blog_released_time.split(' ')[1]}}</div>
               </div>
             </div>
             <div class="user-love">
@@ -58,6 +58,8 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import Vue from 'vue'
+import axios from 'axios'
 
 export default {
   name: 'recommendList.vue',
@@ -187,6 +189,20 @@ export default {
       // console.log(item)
       window.android.toUser(item.userId)
     },
+    getToken () {
+      console.log('token')
+      Vue.prototype.$axios = axios
+      // axios.interceptors.request.use(config => {
+      //   config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
+      //   return config
+      // })
+      const myToken = window.android.getToken(' ')
+      console.log(myToken)
+      axios.interceptors.request.use(config => {
+        config.headers.token = myToken
+        return config
+      })
+    },
     getBlogInfo () {
       console.log('获取所有博客信息')
       const that = this
@@ -201,7 +217,7 @@ export default {
         console.log(res)
         if (res.data.code === 200) {
           // let temp = {}
-          that.block = that.block.concat(res.data.data)
+          that.block = that.block.concat(res.data.data).reverse()
         } else {
           Toast(res.data.msg)
         }
@@ -214,6 +230,7 @@ export default {
     }
   },
   mounted () {
+    this.getToken()
     this.getBlogInfo()
   }
 }
@@ -400,6 +417,7 @@ export default {
                 width: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                text-align: left;
               }
             }
           }

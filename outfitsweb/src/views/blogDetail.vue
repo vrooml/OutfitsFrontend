@@ -21,7 +21,7 @@
 
         <div id="blog-detail-context">
           <div id="blog-detail-title">
-            <div>{{data.title}}</div>
+            <div>{{data.title.replace(/^\"|\"$/g,'')}}</div>
           </div>
           <div id="blog-detail-second">
             <div id="detail-time">{{data.time}}</div>
@@ -38,7 +38,7 @@
             <img :src="data.picture" />
           </div>
           <div id="detail-content">
-            {{data.article}}
+            {{data.article.replace(/^\"|\"$/g,'')}}
           </div>
         </div>
       </div>
@@ -88,16 +88,16 @@ export default {
     getToken () {
       console.log('token')
       Vue.prototype.$axios = axios
-      axios.interceptors.request.use(config => {
-        config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
-        return config
-      })
-      // const myToken = window.android.getToken(' ')
-      // console.log(myToken)
       // axios.interceptors.request.use(config => {
-      //   config.headers.token = myToken
+      //   config.headers.token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2IiwiaWF0IjoxNjIzODE4NDA4LCJzdWIiOiIxMzAyMzgzNjU4NyIsImlzcyI6InJ1aWppbiIsImV4cCI6MTYyNDA3NzYwOH0.XfLDqPo9_A6uNURwTxNRPzFBBBgoreQgu5Gexc4DleA'
       //   return config
       // })
+      const myToken = window.android.getToken(' ')
+      console.log(myToken)
+      axios.interceptors.request.use(config => {
+        config.headers.token = myToken
+        return config
+      })
     },
     getBlogDetail () {
       this.getToken()
