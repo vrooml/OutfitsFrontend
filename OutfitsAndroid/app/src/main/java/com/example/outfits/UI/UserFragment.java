@@ -117,7 +117,32 @@ public class UserFragment extends Fragment{
     @Override
     public void onResume(){
         super.onResume();
-        initView();
+        final PostInterfaces request=RetrofitUtil.retrofit.create(PostInterfaces.class);
+        Call<ResponseModel<UserInfo>> call=request.getUserInfo(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token"));
+        call.enqueue(new Callback<ResponseModel<UserInfo>>(){
+            @Override
+            public void onResponse(Call<ResponseModel<UserInfo>> call,Response<ResponseModel<UserInfo>> response){
+                if(response.body()!=null){
+                    if(response.body().getCode()==SUCCESS_CODE){
+                        UserInfo userInfo=response.body().getData();
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",userInfo.getUserNickname());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userAccount",String.valueOf(userInfo.getUserAccount()));
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"sex",userInfo.getUserSex());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"avatar",userInfo.getUserPic());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"profile",userInfo.getUserProfile());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userId",String.valueOf(userInfo.getUserId()));
+                        initView();
+                    }else{
+                        Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel<UserInfo>> call,Throwable t){
+                Toast.makeText(MyApplication.getContext(),FAILED,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initView(){
