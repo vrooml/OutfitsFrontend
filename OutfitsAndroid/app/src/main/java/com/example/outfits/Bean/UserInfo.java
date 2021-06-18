@@ -5,15 +5,15 @@ public class UserInfo {
     private String userAccount;
     private String userNickname;
     private String userPic;
-    private String sex;
-    private String profile;
-    public UserInfo(int userId,String userAccount,String userNickname,String userPic,String sex,String profile){
+    private String userSex;
+    private String userProfile;
+    public UserInfo(int userId,String userAccount,String userNickname,String userPic,String userSex,String userProfile){
         this.userId=userId;
         this.userAccount=userAccount;
         this.userNickname=userNickname;
         this.userPic=userPic;
-        this.sex=sex;
-        this.profile=profile;
+        this.userSex=userSex;
+        this.userProfile=userProfile;
     }
 
     public int getUserId(){
@@ -48,19 +48,19 @@ public class UserInfo {
         this.userPic=userPic;
     }
 
-    public String getSex(){
-        return sex;
+    public String getUserSex(){
+        return userSex;
     }
 
-    public void setSex(String sex){
-        this.sex=sex;
+    public void setUserSex(String userSex){
+        this.userSex=userSex;
     }
 
-    public String getProfile(){
-        return profile;
+    public String getUserProfile(){
+        return userProfile;
     }
 
-    public void setProfile(String profile){
-        this.profile=profile;
+    public void setUserProfile(String userProfile){
+        this.userProfile=userProfile;
     }
 }

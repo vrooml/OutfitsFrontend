@@ -49,12 +49,10 @@ import com.example.outfits.UI.OutfitTypeFragment;
 import com.example.outfits.UI.RecommendOutfitFragment;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -211,9 +209,9 @@ public class RetrofitUtil{
                         UserInfo userInfo=response.body().getData();
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"username",userInfo.getUserNickname());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userAccount",String.valueOf(userInfo.getUserAccount()));
-                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"sex",userInfo.getSex());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"sex",userInfo.getUserSex());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"avatar",userInfo.getUserPic());
-                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"profile",userInfo.getProfile());
+                        SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"profile",userInfo.getUserProfile());
                         SharedPreferencesUtil.setStoredMessage(MyApplication.getContext(),"userId",String.valueOf(userInfo.getUserId()));
 
                     }else{
@@ -650,7 +648,6 @@ public class RetrofitUtil{
                             recommendClothes.add(i);
                         }
                         recommendOutfitFragment.notifyDataSetChanged();
-                        Toast.makeText(MyApplication.getContext(),"获取新的推荐~",Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }
@@ -719,7 +716,7 @@ public class RetrofitUtil{
                 if(response.body()!=null){
                     if(response.body().getCode()==SUCCESS_CODE){
                         Toast.makeText(MyApplication.getContext(),"修改成功",Toast.LENGTH_SHORT).show();
-
+                        RetrofitUtil.getUserInfoAndStore(token);
                     }else{
                         Toast.makeText(MyApplication.getContext(),response.body().getMsg(),Toast.LENGTH_SHORT).show();
                     }

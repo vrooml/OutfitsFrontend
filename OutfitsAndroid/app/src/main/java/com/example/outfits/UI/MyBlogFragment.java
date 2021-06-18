@@ -40,6 +40,7 @@ public class MyBlogFragment extends Fragment {
     private List<Blog> blogLists;
     public static BlogAdapter blogAdapter;
     public static SwipeRefreshLayout swipeRefreshLayout;
+    private int userId=-1;
 
 
     public MyBlogFragment() {
@@ -49,6 +50,13 @@ public class MyBlogFragment extends Fragment {
     public static MyBlogFragment newInstance(List<Blog> blogList) {
         MyBlogFragment fragment = new MyBlogFragment();
         fragment.blogLists = blogList;
+        return fragment;
+    }
+
+    public static MyBlogFragment newInstance(List<Blog> blogList,int userId) {
+        MyBlogFragment fragment = new MyBlogFragment();
+        fragment.blogLists = blogList;
+        fragment.userId=userId;
         return fragment;
     }
 
@@ -74,7 +82,12 @@ public class MyBlogFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GetBlogRequest getBlogRequest = new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId")));
+                GetBlogRequest getBlogRequest;
+                if(userId==-1){
+                    getBlogRequest = new GetBlogRequest(Integer.parseInt(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"userId")));
+                }else{
+                    getBlogRequest = new GetBlogRequest(userId);
+                }
                 RetrofitUtil.getBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                         ,getBlogRequest, blogLists, null);
             }

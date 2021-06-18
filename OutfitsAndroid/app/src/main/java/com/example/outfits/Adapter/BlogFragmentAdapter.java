@@ -50,7 +50,7 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
             GetBlogRequest getBlogRequest = new GetBlogRequest(userId);
             RetrofitUtil.getBlog(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,getBlogRequest, blogList, null);
-            return MyBlogFragment.newInstance(blogList);
+            return MyBlogFragment.newInstance(blogList,userId);
         }
         else {
             List<Collection> collectionList = new ArrayList<>();
@@ -63,7 +63,7 @@ public class BlogFragmentAdapter extends FragmentStateAdapter {
             GetBlogRequest getBlogRequest = new GetBlogRequest(userId);
             RetrofitUtil.getCollection(SharedPreferencesUtil.getStoredMessage(MyApplication.getContext(),"token")
                     ,getBlogRequest, collectionList, null);
-            return MyCollectionFragment.newInstance(collectionList);
+            return MyCollectionFragment.newInstance(collectionList,userId);
         }
     }
 
